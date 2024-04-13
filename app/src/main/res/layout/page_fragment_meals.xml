@@ -8,10 +8,9 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/Fragment1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Geeks for Geeks"
+        android:text="@string/bottom_nav_item_text_meals"
         android:textColor="#43a047"
         android:textSize="40sp"
         android:textStyle="italic|bold"

@@ -45,7 +45,7 @@
     </string>
 
     <string name="bottom_nav_item_text_meals">meals</string>
-    <string name="bottom_nav_item_text_list">list</string>
+    <string name="bottom_nav_item_text_list">shopping list</string>
     <string name="bottom_nav_item_text_inventory">inventory</string>
     <string name="bottom_nav_item_text_stats">stats</string>
     <string name="bottom_nav_item_text_settings">settings</string>
