@@ -16,11 +16,11 @@ class MainActivity : AppCompatActivity() {
 
         setCurrentFragment(fragment1)
         findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            .setOnNavigationItemSelectedListener {
+            .setOnItemSelectedListener {
                 when (it.itemId) {
-                    R.id.item1 -> setCurrentFragment(fragment1)
-                    R.id.item2 -> setCurrentFragment(fragment2)
-                    R.id.item3 -> setCurrentFragment(fragment3)
+                    R.id.bottom_mav_item_meals -> setCurrentFragment(fragment1)
+                    R.id.bottom_mav_item_list -> setCurrentFragment(fragment2)
+                    R.id.bottom_mav_item_inventory -> setCurrentFragment(fragment3)
 
                 }
                 true

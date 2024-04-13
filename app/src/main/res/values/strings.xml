@@ -43,6 +43,10 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="bottom_nav_item_text_meals">meals</string>
+    <string name="bottom_nav_item_text_list">list</string>
+    <string name="bottom_nav_item_text_inventory">inventory</string>
+    <string name="bottom_nav_item_text_stats">stats</string>
+    <string name="bottom_nav_item_text_settings">settings</string>
 </resources>
