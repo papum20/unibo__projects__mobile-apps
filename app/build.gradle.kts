@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")  // Kotlin Annotation Processing Tool, for Room
 }
 
 android {

@@ -17,3 +17,7 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 *Nota: essendo gli scontrini scritti in modo diverso da negozio a negozio, la prima volta l'utente dovrebbe aggiungere a mano il fatto che, per esempio, "bottiglia acqua" corrisponde al cibo "acqua naturale" (che sullo scontrino di un altro negozio potrebbe essere scritto diversamente, come "acqua in bottiglia"), ma facendo una seconda volta la spesa nello stesso negozio, l'app dovrebbe già conoscere questa corrispondenza.
 
 *Nota2: se preferisce procedere con OCR (riconoscere testo da scontrino) è più interessante, ma è più difficile dal lato tecnico. Consideri che lo sforzo per integrare funzioni di questo tipo (integrare una libreria) non verrà valutato. Per semplificare, consideri che il codice a barre non è personalizzato per ogni supermercato, ad esempio la pasta barilla ha stesso codice in tutti i supermercati. Esistono API gratuite (tipo https://it.openfoodfacts.org/data) che la aiuterebbero in questo senso. In ogni caso, entrambe le soluzioni sono adeguate, proceda pure con quella che preferisce.
+
+## tasks
+
+
