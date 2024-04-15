@@ -4,21 +4,23 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 /**
- * Table for products in inventory.
+ * A recipe (group of edible products, plus some properties).
+ * Still a product.
  */
 @Entity(
+	tableName = "Recipe",
 	foreignKeys = [
 		ForeignKey(
-			entity = Product::class,
+			entity = EntityProduct::class,
 			parentColumns = ["name", "parent"],
 			childColumns = ["name", "parent"]
 		)
 	],
 	primaryKeys = ["name", "parent"]
 )
-class Inventory(
+class EntityRecipe(
 	var name: String,
-	var parent: String,
+	var parent: String?,
 
-	var quantity: Float?
+	var author: String?	// recipe author
 )

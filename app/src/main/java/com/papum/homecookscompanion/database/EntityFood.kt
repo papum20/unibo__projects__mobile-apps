@@ -4,21 +4,22 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 /**
- * Table for products in shopping list.
+ * An (abstract) food product.
  */
 @Entity(
+	tableName = "Food",
 	foreignKeys = [
 		ForeignKey(
-			entity = Product::class,
+			entity = EntityProduct::class,
 			parentColumns = ["name", "parent"],
 			childColumns = ["name", "parent"]
 		)
 	],
 	primaryKeys = ["name", "parent"]
 )
-class List(
+class EntityFood(
 	var name: String,
-	var parent: String,
+	var parent: String?,
 
-	var quantity: Float?
+	var brand: String?
 )

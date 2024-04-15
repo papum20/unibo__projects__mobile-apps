@@ -2,7 +2,6 @@ package com.papum.homecookscompanion.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 
 /**
  * An abstract edible product.
@@ -10,18 +9,19 @@ import androidx.room.PrimaryKey
  * Null nutrients values will probably be inherited by parent (if available).
  */
 @Entity(
+	tableName = "Edible",
 	foreignKeys = [
 		ForeignKey(
-			entity = Product::class,
+			entity = EntityProduct::class,
 			parentColumns = ["name", "parent"],
 			childColumns = ["name", "parent"]
 		)
 	],
 	primaryKeys = ["name", "parent"]
 )
-class Edible(
+class EntityEdible(
 	var name: String,
-	var parent: String,
+	var parent: String?,
 
 	var kcal: Float?,
 	var carbohydrates: Float?,

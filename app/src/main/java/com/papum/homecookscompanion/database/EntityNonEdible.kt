@@ -4,22 +4,22 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 /**
- * A recipe (group of edible products, plus some properties).
- * Still a product.
+ * An abstract non-edible product.
  */
 @Entity(
+	tableName = "NonEdible",
 	foreignKeys = [
 		ForeignKey(
-			entity = Product::class,
+			entity = EntityProduct::class,
 			parentColumns = ["name", "parent"],
 			childColumns = ["name", "parent"]
 		)
 	],
 	primaryKeys = ["name", "parent"]
 )
-class Recipe(
+class EntityNonEdible(
 	var name: String,
-	var parent: String,
+	var parent: String?,
 
-	var author: String?	// recipe author
+	var data: String?	// temporary field, empty table for now
 )

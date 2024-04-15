@@ -4,21 +4,22 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 /**
- * An abstract non-edible product.
+ * Table for products in shopping list.
  */
 @Entity(
+	tableName = "List",
 	foreignKeys = [
 		ForeignKey(
-			entity = Product::class,
+			entity = EntityProduct::class,
 			parentColumns = ["name", "parent"],
 			childColumns = ["name", "parent"]
 		)
 	],
 	primaryKeys = ["name", "parent"]
 )
-class NonEdible(
+class EntityList(
 	var name: String,
-	var parent: String,
+	var parent: String?,
 
-	var data: String?	// temporary field, empty table for now
+	var quantity: Float?
 )

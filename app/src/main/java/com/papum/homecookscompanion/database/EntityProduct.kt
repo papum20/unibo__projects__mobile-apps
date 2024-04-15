@@ -9,9 +9,10 @@ import androidx.room.PrimaryKey
  * obtained from the concatenation of the names in the parent hierarchy.
  */
 @Entity(
+	tableName = "Product",
 	primaryKeys = ["name", "parent"]
 )
-class Product(
+class EntityProduct(
 	@PrimaryKey
 	var name: String,		// product name
 	var parent: String?		// parent name
