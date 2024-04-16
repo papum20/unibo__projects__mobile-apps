@@ -12,15 +12,13 @@ import java.util.Date
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,
-			parentColumns = ["name", "parent"],
-			childColumns = ["edibleName", "edibleParent"]
+			parentColumns	= ["id"],
+			childColumns	= ["idEdible"]
 		)
 	],
-	primaryKeys = ["date", "edibleName", "edibleParent"]
+	primaryKeys = ["date", "idEdible"]
 )
 class EntityPlan(
 	var date: Date,
-
-	var edibleName: String,
-	var edibleParent: String?
+	var idEdible: Long
 )

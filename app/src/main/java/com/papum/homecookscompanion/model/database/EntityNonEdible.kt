@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 /**
  * An abstract non-edible product.
@@ -11,15 +12,14 @@ import androidx.room.ForeignKey
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,
-			parentColumns = ["name", "parent"],
-			childColumns = ["name", "parent"]
+			parentColumns	= ["id"],
+			childColumns	= ["id"]
 		)
-	],
-	primaryKeys = ["name", "parent"]
+	]
 )
 class EntityNonEdible(
-	var name: String,
-	var parent: String?,
-
+	@PrimaryKey
+	var id: Long,
+	
 	var data: String?	// temporary field, empty table for now
 )

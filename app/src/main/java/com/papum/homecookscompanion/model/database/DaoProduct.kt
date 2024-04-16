@@ -6,15 +6,15 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface DaoFood {
+interface DaoProduct {
 
 	@Insert
-	fun insertAll(vararg foods: EntityFood)
+	fun insert(vararg food: EntityProduct): Long
 
 	@Delete
-	fun delete(food: EntityFood)
+	fun delete(user: EntityProduct)
 
-	@Query("SELECT * FROM Food")
-	fun getAll(): List<EntityFood>
+	@Query("SELECT * FROM Product")
+	fun getAll(): List<EntityProduct>
 
 }

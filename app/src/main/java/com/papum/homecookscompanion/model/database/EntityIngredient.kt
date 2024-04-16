@@ -10,22 +10,19 @@ import androidx.room.ForeignKey
 	tableName = "Ingredient",
 	foreignKeys = [
 		ForeignKey(
-			entity = EntityProduct::class,
-			parentColumns = ["name", "parent"],
-			childColumns = ["edibleName", "edibleName"]
+			entity = EntityEdible::class,
+			parentColumns	= ["id"],
+			childColumns	= ["idEdible"]
 		),
 		ForeignKey(
 			entity = EntityRecipe::class,
-			parentColumns = ["name", "parent"],
-			childColumns = ["recipeName", "recipeParent"]
+			parentColumns	= ["id"],
+			childColumns	= ["idRecipe"]
 		)
 	],
-	primaryKeys = ["edibleName", "edibleParent", "recipeName", "recipeParent"]
+	primaryKeys = ["idEdible", "idRecipe"]
 )
 class EntityIngredient(
-	var edibleName: String,
-	var edibleParent: String?,
-
-	var recipeName: String,
-	var recipeParent: String?,
+	var idEdible: Long,
+	var idRecipe: Long
 )

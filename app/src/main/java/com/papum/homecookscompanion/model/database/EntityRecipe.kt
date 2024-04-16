@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 /**
  * A recipe (group of edible products, plus some properties).
@@ -12,15 +13,14 @@ import androidx.room.ForeignKey
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,
-			parentColumns = ["name", "parent"],
-			childColumns = ["name", "parent"]
+			parentColumns	= ["id"],
+			childColumns	= ["id"]
 		)
-	],
-	primaryKeys = ["name", "parent"]
+	]
 )
 class EntityRecipe(
-	var name: String,
-	var parent: String?,
+	@PrimaryKey
+	var id: Long,
 
 	var author: String?	// recipe author
 )
