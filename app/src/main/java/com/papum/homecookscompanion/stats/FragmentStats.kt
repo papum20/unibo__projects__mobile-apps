@@ -20,7 +20,7 @@ class FragmentStats : Fragment(R.layout.page_fragment_stats) {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.page_fragment_inventory, container, false)
+        return inflater.inflate(R.layout.page_fragment_stats, container, false)
     }
 
     companion object {

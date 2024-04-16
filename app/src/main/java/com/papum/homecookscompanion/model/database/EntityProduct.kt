@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.database
+package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

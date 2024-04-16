@@ -1,13 +1,13 @@
-package com.papum.homecookscompanion.database
+package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 
 /**
- * An abstract non-edible product.
+ * Table for products in inventory.
  */
 @Entity(
-	tableName = "NonEdible",
+	tableName = "Inventory",
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,
@@ -17,9 +17,9 @@ import androidx.room.ForeignKey
 	],
 	primaryKeys = ["name", "parent"]
 )
-class EntityNonEdible(
+class EntityInventory(
 	var name: String,
 	var parent: String?,
 
-	var data: String?	// temporary field, empty table for now
+	var quantity: Float?
 )

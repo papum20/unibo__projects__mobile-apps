@@ -1,9 +1,13 @@
-package com.papum.homecookscompanion.database
+package com.papum.homecookscompanion.model.database
 
-import androidx.room.Database
+import android.content.Context
+import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-@Database(
+@androidx.room.Database(
     entities = [
         EntityEdible::class,
         EntityFood::class,
@@ -35,12 +39,19 @@ abstract class Database : RoomDatabase() {
 
                 /* What happens when the database gets called for the first time? */
                 databaseWriteExecutor.execute() {
+                    val dao = INSTANCE?.daoFood()
 
+                    dao?.insertAll(
+                        EntityFood("plants", null, null),
+                        EntityFood("cereals", "plants", null),
+                        EntityFood("bread", "cereals", null),
+                        EntityFood("pasta", "cereals", null),
+                    )
                 }
             }
         }
 
-        fun getDatabase(context: Context) : TodoRoomDatabase {
+        fun getDatabase(context: Context) : Database {
             return INSTANCE ?: synchronized (this) {
                 val _INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
