@@ -6,6 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
+/*
 @Entity
 class EntityProductAndFood (
     @Embedded
@@ -17,3 +18,4 @@ class EntityProductAndFood (
     val food: EntityFood
  
 )
+*/

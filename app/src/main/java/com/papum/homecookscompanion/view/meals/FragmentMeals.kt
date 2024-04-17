@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.meals
+package com.papum.homecookscompanion.view.meals
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

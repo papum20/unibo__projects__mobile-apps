@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.list
+package com.papum.homecookscompanion.view.list
 
 import android.view.View
 import android.widget.TextView

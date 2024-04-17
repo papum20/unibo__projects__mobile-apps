@@ -1,6 +1,7 @@
 package com.papum.homecookscompanion.model
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.papum.homecookscompanion.model.database.DaoEdible
 import com.papum.homecookscompanion.model.database.DaoFood
 import com.papum.homecookscompanion.model.database.DaoIngredient
@@ -11,6 +12,8 @@ import com.papum.homecookscompanion.model.database.DaoPlan
 import com.papum.homecookscompanion.model.database.DaoProduct
 import com.papum.homecookscompanion.model.database.DaoRecipe
 import com.papum.homecookscompanion.model.database.Database
+import com.papum.homecookscompanion.model.database.EntityFood
+import com.papum.homecookscompanion.model.database.EntityProduct
 
 class Repository(app: Application) {
 
@@ -26,17 +29,39 @@ class Repository(app: Application) {
 
 	init {
 		val db = Database.getDatabase(app)
-		var daoEdible		= db.daoEdible()
-		var daoFood  		= db.daoFood()
-		var daoIngredient	= db.daoIngredient()
-		var daoInventory	= db.daoInventory()
-		var daoList			= db.daoList()
-		var daoNonEdible	= db.daoNonEdible()
-		var daoPlan			= db.daoPlan()
-		var daoProduct		= db.daoProduct()
-		var daoRecipe		= db.daoRecipe()
+		daoEdible		= db.daoEdible()
+		daoFood  		= db.daoFood()
+		daoIngredient	= db.daoIngredient()
+		daoInventory	= db.daoInventory()
+		daoList			= db.daoList()
+		daoNonEdible	= db.daoNonEdible()
+		daoPlan			= db.daoPlan()
+		daoProduct		= db.daoProduct()
+		daoRecipe		= db.daoRecipe()
 	}
 
+	/* Get */
 
+	fun getAllProducts(): LiveData<List<EntityProduct>> {
+		return daoProduct.getAll()
+	}
+
+	/* Insert */
+
+	fun insertProduct(product: EntityProduct) {
+		Database.databaseWriteExecutor.execute {
+			daoProduct.insertProduct(product)
+		}
+	}
+
+	/* Delete */
+
+	fun deleteProducts(products: List<EntityProduct>) {
+		Database.databaseWriteExecutor.execute {
+			products.forEach {
+				daoProduct.delete(it)
+			}
+		}
+	}
 
 }

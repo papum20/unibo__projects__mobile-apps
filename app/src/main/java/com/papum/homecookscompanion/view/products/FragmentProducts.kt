@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.products
+package com.papum.homecookscompanion.view.products
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.inventory
+package com.papum.homecookscompanion.view.inventory
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

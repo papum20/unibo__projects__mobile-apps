@@ -4,11 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.papum.homecookscompanion.inventory.FragmentInventory
-import com.papum.homecookscompanion.list.FragmentList
-import com.papum.homecookscompanion.meals.FragmentMeals
-import com.papum.homecookscompanion.settings.FragmentSettings
-import com.papum.homecookscompanion.stats.FragmentStats
+import com.papum.homecookscompanion.view.inventory.FragmentInventory
+import com.papum.homecookscompanion.view.list.FragmentList
+import com.papum.homecookscompanion.view.meals.FragmentMeals
+import com.papum.homecookscompanion.view.settings.FragmentSettings
+import com.papum.homecookscompanion.view.stats.FragmentStats
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

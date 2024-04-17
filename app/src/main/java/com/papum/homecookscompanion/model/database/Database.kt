@@ -18,7 +18,6 @@ import java.util.concurrent.Executors
 		EntityNonEdible::class,
 		EntityPlan::class,
 		EntityProduct::class,
-		EntityProductAndFood::class,
 		EntityRecipe::class,
    ],
 	version = 1,
@@ -35,7 +34,6 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoNonEdible()			: DaoNonEdible
 	abstract fun daoPlan()				: DaoPlan
 	abstract fun daoProduct()			: DaoProduct
-	abstract fun daoProductAndFood()	: DaoProductAndFood
 	abstract fun daoRecipe()			: DaoRecipe
 
 
@@ -53,12 +51,13 @@ abstract class Database : RoomDatabase() {
 
 				/* What happens when the database gets called for the first time? */
 				databaseWriteExecutor.execute() {
-					val daoProductAndFood = INSTANCE?.daoProductAndFood()
+					val daoProduct = INSTANCE?.daoProduct()
 
-					daoProductAndFood?.insertProductAndFood("plants", null, null)
-					daoProductAndFood?.insertProductAndFood("cereals", "plants", null)
-					daoProductAndFood?.insertProductAndFood("bread", "cereals", null)
-					daoProductAndFood?.insertProductAndFood("pasta", "cereals", null)
+					daoProduct?.insertFood("plant", null, null)
+					daoProduct?.insertFood("cereal", "plant", null)
+					daoProduct?.insertFood("bread", "cereal", null)
+					daoProduct?.insertFood("pasta", "cereal", null)
+					daoProduct?.insertFood("recipe", null, null)
 				}
 			}
 		}
