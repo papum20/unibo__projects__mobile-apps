@@ -59,7 +59,8 @@ class FragmentList : Fragment(R.layout.page_fragment_list) {
 			adapter.let {
 				it.items = newdata
 				it.notifyDataSetChanged()
-				Log.d("LIST_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
+				//Log.d("LIST_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
+				Log.d("LIST_ACTIVITY_UPDATE", "products: ${it.itemCount}")
 			}
 		}
 

@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.view.list
+package com.papum.homecookscompanion.view.products
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,17 +8,17 @@ import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityProduct
 
 
-class ListAdapter(var items:List<EntityProduct>?) : Adapter<ListViewHolder>() {
+class ProductsAdapter(var items:List<EntityProduct>?) : Adapter<ProductsViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        return ListViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
+        return ProductsViewHolder(
             LayoutInflater.from(parent.context)
-				.inflate(R.layout.recycler_card_list_item, parent, false)
+				.inflate(R.layout.recycler_card_products_item, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-		Log.d("LIST_HOLDER", "${items}; ${position}")
+    override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
+		Log.d("PRODUCTS_HOLDER", "${items}; ${position}")
 		holder.let {
             it.tvItemName.text = items?.get(position)?.name ?: "no product"
         }

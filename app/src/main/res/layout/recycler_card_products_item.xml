@@ -17,7 +17,7 @@ android:layout_height="wrap_content">
         app:srcCompat="@android:drawable/ic_menu_agenda" />
 
     <TextView
-        android:id="@+id/recycler_card_list_item_text"
+        android:id="@+id/recycler_card_products_item_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
