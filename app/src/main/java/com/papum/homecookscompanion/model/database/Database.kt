@@ -1,40 +1,37 @@
 package com.papum.homecookscompanion.model.database
 
 import android.content.Context
+import androidx.room.AutoMigration
+import androidx.room.DeleteColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @androidx.room.Database(
 	entities = [
-		EntityEdible::class,
-		EntityFood::class,
-		EntityIngredient::class,
+		EntityNutrients::class,
+		EntityIngredientOf::class,
 		EntityInventory::class,
 		EntityList::class,
-		EntityNonEdible::class,
 		EntityPlan::class,
 		EntityProduct::class,
-		EntityRecipe::class,
    ],
-	version = 1,
+	version = 2,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase() {
 
-	abstract fun daoEdible()        	: DaoEdible
-	abstract fun daoFood()          	: DaoFood
-	abstract fun daoIngredient()		: DaoIngredient
+	abstract fun daoNutrients()        	: DaoNutrients
+	abstract fun daoIngredient()		: DaoIngredientOf
 	abstract fun daoInventory()			: DaoInventory
 	abstract fun daoList()				: DaoList
-	abstract fun daoNonEdible()			: DaoNonEdible
 	abstract fun daoPlan()				: DaoPlan
 	abstract fun daoProduct()			: DaoProduct
-	abstract fun daoRecipe()			: DaoRecipe
 
 
 	companion object {
@@ -53,11 +50,11 @@ abstract class Database : RoomDatabase() {
 				databaseWriteExecutor.execute() {
 					val daoProduct = INSTANCE?.daoProduct()
 
-					daoProduct?.insertFood("plant", null, null)
-					daoProduct?.insertFood("cereal", "plant", null)
-					daoProduct?.insertFood("bread", "cereal", null)
-					daoProduct?.insertFood("pasta", "cereal", null)
-					daoProduct?.insertFood("recipe", null, null)
+					daoProduct?.insertProduct(EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false))
+					daoProduct?.insertProduct(EntityProduct(0, "cereal", "plant",	isEdible=true, isRecipe=false))
+					daoProduct?.insertProduct(EntityProduct(0, "bread", "cereal",	isEdible=true, isRecipe=false))
+					daoProduct?.insertProduct(EntityProduct(0, "pasta", "cereal",	isEdible=true, isRecipe=false))
+					daoProduct?.insertProduct(EntityProduct(0, "recipe", null,		isEdible=true, isRecipe=false))
 				}
 			}
 		}

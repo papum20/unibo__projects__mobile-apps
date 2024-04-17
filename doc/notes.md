@@ -14,3 +14,7 @@ Current problem:
 3.	but, in this way, a recipe could be child of non-edible (e.g. soap) (or, at least, it wouldn't be enforced by the db itself, but you'd have to be careful)
 4.	and you can't neither use 3 different tables (recipes, edible, non-edible), because inventory and list can contain any product
 5.	on second thought, take example of bechamel, which could be either recipe or bought, and both should be in same category... so checking manually the parent could be ok
+
+## todo
+
+*	check frame container in prof slides  

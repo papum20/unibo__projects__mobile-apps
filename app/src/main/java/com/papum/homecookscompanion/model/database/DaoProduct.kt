@@ -20,21 +20,6 @@ interface DaoProduct {
 	@Insert
 	fun insertProduct(product: EntityProduct): Long
 
-	@Insert
-	fun _insertFood(product: EntityFood): Long
-
-	@Transaction
-	fun insertFood(name: String, parent: String?, brand: String?) {
-		val product_id = insertProduct(
-			EntityProduct(0, name, parent)
-		)
-		_insertFood(
-			EntityFood(product_id, brand)
-		)
-	}
-
-
-
 	/* delete */
 
 	@Delete

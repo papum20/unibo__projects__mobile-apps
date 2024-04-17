@@ -64,7 +64,6 @@ class FragmentList : Fragment(R.layout.page_fragment_list) {
 			}
 		}
 
-		view_model.insertProduct(EntityProduct(0, "a", "b"))
     }
 
     companion object {

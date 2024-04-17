@@ -54,7 +54,6 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 			}
 		}
 
-		view_model.insertProduct(EntityProduct(0, "a", "b"))
 	}
 
 	companion object {

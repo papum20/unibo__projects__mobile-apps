@@ -18,10 +18,21 @@ class ProductsAdapter(var items:List<EntityProduct>?) : Adapter<ProductsViewHold
     }
 
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
-		Log.d("PRODUCTS_HOLDER", "${items}; ${position}")
-		holder.let {
-            it.tvItemName.text = items?.get(position)?.name ?: "no product"
-        }
+		Log.d("PRODUCTS_VIEW_HOLDER", "create at position ${position}")
+
+		val name: String = items?.get(position)?.let {
+			it.parent?.let { p ->
+				"${it.name}, $p"
+			} ?: it.name
+		} ?: "[wrong entry]"
+		val type: String = items?.get(position)?.let {
+			if(!it.isEdible)		"(NonEdible)"
+			else if(it.isRecipe)	"(Recipe)"
+			else					"(Food)"
+		} ?: ("UnknownType")
+
+		holder.tvType.text = type
+		holder.tvName.text = name
     }
 
     override fun getItemCount(): Int {

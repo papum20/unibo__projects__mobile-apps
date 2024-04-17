@@ -5,10 +5,12 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 /**
- * An abstract non-edible product.
+ * An abstract edible product.
+ * Nutrients are grams for 100g of edible part of product.
+ * Null nutrients values will probably be inherited by parent (if available).
  */
 @Entity(
-	tableName = "NonEdible",
+	tableName = "Edible",
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,
@@ -17,9 +19,12 @@ import androidx.room.PrimaryKey
 		)
 	]
 )
-class EntityNonEdible(
+class EntityNutrients(
 	@PrimaryKey
 	var id: Long,
-	
-	var data: String?	// temporary field, empty table for now
+
+	var kcal: Float?,
+	var carbohydrates: Float?,
+	var fats: Float?,
+	var proteins: Float?,
 )

@@ -7,22 +7,22 @@ import androidx.room.ForeignKey
  * 1-to-many relation between a recipe and its ingredients.
  */
 @Entity(
-	tableName = "Ingredient",
+	tableName = "IngredientOf",
 	foreignKeys = [
 		ForeignKey(
-			entity = EntityEdible::class,
-			parentColumns	= ["id"],
-			childColumns	= ["idEdible"]
-		),
-		ForeignKey(
-			entity = EntityRecipe::class,
+			entity = EntityProduct::class,
 			parentColumns	= ["id"],
 			childColumns	= ["idRecipe"]
+		),
+		ForeignKey(
+			entity = EntityProduct::class,
+			parentColumns	= ["id"],
+			childColumns	= ["idIngredient"]
 		)
 	],
-	primaryKeys = ["idEdible", "idRecipe"]
+	primaryKeys = ["idRecipe", "idIngredient"]
 )
-class EntityIngredient(
-	var idEdible: Long,
-	var idRecipe: Long
+class EntityIngredientOf(
+	var idRecipe: Long,
+	var idIngredient: Long
 )
