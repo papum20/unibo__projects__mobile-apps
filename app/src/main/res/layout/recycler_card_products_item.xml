@@ -22,7 +22,7 @@ android:layout_height="wrap_content">
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingHorizontal="5dp"
-        android:text="@string/placeholder_products_type"
+        android:text="@string/placeholder_product_type"
         android:textSize="20sp" />
 
     <TextView
@@ -30,7 +30,7 @@ android:layout_height="wrap_content">
         android:layout_width="195dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/placeholder_products_text"
+        android:text="@string/placeholder_product_text"
         android:textSize="20sp" />
 
 </LinearLayout>

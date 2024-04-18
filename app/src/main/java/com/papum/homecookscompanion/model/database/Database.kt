@@ -1,6 +1,7 @@
 package com.papum.homecookscompanion.model.database
 
 import android.content.Context
+import android.util.Log
 import androidx.room.AutoMigration
 import androidx.room.DeleteColumn
 import androidx.room.Room
@@ -20,7 +21,7 @@ import java.util.concurrent.Executors
 		EntityPlan::class,
 		EntityProduct::class,
    ],
-	version = 3,
+	version = 4,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -33,6 +34,7 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoPlan()					: DaoPlan
 	abstract fun daoProduct()				: DaoProduct
 	abstract fun daoProductAndInventory()	: DaoProductAndInventory
+	abstract fun daoProductAndList()		: DaoProductAndList
 
 
 	companion object {
@@ -51,6 +53,7 @@ abstract class Database : RoomDatabase() {
 				databaseWriteExecutor.execute() {
 					val daoProduct		= INSTANCE?.daoProduct()
 					val daoInventory	= INSTANCE?.daoInventory()
+					val daoList			= INSTANCE?.daoList()
 
 					val idPlant		= daoProduct?.insertProduct(EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false))
 					val idCereal	= daoProduct?.insertProduct(EntityProduct(0, "cereal", "plant",	isEdible=true, isRecipe=false))
@@ -63,6 +66,15 @@ abstract class Database : RoomDatabase() {
 					}
 					idPasta?.let { id ->
 						daoInventory?.insertOne(EntityInventory(id, 2.5F))
+					}
+					idBread?.let { id ->
+						daoList?.insertOne(EntityList(id, 12F))
+					}
+					idPasta?.let { id ->
+						daoList?.insertOne(EntityList(id, 15F))
+					}
+					idCereal?.let { id ->
+						daoList?.insertOne(EntityList(id, 1F))
 					}
 				}
 			}

@@ -30,10 +30,12 @@ class InventoryAdapter(var items:List<EntityProductAndInventory>?) : Adapter<Inv
 			if(!it.product.isEdible)		"(NonEdible)"
 			else if(it.product.isRecipe)	"(Recipe)"
 			else							"(Food)"
-		} ?: ("UnknownType")
+		} ?: "(UnknownType)"
+		val quantity: String = items?.get(position)?.inventoryItem?.quantity.toString() ?: "??"
 
-		holder.tvType.text = type
-		holder.tvName.text = name
+		holder.tvType.text		= type
+		holder.tvName.text		= name
+		holder.tvQuantity.text	= quantity
     }
 
     override fun getItemCount(): Int {

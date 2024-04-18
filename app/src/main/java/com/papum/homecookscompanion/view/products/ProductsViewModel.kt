@@ -8,7 +8,7 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
-	fun getAllProducts(): LiveData<List<EntityProduct>> {
+	fun getAllProducts(): List<EntityProduct> {
 		return repository.getAllProducts()
 	}
 

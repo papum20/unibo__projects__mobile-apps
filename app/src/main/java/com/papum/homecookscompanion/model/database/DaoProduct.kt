@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 
 @Dao
 interface DaoProduct {
@@ -13,7 +12,10 @@ interface DaoProduct {
 	/* query */
 
 	@Query("SELECT * FROM Product")
-	fun getAll(): LiveData<List<EntityProduct>>
+	fun getAll(): List<EntityProduct>
+
+	@Query("select * from Product where name LIKE :pattern")
+	fun getAllMatches(pattern: String): List<EntityProduct>
 
 	/* insert */
 

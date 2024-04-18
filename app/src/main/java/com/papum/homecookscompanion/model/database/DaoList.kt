@@ -9,4 +9,15 @@ import androidx.room.Query
 interface DaoList
 {
 
+	/* insert */
+
+	@Insert
+	fun insertOne(listProduct: EntityList)
+
+	/* delete */
+
+	@Delete
+	fun deleteOne(listProduct: EntityList)
+
+
 }

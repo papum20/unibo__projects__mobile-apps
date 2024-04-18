@@ -5,13 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.model.database.EntityProductAndList
 
 class ListViewModel(private val repository: Repository) : ViewModel() {
 
-	fun getAllProducts(): LiveData<List<EntityProduct>> {
-		return repository.getAllProducts()
+	fun getAllProducts(): LiveData<List<EntityProductAndList>> {
+		return repository.getAllProductsWithList()
 	}
 
+	/*
 	fun insertProduct(product: EntityProduct) {
 		repository.insertProduct(product)
 	}
@@ -19,6 +21,7 @@ class ListViewModel(private val repository: Repository) : ViewModel() {
 	fun deleteProduct(products: List<EntityProduct>) {
 		repository.deleteProducts(products)
 	}
+	 */
 
 }
 

@@ -9,10 +9,12 @@ import com.papum.homecookscompanion.model.database.DaoNutrients
 import com.papum.homecookscompanion.model.database.DaoPlan
 import com.papum.homecookscompanion.model.database.DaoProduct
 import com.papum.homecookscompanion.model.database.DaoProductAndInventory
+import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
+import com.papum.homecookscompanion.model.database.EntityProductAndList
 
 class Repository(app: Application) {
 
@@ -23,6 +25,7 @@ class Repository(app: Application) {
 	var daoPlan					: DaoPlan
 	var daoProduct				: DaoProduct
 	var daoProductAndInventory	: DaoProductAndInventory
+	var daoProductAndList		: DaoProductAndList
 
 	init {
 		val db = Database.getDatabase(app)
@@ -33,17 +36,27 @@ class Repository(app: Application) {
 		daoPlan					= db.daoPlan()
 		daoProduct				= db.daoProduct()
 		daoProductAndInventory	= db.daoProductAndInventory()
+		daoProductAndList	= db.daoProductAndList()
 	}
 
 	/* Get */
 
-	fun getAllProducts(): LiveData<List<EntityProduct>> {
+	fun getAllProducts(): List<EntityProduct> {
 		return daoProduct.getAll()
 	}
 
 	fun getAllProductsWithInventory(): LiveData<List<EntityProductAndInventory>> {
 		return daoProductAndInventory.getAll()
 	}
+
+	fun getAllProductsWithList(): LiveData<List<EntityProductAndList>> {
+		return daoProductAndList.getAll()
+	}
+
+	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): List<EntityProduct> {
+		return daoProduct.getAllMatches("LOWER(%$substr%)")
+	}
+
 
 	/* Insert */
 

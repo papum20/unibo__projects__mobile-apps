@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.model.database.EntityProductAndList
 
 
-class ListAdapter(var items:List<EntityProduct>?) : Adapter<ListViewHolder>() {
+class ListAdapter(var items:List<EntityProductAndList>?) : Adapter<ListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         return ListViewHolder(
@@ -18,11 +19,24 @@ class ListAdapter(var items:List<EntityProduct>?) : Adapter<ListViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-		Log.d("LIST_HOLDER", "${items}; ${position}")
-		holder.let {
-            it.tvItemName.text = items?.get(position)?.name ?: "no product"
-        }
-    }
+		Log.d("LIST_VIEW_HOLDER", "${items}; ${position}")
+
+		val name: String = items?.get(position)?.let {
+			it.product?.parent?.let { p ->
+				"${it.product.name}, $p"
+			} ?: it.product.name
+		} ?: "[wrong entry]"
+		val type: String = items?.get(position)?.let {
+			if(!it.product.isEdible)		"(NonEdible)"
+			else if(it.product.isRecipe)	"(Recipe)"
+			else							"(Food)"
+		} ?: "(UnknownType)"
+		val quantity: String = items?.get(position)?.listItem?.quantity.toString() ?: "??"
+
+		holder.tvType.text		= type
+		holder.tvName.text		= name
+		holder.tvQuantity.text	= quantity
+	}
 
     override fun getItemCount(): Int {
         return items?.size ?: 0

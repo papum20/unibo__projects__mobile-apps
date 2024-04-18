@@ -17,20 +17,29 @@ android:layout_height="wrap_content">
         app:srcCompat="@android:drawable/ic_menu_agenda" />
 
     <TextView
-        android:id="@+id/recycler_card_list_item_text"
-        android:layout_width="0dp"
+        android:id="@+id/recycler_card_list_item_type"
+        android:layout_width="32dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingStart="5dp"
-        android:text="TextView"
+        android:paddingHorizontal="5dp"
+        android:text="@string/placeholder_product_type"
         android:textSize="20sp" />
 
-    <CheckBox
-        android:id="@+id/todoCheck"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/recycler_card_list_item_text"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/placeholder_product_text"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/recycler_card_list_item_quantity"
+        android:layout_width="34dp"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="Done?" />
+        android:text="@string/placeholder_product_quantity" />
+
 </LinearLayout>
 
 </androidx.cardview.widget.CardView>

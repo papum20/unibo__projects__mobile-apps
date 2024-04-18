@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		// set default app entry
-		bottomNavbar.selectedItemId = R.id.bottom_nav_item_products
+		bottomNavbar.selectedItemId = R.id.bottom_nav_item_inventory
 		//setCurrentFragment(fragment_products)
 	}
 
