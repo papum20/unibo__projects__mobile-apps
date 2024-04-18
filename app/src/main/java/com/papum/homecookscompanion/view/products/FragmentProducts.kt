@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.model.database.EntityProduct
 
 
 /**
@@ -33,7 +32,7 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val view_model: ProductsViewModel by viewModels {
+		val viewModel: ProductsViewModel by viewModels {
 			ProductsViewModelFactory(
 				Repository(requireActivity().application)
 			)
@@ -45,7 +44,7 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 		recycler.adapter = adapter
 		recycler.layoutManager = LinearLayoutManager(context)
 
-		view_model.getAllProducts().observe(viewLifecycleOwner) { newdata ->
+		viewModel.getAllProducts().observe(viewLifecycleOwner) { newdata ->
 			adapter.let {
 				it.items = newdata
 				it.notifyDataSetChanged()

@@ -16,29 +16,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragment_meals      = FragmentMeals()
-        val fragment_list       = FragmentList()
-        val fragment_inventory  = FragmentInventory()
-        val fragment_products	= FragmentProducts()
-        val fragment_stats      = FragmentStats()
-        val fragment_settings   = FragmentSettings()
+        val fragmentMeals      	= FragmentMeals()
+        val fragmentList       	= FragmentList()
+        val fragmentInventory 	= FragmentInventory()
+        val fragmentProducts	= FragmentProducts()
+        val fragmentStats      	= FragmentStats()
+        val fragmentSettings   	= FragmentSettings()
 
-		val bottom_navbar		= findViewById<BottomNavigationView>(R.id.bottom_nav)
+		val bottomNavbar		= findViewById<BottomNavigationView>(R.id.bottom_nav)
 
 		// set navbar onclick listeners for entries
-		bottom_navbar.setOnItemSelectedListener {
+		bottomNavbar.setOnItemSelectedListener {
 			when (it.itemId) {
-				R.id.bottom_nav_item_meals -> setCurrentFragment(fragment_meals)
-				R.id.bottom_nav_item_list -> setCurrentFragment(fragment_list)
-				R.id.bottom_nav_item_inventory -> setCurrentFragment(fragment_inventory)
-				R.id.bottom_nav_item_products -> setCurrentFragment(fragment_products)
-				R.id.bottom_nav_item_stats -> setCurrentFragment(fragment_stats)
+				R.id.bottom_nav_item_meals -> setCurrentFragment(fragmentMeals)
+				R.id.bottom_nav_item_list -> setCurrentFragment(fragmentList)
+				R.id.bottom_nav_item_inventory -> setCurrentFragment(fragmentInventory)
+				R.id.bottom_nav_item_products -> setCurrentFragment(fragmentProducts)
+				R.id.bottom_nav_item_stats -> setCurrentFragment(fragmentStats)
 			}
 			true
 		}
 
 		// set default app entry
-		bottom_navbar.selectedItemId = R.id.bottom_nav_item_products
+		bottomNavbar.selectedItemId = R.id.bottom_nav_item_products
 		//setCurrentFragment(fragment_products)
 	}
 

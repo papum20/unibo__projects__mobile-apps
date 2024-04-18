@@ -20,4 +20,19 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 
 ## tasks
 
+all list:
+*	db: load only some
 
+all viewModel:
+*	```kotlin
+	if(modelClass.isAssignableFrom(ListViewModel::class.java)) {
+		//@Suppress("UNCHECKED_CAST")
+		return ListViewModel(repository) as T
+	}
+	```
+	
+products:
+*	order
+*	more orders
+*	filter
+*	search
