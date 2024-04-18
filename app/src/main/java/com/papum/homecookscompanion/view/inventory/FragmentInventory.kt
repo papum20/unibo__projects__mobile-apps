@@ -42,9 +42,11 @@ class FragmentInventory : Fragment(R.layout.page_fragment_inventory) {
 
 		val adapter = InventoryAdapter(listOf())
 
-		val recycler = view.findViewById<RecyclerView>(R.id.products_recycler_view)
+		val recycler = view.findViewById<RecyclerView>(R.id.inventory_recycler_view)
 		recycler.adapter = adapter
 		recycler.layoutManager = LinearLayoutManager(context)
+
+
 
 		viewModel.getAllProducts().observe(viewLifecycleOwner) { newdata ->
 			adapter.let {

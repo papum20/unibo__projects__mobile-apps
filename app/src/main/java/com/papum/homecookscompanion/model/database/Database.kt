@@ -20,7 +20,7 @@ import java.util.concurrent.Executors
 		EntityPlan::class,
 		EntityProduct::class,
    ],
-	version = 2,
+	version = 3,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)

@@ -41,7 +41,7 @@ class Repository(app: Application) {
 		return daoProduct.getAll()
 	}
 
-	fun getAllInventory(): LiveData<List<EntityProductAndInventory>> {
+	fun getAllProductsWithInventory(): LiveData<List<EntityProductAndInventory>> {
 		return daoProductAndInventory.getAll()
 	}
 

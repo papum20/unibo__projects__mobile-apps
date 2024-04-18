@@ -12,8 +12,11 @@ interface DaoProductAndInventory {
 
 	/* query */
 
-	@Transaction
-	@Query("SELECT * FROM Inventory Product")
+	@Query("""
+        SELECT *
+        FROM Product
+        INNER JOIN Inventory ON Product.id = Inventory.idProduct
+    """)
 	fun getAll(): LiveData<List<EntityProductAndInventory>>
 
 }

@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.model.database.EntityInventory
-import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 
 class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
 	fun getAllProducts(): LiveData<List<EntityProductAndInventory>> {
-		return repository.getAllInventory()
+		return repository.getAllProductsWithInventory()
 	}
 
 	/*
