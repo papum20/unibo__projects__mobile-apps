@@ -19,5 +19,4 @@ interface DaoList
 	@Delete
 	fun deleteOne(listProduct: EntityList)
 
-
 }

@@ -15,6 +15,8 @@ import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class Repository(app: Application) {
 
@@ -36,12 +38,12 @@ class Repository(app: Application) {
 		daoPlan					= db.daoPlan()
 		daoProduct				= db.daoProduct()
 		daoProductAndInventory	= db.daoProductAndInventory()
-		daoProductAndList	= db.daoProductAndList()
+		daoProductAndList		= db.daoProductAndList()
 	}
 
 	/* Get */
 
-	fun getAllProducts(): List<EntityProduct> {
+	fun getAllProducts(): LiveData<List<EntityProduct>> {
 		return daoProduct.getAll()
 	}
 
@@ -53,10 +55,9 @@ class Repository(app: Application) {
 		return daoProductAndList.getAll()
 	}
 
-	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): List<EntityProduct> {
-		return daoProduct.getAllMatches("LOWER(%$substr%)")
+	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
+		return daoProduct.getAllMatches_lowercase("%${substr.lowercase()}%")
 	}
-
 
 	/* Insert */
 

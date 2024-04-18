@@ -1,5 +1,6 @@
 package com.papum.homecookscompanion.view.products
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,13 +10,10 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.model.database.EntityProduct
 
 
 /**
@@ -34,6 +32,7 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 		return inflater.inflate(R.layout.page_fragment_products, container, false)
 	}
 
+	@SuppressLint("NotifyDataSetChanged")	// all fetched products change
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
@@ -44,26 +43,33 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 			)
 		}
 
-		// Recycler
+		/* Recycler */
 		val adapter = ProductsAdapter(listOf())
 
 		val recycler = view.findViewById<RecyclerView>(R.id.products_recycler_view)
 		recycler.adapter = adapter
 		recycler.layoutManager = LinearLayoutManager(context)
 
-		val productsFetched = viewModel.getAllProducts()
-			adapter.let {
-				it.items = productsFetched
-				it.notifyDataSetChanged()
-				//Log.d("PRODUCTS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
-				Log.d("PRODUCTS_ACTIVITY_UPDATE", "products: ${it.itemCount}")
-			}
+		// first fetch all
+		viewModel.getAllProducts().observe(viewLifecycleOwner) { products ->
+			adapter.items = products
+			adapter.notifyDataSetChanged()
+			//Log.d("PRODUCTS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
+			Log.d("PRODUCTS_ACTIVITY_UPDATE", "products: ${adapter.itemCount}")
 		}
 
-		// UI Listeners
+		/* UI Listeners */
+
+		// update on search
 		val searchEditText: EditText = view.findViewById(R.id.products_editText_search)
 		searchEditText.doOnTextChanged { text, start, before, count ->
-
+			viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
+				adapter.items = products
+				Log.i("PRODUCTS_SEARCH", "found ${products.size} matches for \"$text\"")
+				adapter.notifyDataSetChanged()
+				//Log.d("PRODUCTS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
+				Log.d("PRODUCTS_ACTIVITY_UPDATE", "products: ${adapter.itemCount}")
+			}
 		}
 
 	}

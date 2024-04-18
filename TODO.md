@@ -39,7 +39,7 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 9.	suggerimento dei prodotti più convenienti in un negozio: l'utente, quando si trova in un negozio, può visualizzare quali prodotti, tra quelli nella lista della spesa, gli convenga comprare lì, e quali meglio se da un'altra parte.
 10.	prodotti
 *	[V]	list
-*	search
+*	[V]	search
 
 *Nota: essendo gli scontrini scritti in modo diverso da negozio a negozio, la prima volta l'utente dovrebbe aggiungere a mano il fatto che, per esempio, "bottiglia acqua" corrisponde al cibo "acqua naturale" (che sullo scontrino di un altro negozio potrebbe essere scritto diversamente, come "acqua in bottiglia"), ma facendo una seconda volta la spesa nello stesso negozio, l'app dovrebbe già conoscere questa corrispondenza.
 
@@ -62,8 +62,10 @@ products:
 *	order
 *	more orders
 *	filter
-*	search
+*	search (on full name from hierarchy)
 
 all quantity (e.g. inventory, list):
 *	default: grams
 *	make more quantities (customizable)
+
+make table with full names from hierarchy  

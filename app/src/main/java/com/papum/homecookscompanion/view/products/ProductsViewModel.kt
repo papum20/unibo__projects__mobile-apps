@@ -1,5 +1,6 @@
 package com.papum.homecookscompanion.view.products
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,8 +9,17 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
-	fun getAllProducts(): List<EntityProduct> {
+	fun getAllProducts(): LiveData<List<EntityProduct>> {
 		return repository.getAllProducts()
+	}
+
+	@SuppressLint()
+	fun getAllProducts_fromSubstr(substr: String): LiveData<List<EntityProduct>> {
+		return repository.getAllProducts_fromSubstr_caseInsensitive(substr)
+	}
+
+	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
+		return repository.getAllProducts_fromSubstr_caseInsensitive(substr)
 	}
 
 	/*
