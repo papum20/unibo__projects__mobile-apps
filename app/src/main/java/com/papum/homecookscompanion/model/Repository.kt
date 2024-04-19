@@ -12,6 +12,7 @@ import com.papum.homecookscompanion.model.database.DaoProductAndInventory
 import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityInventory
+import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
@@ -55,6 +56,10 @@ class Repository(app: Application) {
 		return daoProductAndList.getAll()
 	}
 
+	fun getAllProductsWithList_withId(id: Long): LiveData<List<EntityProductAndList>> {
+		return daoProductAndList.getAllWhere("id={id.toString()}")
+	}
+
 	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
 		return daoProduct.getAllMatches_lowercase("%${substr.lowercase()}%")
 	}
@@ -70,6 +75,12 @@ class Repository(app: Application) {
 	fun insertInInventory(inventoryProduct: EntityInventory) {
 		Database.databaseWriteExecutor.execute {
 			daoInventory.insertOne(inventoryProduct)
+		}
+	}
+
+	fun insertInList(listProduct: EntityList) {
+		Database.databaseWriteExecutor.execute {
+			daoList.insertOne(listProduct)
 		}
 	}
 

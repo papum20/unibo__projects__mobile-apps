@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")  // Kotlin Annotation Processing Tool, for Room
+    kotlin("kapt") 			// Kotlin Annotation Processing Tool, for Room
+	id("kotlin-parcelize")	// allow automatic @Parcelize (for bundles)
 }
 
 android {

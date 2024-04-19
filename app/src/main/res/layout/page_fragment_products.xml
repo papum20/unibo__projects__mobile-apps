@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:ems="10"
-        android:hint="@string/products_search_textinput_placeholder"
+        android:hint="@string/products_search_textInput_placeholder"
         android:inputType="text" />
 
     <androidx.recyclerview.widget.RecyclerView

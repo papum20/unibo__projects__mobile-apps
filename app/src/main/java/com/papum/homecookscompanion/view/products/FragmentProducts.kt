@@ -1,6 +1,5 @@
 package com.papum.homecookscompanion.view.products
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.model.database.EntityProduct
 
 
 /**
@@ -21,7 +22,11 @@ import com.papum.homecookscompanion.model.Repository
  * Use the [FragmentProducts.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentProducts : Fragment(R.layout.page_fragment_products) {
+class FragmentProducts :
+	Fragment(R.layout.page_fragment_products),
+	ProductsAdapter.IListenerOnClickProduct,
+	FragmentDialogAddToList.IListenerDialog
+{
 
 
 	override fun onCreateView(
@@ -32,7 +37,6 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 		return inflater.inflate(R.layout.page_fragment_products, container, false)
 	}
 
-	@SuppressLint("NotifyDataSetChanged")	// all fetched products change
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
@@ -44,7 +48,7 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 		}
 
 		/* Recycler */
-		val adapter = ProductsAdapter(listOf())
+		val adapter = ProductsAdapter(listOf(), this)
 
 		val recycler = view.findViewById<RecyclerView>(R.id.products_recycler_view)
 		recycler.adapter = adapter
@@ -52,10 +56,7 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 
 		// first fetch all
 		viewModel.getAllProducts().observe(viewLifecycleOwner) { products ->
-			adapter.items = products
-			adapter.notifyDataSetChanged()
-			//Log.d("PRODUCTS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
-			Log.d("PRODUCTS_ACTIVITY_UPDATE", "products: ${adapter.itemCount}")
+			adapter.updateItems(products)
 		}
 
 		/* UI Listeners */
@@ -64,23 +65,40 @@ class FragmentProducts : Fragment(R.layout.page_fragment_products) {
 		val searchEditText: EditText = view.findViewById(R.id.products_editText_search)
 		searchEditText.doOnTextChanged { text, start, before, count ->
 			viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
-				adapter.items = products
 				Log.i("PRODUCTS_SEARCH", "found ${products.size} matches for \"$text\"")
-				adapter.notifyDataSetChanged()
-				//Log.d("PRODUCTS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
-				Log.d("PRODUCTS_ACTIVITY_UPDATE", "products: ${adapter.itemCount}")
+				adapter.updateItems(products)
 			}
 		}
 
 	}
 
-	companion object {
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment using the provided parameters.
-		 */
-		@JvmStatic
-		fun newInstance(param1: String, param2: String) =
-			FragmentProducts()
+
+	/* IListenerOnClickProduct */
+
+	override fun onClickAddToInventoryClick(product: EntityProduct) {
+		FragmentDialogAddToList.newInstance(this, product)
+			.show(parentFragmentManager, "ADD_LIST")
 	}
+
+	override fun onClickAddToListClick(product: EntityProduct) {
+		FragmentDialogAddToList.newInstance(this, product)
+			.show(parentFragmentManager, "ADD_INVENTORY")
+
+	}
+
+	override fun onClickAddToPlan(product: EntityProduct) {
+		FragmentDialogAddToList.newInstance(this, product)
+			.show(parentFragmentManager, "ADD_PLAN")
+	}
+
+	/* FragmentDialogAddToList.IListenerDialog */
+
+	override fun onClickAdd(dialog: DialogFragment, quantity: Float) {
+		Log.d("PRODUCTS_ADD_LIST", quantity.toString())
+	}
+
+	override fun onClickCancel(dialog: DialogFragment) {
+
+	}
+
 }

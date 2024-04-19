@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
-import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 
 
@@ -14,7 +13,7 @@ class ListAdapter(var items:List<EntityProductAndList>?) : Adapter<ListViewHolde
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         return ListViewHolder(
             LayoutInflater.from(parent.context)
-				.inflate(R.layout.recycler_card_list_item, parent, false)
+				.inflate(R.layout.recycler_card_list, parent, false)
         )
     }
 

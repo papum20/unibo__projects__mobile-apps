@@ -19,4 +19,12 @@ interface DaoProductAndList {
     """)
 	fun getAll(): LiveData<List<EntityProductAndList>>
 
+	@Query("""
+        SELECT *
+        FROM Product
+        INNER JOIN List ON Product.id = List.idProduct
+		WHERE :where
+    """)
+	fun getAllWhere(where: String): LiveData<List<EntityProductAndList>>
+
 }

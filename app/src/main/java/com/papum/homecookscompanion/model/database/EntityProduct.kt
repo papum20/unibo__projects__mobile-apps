@@ -1,7 +1,9 @@
 package com.papum.homecookscompanion.model.database
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 /**
  * A product, either edible (food or recipe) or not;
@@ -13,7 +15,8 @@ import androidx.room.PrimaryKey
 @Entity(
 	tableName = "Product"
 )
-class EntityProduct(
+@Parcelize
+data class EntityProduct(
 	@PrimaryKey(autoGenerate = true)
 	var id: Long,
 
@@ -22,4 +25,4 @@ class EntityProduct(
 
 	var isEdible: Boolean,	// edible if it's a food or a recipe
 	var isRecipe: Boolean
-)
+) : Parcelable

@@ -55,6 +55,15 @@
     <string name="placeholder_product_text">some recipe</string>
     <string name="placeholder_product_quantity">q.ty</string>
 
-    <string name="products_search_textinput_placeholder">Search a product</string>
+    <string name="products_search_textInput_placeholder">Search a product</string>
+
+    <string name="recycler_card_products_btn_addList">+List</string>
+    <string name="recycler_card_products_btn_addInventory">+Inventory</string>
+    <string name="recycler_card_products_btn_addPlan">+Plan</string>
+
+    <string name="dialog_products_addTo_tv_placeholder">Insert quantity of {} to add to {}:</string>
+    <string name="dialog_products_addTo_et_placeholder">(quantity)</string>
+
+    <string name="bundle_FragmentDialogAddToList_product">product</string>
 
 </resources>
