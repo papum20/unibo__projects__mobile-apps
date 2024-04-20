@@ -17,6 +17,14 @@ interface DaoProduct {
 	@Query("select * from Product where name LIKE :pattern")
 	fun getAllMatches(pattern: String): LiveData<List<EntityProduct>>
 
+	@Query("""
+        SELECT *
+        FROM Product
+		WHERE id = :id
+    """)
+	fun getOneFromId(id: String): LiveData<EntityProduct>
+
+
 	/**
 	 * Use LOWER(name)
 	 */

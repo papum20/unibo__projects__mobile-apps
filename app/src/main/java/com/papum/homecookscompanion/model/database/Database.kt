@@ -59,7 +59,7 @@ abstract class Database : RoomDatabase() {
 					val idCereal	= daoProduct?.insertProduct(EntityProduct(0, "cereal", "plant",	isEdible=true, isRecipe=false))
 					val idBread		= daoProduct?.insertProduct(EntityProduct(0, "bread", "cereal",	isEdible=true, isRecipe=false))
 					val idPasta		= daoProduct?.insertProduct(EntityProduct(0, "pasta", "cereal",	isEdible=true, isRecipe=false))
-					val idRecipe	= daoProduct?.insertProduct(EntityProduct(0, "recipe", null,		isEdible=true, isRecipe=false))
+					val idRecipe	= daoProduct?.insertProduct(EntityProduct(0, "recipe", null,		isEdible=true, isRecipe=true))
 
 					idBread?.let { id ->
 						daoInventory?.insertOne(EntityInventory(id, 1F))

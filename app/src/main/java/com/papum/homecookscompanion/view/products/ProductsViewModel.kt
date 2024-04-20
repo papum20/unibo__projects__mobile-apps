@@ -1,12 +1,13 @@
 package com.papum.homecookscompanion.view.products
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
@@ -22,8 +23,16 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 		return repository.getAllProducts_fromSubstr_caseInsensitive(substr)
 	}
 
-	fun getAllProductsWithList_withId(id: Long): LiveData<List<EntityProductAndList>> {
-		return repository.getAllProductsWithList_withId(id)
+	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
+		return repository.getProduct_fromId(id)
+	}
+
+	fun getProductsWithInventory_fromId(id: Long): LiveData<List<EntityProductAndInventory>> {
+		return repository.getAllProductsWithInventory_fromId(id)
+	}
+
+	fun getProductsWithList_fromId(id: Long): LiveData<List<EntityProductAndList>> {
+		return repository.getAllProductsWithList_fromId(id)
 	}
 
 	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
@@ -32,8 +41,12 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
 	/* Insert */
 
-	fun addToList(product: EntityList) {
-		repository.insertInList(product)
+	fun addToInventory(id: Long, quantity: Float) {
+		repository.insertInInventory(EntityInventory(id, quantity))
+	}
+
+	fun addToList(id: Long, quantity: Float) {
+		repository.insertInList(EntityList(id, quantity))
 	}
 
 

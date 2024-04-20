@@ -12,15 +12,15 @@ import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
 
-class FragmentDialogAddToList(
+class FragmentDialogAddToInventory(
 	private val listener: IListenerDialog
 ) : DialogFragment() {
 
 
 	// Callbacks for dialog buttons
 	interface IListenerDialog {
-		fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float)
-		fun onClickCancel(dialog: DialogFragment)
+		fun onClickAddToInventory(dialog: DialogFragment, productId: Long, quantity: Float)
+		fun onClickAddToInventoryCancel(dialog: DialogFragment)
 	}
 
 
@@ -40,8 +40,8 @@ class FragmentDialogAddToList(
 
 			val inflater	= requireActivity().layoutInflater
 
-			val dialogView	= inflater.inflate(R.layout.dialog_products_add_to_list, null)
-			val tvName	= dialogView.findViewById<TextView>(R.id.dialog_products_addToList_tv)
+			val dialogView	= inflater.inflate(R.layout.dialog_products_add_to_inventory, null)
+			val tvName	= dialogView.findViewById<TextView>(R.id.dialog_products_addToInventory_tv)
 
 			Log.d("PRODUCTS_DIALOG", "product id: ${arguments?.getLong(KEY_PRODUCT).toString()}")
 			productId?.let { productId ->
@@ -59,16 +59,16 @@ class FragmentDialogAddToList(
 				.setView(dialogView)
 				.setPositiveButton("Add") { dialog, id ->
 					// add quantity of product to list
-					val quantity = dialogView.findViewById<EditText>(R.id.dialog_products_addToList_et)
+					val quantity = dialogView.findViewById<EditText>(R.id.dialog_products_addToInventory_et)
 						.text.toString().toFloatOrNull()
 					if(quantity != null)
 						productId?.let { id ->
-							listener.onClickAddToList(this, id, quantity)
+							listener.onClickAddToInventory(this, id, quantity)
 						}
 				}
 				.setNegativeButton("Cancel") { dialog, id ->
 					// User cancelled the dialog
-					listener.onClickCancel(this)
+					listener.onClickAddToInventoryCancel(this)
 				}
 
 			// Create the AlertDialog object and return it.
@@ -90,7 +90,7 @@ class FragmentDialogAddToList(
 		 */
 		@JvmStatic
 		fun newInstance(listener: IListenerDialog, product: EntityProduct) =
-			FragmentDialogAddToList(listener).apply {
+			FragmentDialogAddToInventory(listener).apply {
 				arguments = Bundle().apply {
 					//putParcelable("product", product)
 					putLong(KEY_PRODUCT, product.id)

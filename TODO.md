@@ -69,3 +69,7 @@ all quantity (e.g. inventory, list):
 *	make more quantities (customizable)
 
 make table with full names from hierarchy  
+
+implementation :
+*	fragments args (newinstance/constructor)
+*	bundle keys in R.strings

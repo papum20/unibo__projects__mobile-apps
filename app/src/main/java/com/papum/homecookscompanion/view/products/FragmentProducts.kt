@@ -25,8 +25,16 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 class FragmentProducts :
 	Fragment(R.layout.page_fragment_products),
 	ProductsAdapter.IListenerOnClickProduct,
-	FragmentDialogAddToList.IListenerDialog
+	FragmentDialogAddToList.IListenerDialog,
+	FragmentDialogAddToInventory.IListenerDialog
 {
+
+	// View Model
+	private val viewModel: ProductsViewModel by viewModels {
+		ProductsViewModelFactory(
+			Repository(requireActivity().application)
+		)
+	}
 
 
 	override fun onCreateView(
@@ -40,13 +48,6 @@ class FragmentProducts :
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		// View Model
-		val viewModel: ProductsViewModel by viewModels {
-			ProductsViewModelFactory(
-				Repository(requireActivity().application)
-			)
-		}
-
 		/* Recycler */
 		val adapter = ProductsAdapter(listOf(), this)
 
@@ -56,6 +57,7 @@ class FragmentProducts :
 
 		// first fetch all
 		viewModel.getAllProducts().observe(viewLifecycleOwner) { products ->
+			Log.d("PRODUCTS", "products ids: ${products.map{ p -> "${p.id}.${p.name};" }}")
 			adapter.updateItems(products)
 		}
 
@@ -93,8 +95,18 @@ class FragmentProducts :
 
 	/* FragmentDialogAddToList.IListenerDialog */
 
-	override fun onClickAdd(dialog: DialogFragment, quantity: Float) {
-		Log.d("PRODUCTS_ADD_LIST", quantity.toString())
+	override fun onClickAddToInventory(dialog: DialogFragment, productId: Long, quantity: Float) {
+		Log.d("PRODUCTS_ADD_LIST",  "id $productId to ${quantity}")
+		viewModel.addToList(productId, quantity)
+	}
+
+	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
+		Log.d("PRODUCTS_ADD_INVENTORY",  "id $productId to ${quantity}")
+		viewModel.addToInventory(productId, quantity)
+	}
+
+	override fun onClickAddToInventoryCancel(dialog: DialogFragment) {
+
 	}
 
 	override fun onClickCancel(dialog: DialogFragment) {

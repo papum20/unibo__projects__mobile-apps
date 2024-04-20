@@ -16,8 +16,6 @@ import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class Repository(app: Application) {
 
@@ -56,8 +54,16 @@ class Repository(app: Application) {
 		return daoProductAndList.getAll()
 	}
 
-	fun getAllProductsWithList_withId(id: Long): LiveData<List<EntityProductAndList>> {
-		return daoProductAndList.getAllWhere("id={id.toString()}")
+	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
+		return daoProduct.getOneFromId(id.toString())
+	}
+
+	fun getAllProductsWithInventory_fromId(id: Long): LiveData<List<EntityProductAndInventory>> {
+		return daoProductAndInventory.getAllFromId(id.toString())
+	}
+
+	fun getAllProductsWithList_fromId(id: Long): LiveData<List<EntityProductAndList>> {
+		return daoProductAndList.getAllFromId(id.toString())
 	}
 
 	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {

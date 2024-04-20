@@ -2,10 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 
 @Dao
 interface DaoProductAndList {
@@ -23,8 +20,8 @@ interface DaoProductAndList {
         SELECT *
         FROM Product
         INNER JOIN List ON Product.id = List.idProduct
-		WHERE :where
+		WHERE idProduct = :id
     """)
-	fun getAllWhere(where: String): LiveData<List<EntityProductAndList>>
+	fun getAllFromId(id: String): LiveData<List<EntityProductAndList>>
 
 }
