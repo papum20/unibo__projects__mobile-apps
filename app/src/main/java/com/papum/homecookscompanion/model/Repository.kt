@@ -10,12 +10,15 @@ import com.papum.homecookscompanion.model.database.DaoPlan
 import com.papum.homecookscompanion.model.database.DaoProduct
 import com.papum.homecookscompanion.model.database.DaoProductAndInventory
 import com.papum.homecookscompanion.model.database.DaoProductAndList
+import com.papum.homecookscompanion.model.database.DaoProductAndPlan
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
+import com.papum.homecookscompanion.model.database.EntityPlan
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
+import com.papum.homecookscompanion.model.database.EntityProductAndPlan
 
 class Repository(app: Application) {
 
@@ -27,6 +30,7 @@ class Repository(app: Application) {
 	var daoProduct				: DaoProduct
 	var daoProductAndInventory	: DaoProductAndInventory
 	var daoProductAndList		: DaoProductAndList
+	var daoProductAndPlan		: DaoProductAndPlan
 
 	init {
 		val db = Database.getDatabase(app)
@@ -38,6 +42,7 @@ class Repository(app: Application) {
 		daoProduct				= db.daoProduct()
 		daoProductAndInventory	= db.daoProductAndInventory()
 		daoProductAndList		= db.daoProductAndList()
+		daoProductAndPlan		= db.daoProductAndPlan()
 	}
 
 	/* Get */
@@ -52,6 +57,10 @@ class Repository(app: Application) {
 
 	fun getAllProductsWithList(): LiveData<List<EntityProductAndList>> {
 		return daoProductAndList.getAll()
+	}
+
+	fun getAllProductsWithPlan(): LiveData<List<EntityProductAndPlan>> {
+			return daoProductAndPlan.getAll()
 	}
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
@@ -87,6 +96,12 @@ class Repository(app: Application) {
 	fun insertInList(listProduct: EntityList) {
 		Database.databaseWriteExecutor.execute {
 			daoList.insertOne(listProduct)
+		}
+	}
+
+	fun insertInPlan(planProduct: EntityPlan) {
+		Database.databaseWriteExecutor.execute {
+			daoPlan.insertOne(planProduct)
 		}
 	}
 

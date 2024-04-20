@@ -19,6 +19,8 @@ import java.util.Date
 	primaryKeys = ["date", "idEdible"]
 )
 class EntityPlan(
+	var idEdible: Long,
 	var date: Date,
-	var idEdible: Long
+
+	var quantity: Float
 )

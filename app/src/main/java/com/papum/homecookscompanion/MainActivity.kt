@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.papum.homecookscompanion.view.inventory.FragmentInventory
 import com.papum.homecookscompanion.view.list.FragmentList
-import com.papum.homecookscompanion.view.meals.FragmentMeals
+import com.papum.homecookscompanion.view.plan.FragmentPlan
 import com.papum.homecookscompanion.view.products.FragmentProducts
 import com.papum.homecookscompanion.view.settings.FragmentSettings
 import com.papum.homecookscompanion.view.stats.FragmentStats
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fragmentMeals      	= FragmentMeals()
+        val fragmentMeals      	= FragmentPlan()
         val fragmentList       	= FragmentList()
         val fragmentInventory 	= FragmentInventory()
         val fragmentProducts	= FragmentProducts()

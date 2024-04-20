@@ -21,8 +21,8 @@ class ProductsAdapter(
 
 	interface IListenerOnClickProduct {
 
-		fun onClickAddToInventoryClick(product: EntityProduct)
-		fun onClickAddToListClick(product: EntityProduct)
+		fun onClickAddToInventory(product: EntityProduct)
+		fun onClickAddToList(product: EntityProduct)
 		fun onClickAddToPlan(product: EntityProduct)
 
 	}
@@ -70,11 +70,11 @@ class ProductsAdapter(
 		items?.get(position)?.let { product ->
 			// add product to inventory
 			holder.btnAddInventory.setOnClickListener { _ ->
-				buttonsListener.onClickAddToInventoryClick(product)
+				buttonsListener.onClickAddToInventory(product)
 			}
 			// add product to list
 			holder.btnAddList.setOnClickListener { _ ->
-				buttonsListener.onClickAddToListClick(product)
+				buttonsListener.onClickAddToList(product)
 			}
 			// add product to plan
 			holder.btnAddPlan.setOnClickListener { _ ->

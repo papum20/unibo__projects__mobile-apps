@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import java.util.Date
 
 
 /**
@@ -26,7 +27,8 @@ class FragmentProducts :
 	Fragment(R.layout.page_fragment_products),
 	ProductsAdapter.IListenerOnClickProduct,
 	FragmentDialogAddToList.IListenerDialog,
-	FragmentDialogAddToInventory.IListenerDialog
+	FragmentDialogAddToInventory.IListenerDialog,
+	FragmentDialogAddToPlan.IListenerDialog
 {
 
 	// View Model
@@ -77,39 +79,48 @@ class FragmentProducts :
 
 	/* IListenerOnClickProduct */
 
-	override fun onClickAddToInventoryClick(product: EntityProduct) {
-		FragmentDialogAddToList.newInstance(this, product)
+	override fun onClickAddToInventory(product: EntityProduct) {
+		FragmentDialogAddToInventory.newInstance(this, product)
 			.show(parentFragmentManager, "ADD_LIST")
 	}
 
-	override fun onClickAddToListClick(product: EntityProduct) {
+	override fun onClickAddToList(product: EntityProduct) {
 		FragmentDialogAddToList.newInstance(this, product)
 			.show(parentFragmentManager, "ADD_INVENTORY")
 
 	}
 
 	override fun onClickAddToPlan(product: EntityProduct) {
-		FragmentDialogAddToList.newInstance(this, product)
+		FragmentDialogAddToPlan.newInstance(this, product)
 			.show(parentFragmentManager, "ADD_PLAN")
 	}
 
 	/* FragmentDialogAddToList.IListenerDialog */
 
 	override fun onClickAddToInventory(dialog: DialogFragment, productId: Long, quantity: Float) {
+		Log.d("PRODUCTS_ADD_INVENTORY",  "id $productId to ${quantity}")
+		viewModel.addToInventory(productId, quantity)
+	}
+
+	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
 		Log.d("PRODUCTS_ADD_LIST",  "id $productId to ${quantity}")
 		viewModel.addToList(productId, quantity)
 	}
 
-	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
-		Log.d("PRODUCTS_ADD_INVENTORY",  "id $productId to ${quantity}")
-		viewModel.addToInventory(productId, quantity)
+	override fun onClickAddToPlan(dialog: DialogFragment, productId: Long, date: Date, quantity: Float) {
+		Log.d("PRODUCTS_ADD_PLAN",  "id $productId to ${quantity}")
+		viewModel.addToPlan(productId, date, quantity)
 	}
 
 	override fun onClickAddToInventoryCancel(dialog: DialogFragment) {
 
 	}
 
-	override fun onClickCancel(dialog: DialogFragment) {
+	override fun onClickAddToListCancel(dialog: DialogFragment) {
+
+	}
+
+	override fun onClickAddToPlanCancel(dialog: DialogFragment) {
 
 	}
 

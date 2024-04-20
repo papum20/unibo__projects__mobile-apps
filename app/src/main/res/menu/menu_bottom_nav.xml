@@ -5,7 +5,7 @@
         android:id="@+id/bottom_nav_item_meals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/bottom_nav_item_text_meals" />
+        android:title="@string/bottom_nav_item_text_plan" />
     <item
         android:id="@+id/bottom_nav_item_list"
         android:layout_width="wrap_content"

@@ -21,7 +21,7 @@ import java.util.concurrent.Executors
 		EntityPlan::class,
 		EntityProduct::class,
    ],
-	version = 4,
+	version = 5,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -35,6 +35,7 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoProduct()				: DaoProduct
 	abstract fun daoProductAndInventory()	: DaoProductAndInventory
 	abstract fun daoProductAndList()		: DaoProductAndList
+	abstract fun daoProductAndPlan()		: DaoProductAndPlan
 
 
 	companion object {

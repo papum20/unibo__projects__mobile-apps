@@ -8,4 +8,14 @@ import androidx.room.Query
 @Dao
 interface DaoPlan {
 
+	/* insert */
+
+	@Insert
+	fun insertOne(planProduct: EntityPlan)
+
+	/* delete */
+
+	@Delete
+	fun deleteOne(planProduct: EntityPlan)
+
 }
