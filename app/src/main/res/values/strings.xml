@@ -70,6 +70,15 @@
     <string name="dialog_products_addTo_date_placeholder">%02d/%02d/%04d</string>
     <string name="dialog_products_addTo_time_placeholder">%02d:%02d</string>
 
-    <string name="bundle_FragmentDialogAddToList_product">product</string>
+    <string name="fragment_create_food_title">Create a food</string>
+    <string name="fragment_create_recipe_title">Create a recipe</string>
+    <string name="fragment_create_food_placeholder_name">(name)</string>
+    <string name="fragment_create_food_placeholder_parent">(parent category)</string>
+
+    <string name="fragment_create_food_nutrients_title">Create a food</string>
+    <string name="fragment_create_placeholder_kcal">(kcal)</string>
+    <string name="fragment_create_placeholder_carbohydrates">(carbohydrates)</string>
+    <string name="fragment_create_placeholder_fats">(fats)</string>
+    <string name="fragment_create_placeholder_proteins">(proteins)</string>
 
 </resources>

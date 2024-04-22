@@ -11,6 +11,7 @@ import com.papum.homecookscompanion.model.database.DaoProduct
 import com.papum.homecookscompanion.model.database.DaoProductAndInventory
 import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.DaoProductAndMeals
+import com.papum.homecookscompanion.model.database.DaoProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
@@ -19,33 +20,36 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
+import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
 class Repository(app: Application) {
 
-	var daoEdible				: DaoNutrients
-	var daoIngredient			: DaoIngredientOf
-	var daoInventory			: DaoInventory
-	var daoList					: DaoList
-	var daoMeals					: DaoMeals
-	var daoProduct				: DaoProduct
-	var daoProductAndInventory	: DaoProductAndInventory
-	var daoProductAndList		: DaoProductAndList
-	var daoProductAndMeals		: DaoProductAndMeals
+	var daoEdible						: DaoNutrients
+	var daoIngredient					: DaoIngredientOf
+	var daoInventory					: DaoInventory
+	var daoList							: DaoList
+	var daoMeals						: DaoMeals
+	var daoProduct						: DaoProduct
+	var daoProductAndInventory			: DaoProductAndInventory
+	var daoProductAndList				: DaoProductAndList
+	var daoProductAndMeals				: DaoProductAndMeals
+	var daoProductAndMealsWithNutrients	: DaoProductAndMealsWithNutrients
 
 	init {
 		val db = Database.getDatabase(app)
-		daoEdible				= db.daoNutrients()
-		daoIngredient			= db.daoIngredient()
-		daoInventory			= db.daoInventory()
-		daoList					= db.daoList()
-		daoMeals				= db.daoMeals()
-		daoProduct				= db.daoProduct()
-		daoProductAndInventory	= db.daoProductAndInventory()
-		daoProductAndList		= db.daoProductAndList()
-		daoProductAndMeals		= db.daoProductAndMeals()
+		daoEdible						= db.daoNutrients()
+		daoIngredient					= db.daoIngredient()
+		daoInventory					= db.daoInventory()
+		daoList							= db.daoList()
+		daoMeals						= db.daoMeals()
+		daoProduct						= db.daoProduct()
+		daoProductAndInventory			= db.daoProductAndInventory()
+		daoProductAndList				= db.daoProductAndList()
+		daoProductAndMeals				= db.daoProductAndMeals()
+		daoProductAndMealsWithNutrients	= db.daoProductAndMealsWithNutrients()
 	}
 
 	/* Get */
@@ -90,6 +94,16 @@ class Repository(app: Application) {
 		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
 		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
 		return daoProductAndMeals.getAllFromDateTimeInterval(startOfDay, endOfDay)
+	}
+
+	/**
+	 * `month` from 1.
+	 */
+	fun getAllProductsWithMealsAndNutrients_fromDate(date: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
+		// set localDateTime to time=0 -> convert to instant (nanosecs from epoch) -> convert to millisecs
+		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
+		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
+		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval_withNutrients(startOfDay, endOfDay)
 	}
 
 

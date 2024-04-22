@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
  * Null nutrients values will probably be inherited by parent (if available).
  */
 @Entity(
-	tableName = "Edible",
+	tableName = "Nutrients",
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,

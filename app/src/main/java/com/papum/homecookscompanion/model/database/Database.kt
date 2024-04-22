@@ -17,21 +17,22 @@ import java.util.concurrent.Executors
 		EntityMeals::class,
 		EntityProduct::class,
    ],
-	version = 7,
+	version = 8,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase() {
 
-	abstract fun daoNutrients()    	    	: DaoNutrients
-	abstract fun daoIngredient()			: DaoIngredientOf
-	abstract fun daoInventory()				: DaoInventory
-	abstract fun daoList()					: DaoList
-	abstract fun daoMeals()					: DaoMeals
-	abstract fun daoProduct()				: DaoProduct
-	abstract fun daoProductAndInventory()	: DaoProductAndInventory
-	abstract fun daoProductAndList()		: DaoProductAndList
-	abstract fun daoProductAndMeals()		: DaoProductAndMeals
+	abstract fun daoNutrients()    	    			: DaoNutrients
+	abstract fun daoIngredient()					: DaoIngredientOf
+	abstract fun daoInventory()						: DaoInventory
+	abstract fun daoList()							: DaoList
+	abstract fun daoMeals()							: DaoMeals
+	abstract fun daoProduct()						: DaoProduct
+	abstract fun daoProductAndInventory()			: DaoProductAndInventory
+	abstract fun daoProductAndList()				: DaoProductAndList
+	abstract fun daoProductAndMeals()				: DaoProductAndMeals
+	abstract fun daoProductAndMealsWithNutrients()	: DaoProductAndMealsWithNutrients
 
 
 	companion object {
