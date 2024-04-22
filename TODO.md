@@ -21,7 +21,7 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 ## features (todo)
 1.	lista della spesa;
 	*	[V]	list
-	*	add
+	*	[V] add
 	*	remove
 2.	ricette: si può creare e salvare una ricetta;
 3.	pianificazione dei pasti: si possono assegnare i cibi/ricette che si consumano a una giornata. Vengono mostrati calorie e macronutrienti per ogni alimento/giorno/settimana...;
@@ -73,3 +73,4 @@ make table with full names from hierarchy
 implementation :
 *	fragments args (newinstance/constructor)
 *	bundle keys in R.strings
+*	use R strings formatters (e.g. list {} ...)

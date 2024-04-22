@@ -61,7 +61,7 @@ class FragmentList : Fragment(R.layout.page_fragment_list) {
          * this fragment using the provided parameters.
          */
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             FragmentList()
     }
 }

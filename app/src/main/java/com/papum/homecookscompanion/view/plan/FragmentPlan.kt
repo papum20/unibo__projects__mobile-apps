@@ -32,8 +32,8 @@ class FragmentPlan : Fragment(R.layout.page_fragment_plan) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-		val viewModel: ListViewModel by viewModels {
-			ListViewModelFactory(
+		val viewModel: PlanViewModel by viewModels {
+			PlanViewModelFactory(
 				Repository(requireActivity().application)
 			)
 		}
@@ -45,11 +45,12 @@ class FragmentPlan : Fragment(R.layout.page_fragment_plan) {
         recycler.layoutManager = LinearLayoutManager(context)
 
 		viewModel.getAllProducts().observe(viewLifecycleOwner) { newdata ->
-			adapter.let {
-				it.items = newdata
-				it.notifyDataSetChanged()
+			Log.d("MEALS_ACTIVITY_UPDATE", "products: ${newdata.map { plan -> "${plan.product.name} ${plan.planItem.date} ${plan.planItem.quantity};" } }")
+			adapter.let { a ->
+				a.items = newdata
+				a.notifyDataSetChanged()
 				//Log.d("MEALS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
-				Log.d("MEALS_ACTIVITY_UPDATE", "products: ${it.itemCount}")
+				Log.d("MEALS_ACTIVITY_UPDATE", "products: ${a.itemCount}")
 			}
 		}
 
@@ -61,7 +62,7 @@ class FragmentPlan : Fragment(R.layout.page_fragment_plan) {
          * this fragment using the provided parameters.
          */
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             FragmentPlan()
     }
 }

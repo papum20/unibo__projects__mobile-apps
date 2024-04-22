@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
-import java.util.Date
+import com.papum.homecookscompanion.utils.ConvertersDates
+import java.time.LocalDateTime
 
 
 /**
@@ -107,9 +108,9 @@ class FragmentProducts :
 		viewModel.addToList(productId, quantity)
 	}
 
-	override fun onClickAddToPlan(dialog: DialogFragment, productId: Long, date: Date, quantity: Float) {
+	override fun onClickAddToPlan(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
 		Log.d("PRODUCTS_ADD_PLAN",  "id $productId to ${quantity}")
-		viewModel.addToPlan(productId, date, quantity)
+		viewModel.addToPlan(productId, ConvertersDates.localDateTimeToDate(date), quantity)
 	}
 
 	override fun onClickAddToInventoryCancel(dialog: DialogFragment) {

@@ -7,7 +7,7 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndPlan
 
-class ListViewModel(private val repository: Repository) : ViewModel() {
+class PlanViewModel(private val repository: Repository) : ViewModel() {
 
 	fun getAllProducts(): LiveData<List<EntityProductAndPlan>> {
 		return repository.getAllProductsWithPlan()
@@ -26,12 +26,12 @@ class ListViewModel(private val repository: Repository) : ViewModel() {
 }
 
 
-class ListViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
+class PlanViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
-		if(modelClass.isAssignableFrom(ListViewModel::class.java)) {
+		if(modelClass.isAssignableFrom(PlanViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")
-			return ListViewModel(repository) as T
+			return PlanViewModel(repository) as T
 		}
 		throw IllegalArgumentException("Unknown ViewModel class")
 	}

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
-import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndPlan
 
 
@@ -14,12 +13,12 @@ class PlanAdapter(var items:List<EntityProductAndPlan>?) : Adapter<PlanViewHolde
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlanViewHolder {
         return PlanViewHolder(
             LayoutInflater.from(parent.context)
-				.inflate(R.layout.recycler_card_list, parent, false)
+				.inflate(R.layout.recycler_card_plan, parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: PlanViewHolder, position: Int) {
-		Log.d("LIST_VIEW_HOLDER", "${items}; ${position}")
+		Log.d("PLAN_VIEW_HOLDER", "${items}; ${position}")
 
 		val name: String = items?.get(position)?.let {
 			it.product?.parent?.let { p ->

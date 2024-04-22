@@ -63,7 +63,8 @@
 
     <string name="dialog_products_addTo_tv_placeholder">Insert quantity of {} to add to {}:</string>
     <string name="dialog_products_addTo_et_placeholder">(quantity)</string>
-    <string name="dialog_products_addTo_date_placeholder">date</string>
+    <string name="dialog_products_addTo_date_placeholder">%02d/%02d/%04d</string>
+    <string name="dialog_products_addTo_time_placeholder">%02d:%02d</string>
 
     <string name="bundle_FragmentDialogAddToList_product">product</string>
 

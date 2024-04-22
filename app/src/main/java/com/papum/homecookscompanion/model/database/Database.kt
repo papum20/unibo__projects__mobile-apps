@@ -1,13 +1,9 @@
 package com.papum.homecookscompanion.model.database
 
 import android.content.Context
-import android.util.Log
-import androidx.room.AutoMigration
-import androidx.room.DeleteColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.AutoMigrationSpec
 import androidx.sqlite.db.SupportSQLiteDatabase
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

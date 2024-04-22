@@ -11,36 +11,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dialog_products_addTo_tv_placeholder"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_products_addToPlan_et"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_products_addToPlan_quantity_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/dialog_products_addToPlan_et"
+        android:id="@+id/dialog_products_addToPlan_quantity_et"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="@dimen/dialog_addTo_plan_et_height"
         android:ems="10"
         android:hint="@string/dialog_products_addTo_et_placeholder"
         android:inputType="number|numberSigned"
-		app:layout_constraintWidth_percent="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dialog_products_addToPlan_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_products_addToPlan_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/dialog_products_addToPlan_tv"
+        app:layout_constraintWidth_percent="0.4" />
 
-    <EditText
-        android:id="@+id/dialog_products_addToPlan_date"
+    <Button
+        android:id="@+id/dialog_products_addToPlan_date_btn"
         android:layout_width="0dp"
         android:layout_height="70dp"
-        android:ems="10"
-        android:hint="@string/dialog_products_addTo_date_placeholder"
-        android:inputType="datetime"
-		app:layout_constraintWidth_percent="0.5"
+        android:text="@string/dialog_products_addTo_date_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dialog_products_addToPlan_time_btn"
+        app:layout_constraintStart_toEndOf="@+id/dialog_products_addToPlan_quantity_et"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_products_addToPlan_tv"
+        app:layout_constraintVertical_bias="0.501"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <Button
+        android:id="@+id/dialog_products_addToPlan_time_btn"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:text="@string/dialog_products_addTo_time_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/dialog_products_addToPlan_et"
+        app:layout_constraintStart_toEndOf="@+id/dialog_products_addToPlan_date_btn"
         app:layout_constraintTop_toBottomOf="@+id/dialog_products_addToPlan_tv"
-        app:layout_constraintVertical_bias="0.501" />
+        app:layout_constraintVertical_bias="0.501"
+        app:layout_constraintWidth_percent="0.3" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
