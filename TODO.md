@@ -24,7 +24,10 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 	*	[V] add
 	*	remove
 2.	ricette: si può creare e salvare una ricetta;
-3.	pianificazione dei pasti: si possono assegnare i cibi/ricette che si consumano a una giornata. Vengono mostrati calorie e macronutrienti per ogni alimento/giorno/settimana...;
+3.	pianificazione dei pasti:
+	*	[V]	si possono assegnare i cibi/ricette che si consumano a una giornata.
+	*	(remove)
+	*	Vengono mostrati calorie e macronutrienti per ogni alimento/giorno/settimana...;
 4.	inventario:
 	*	[V]	lista di oggetti posseduti,
 	*	[V]	di cui si salva la quantità.
@@ -69,6 +72,9 @@ all quantity (e.g. inventory, list):
 *	make more quantities (customizable)
 
 make table with full names from hierarchy  
+
+dialogs addTo:
+*	error dialog if wrong parameters (e.g. missing quantity/or put default val)
 
 implementation :
 *	fragments args (newinstance/constructor)

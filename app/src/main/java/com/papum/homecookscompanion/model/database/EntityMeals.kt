@@ -2,13 +2,13 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import java.util.Date
+import java.time.LocalDateTime
 
 /**
  * An (abstract) food product.
  */
 @Entity(
-	tableName = "Plan",
+	tableName = "Meals",
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityProduct::class,
@@ -18,9 +18,9 @@ import java.util.Date
 	],
 	primaryKeys = ["date", "idEdible"]
 )
-class EntityPlan(
+class EntityMeals(
 	var idEdible: Long,
-	var date: Date,
+	var date: LocalDateTime,
 
 	var quantity: Float
 )

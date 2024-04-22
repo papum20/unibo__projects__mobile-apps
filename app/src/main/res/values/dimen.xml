@@ -2,5 +2,8 @@
 <resources>
     <dimen name="bottom_nav_height">50dp</dimen>
 
-    <dimen name="dialog_addTo_plan_et_height">70dp</dimen>
+    <dimen name="recycler_card_plan_edge_left">62dp</dimen>
+    <dimen name="recycler_card_meals_width_right">75dp</dimen>
+
+    <dimen name="dialog_addTo_meals_et_height">70dp</dimen>
 </resources>

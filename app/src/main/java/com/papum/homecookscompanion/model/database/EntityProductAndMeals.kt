@@ -6,14 +6,14 @@ import androidx.room.Relation
 
 
 @Entity
-class EntityProductAndPlan (
+class EntityProductAndMeals (
     @Embedded
     val product: EntityProduct,
     @Relation(
 		parentColumn = "id",
 		entityColumn = "idEdible"
 	)
-    val planItem: EntityPlan
+    val mealsItem: EntityMeals
  
 )
 

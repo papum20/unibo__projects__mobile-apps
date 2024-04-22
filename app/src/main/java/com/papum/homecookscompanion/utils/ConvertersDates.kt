@@ -10,9 +10,14 @@ class ConvertersDates {
 	companion object {
 		@JvmStatic
 		fun localDateTimeToDate(localeDate: LocalDateTime): Date {
-			val instant = localeDate.atZone(ZoneId.systemDefault()).toInstant()
+			// local -> instant -> date
+			return Date.from(localeDate.atZone(ZoneId.systemDefault()).toInstant())
+		}
 
-			return Date.from(instant)
+		@JvmStatic
+		fun dateToLocalDateTime(date: Date): LocalDateTime {
+			// date -> instant -> local
+			return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
 		}
 	}
 

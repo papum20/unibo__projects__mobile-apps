@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
-import com.papum.homecookscompanion.utils.ConvertersDates
 import java.time.LocalDateTime
 
 
@@ -29,7 +28,7 @@ class FragmentProducts :
 	ProductsAdapter.IListenerOnClickProduct,
 	FragmentDialogAddToList.IListenerDialog,
 	FragmentDialogAddToInventory.IListenerDialog,
-	FragmentDialogAddToPlan.IListenerDialog
+	FragmentDialogAddToMeals.IListenerDialog
 {
 
 	// View Model
@@ -91,9 +90,9 @@ class FragmentProducts :
 
 	}
 
-	override fun onClickAddToPlan(product: EntityProduct) {
-		FragmentDialogAddToPlan.newInstance(this, product)
-			.show(parentFragmentManager, "ADD_PLAN")
+	override fun onClickAddToMeals(product: EntityProduct) {
+		FragmentDialogAddToMeals.newInstance(this, product)
+			.show(parentFragmentManager, "ADD_MEALS")
 	}
 
 	/* FragmentDialogAddToList.IListenerDialog */
@@ -108,9 +107,9 @@ class FragmentProducts :
 		viewModel.addToList(productId, quantity)
 	}
 
-	override fun onClickAddToPlan(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
-		Log.d("PRODUCTS_ADD_PLAN",  "id $productId to ${quantity}")
-		viewModel.addToPlan(productId, ConvertersDates.localDateTimeToDate(date), quantity)
+	override fun onClickAddToMeals(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
+		Log.d("PRODUCTS_ADD_MEALS",  "id $productId to ${quantity}")
+		viewModel.addToMeals(productId, date, quantity)
 	}
 
 	override fun onClickAddToInventoryCancel(dialog: DialogFragment) {
@@ -121,7 +120,7 @@ class FragmentProducts :
 
 	}
 
-	override fun onClickAddToPlanCancel(dialog: DialogFragment) {
+	override fun onClickAddToMealsCancel(dialog: DialogFragment) {
 
 	}
 

@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
-import com.papum.homecookscompanion.model.database.EntityPlan
+import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
-import java.util.Date
+import java.time.LocalDateTime
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
@@ -51,8 +51,8 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 		repository.insertInList(EntityList(id, quantity))
 	}
 
-	fun addToPlan(id: Long, date: Date, quantity: Float) {
-		repository.insertInPlan(EntityPlan(id, date, quantity))
+	fun addToMeals(id: Long, date: LocalDateTime, quantity: Float) {
+		repository.insertInMeals(EntityMeals(id, date, quantity))
 	}
 
 

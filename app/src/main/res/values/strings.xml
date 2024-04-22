@@ -44,7 +44,7 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
 
-    <string name="bottom_nav_item_text_plan">meals</string>
+    <string name="bottom_nav_item_text_meals">meals</string>
     <string name="bottom_nav_item_text_list">shopping list</string>
     <string name="bottom_nav_item_text_inventory">inventory</string>
     <string name="bottom_nav_item_text_stats">stats</string>
@@ -54,12 +54,16 @@
     <string name="placeholder_product_type">(Recipe)</string>
     <string name="placeholder_product_text">some recipe</string>
     <string name="placeholder_product_quantity">q.ty</string>
+    <string name="placeholder_product_time">%02d:%02d</string>
 
+    <string name="meals_date_placeholder">%02d/%02d/%04d</string>
+    <string name="meals_date_btn_left_description">button previous day</string>
+    <string name="meals_date_btn_right_description">button next day</string>
     <string name="products_search_textInput_placeholder">Search a product</string>
 
     <string name="recycler_card_products_btn_addList">+List</string>
     <string name="recycler_card_products_btn_addInventory">+Inventory</string>
-    <string name="recycler_card_products_btn_addPlan">+Plan</string>
+    <string name="recycler_card_products_btn_addMeals">+Meals</string>
 
     <string name="dialog_products_addTo_tv_placeholder">Insert quantity of {} to add to {}:</string>
     <string name="dialog_products_addTo_et_placeholder">(quantity)</string>

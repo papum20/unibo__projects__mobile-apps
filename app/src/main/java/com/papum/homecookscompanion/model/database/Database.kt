@@ -14,10 +14,10 @@ import java.util.concurrent.Executors
 		EntityIngredientOf::class,
 		EntityInventory::class,
 		EntityList::class,
-		EntityPlan::class,
+		EntityMeals::class,
 		EntityProduct::class,
    ],
-	version = 5,
+	version = 7,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -27,11 +27,11 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoIngredient()			: DaoIngredientOf
 	abstract fun daoInventory()				: DaoInventory
 	abstract fun daoList()					: DaoList
-	abstract fun daoPlan()					: DaoPlan
+	abstract fun daoMeals()					: DaoMeals
 	abstract fun daoProduct()				: DaoProduct
 	abstract fun daoProductAndInventory()	: DaoProductAndInventory
 	abstract fun daoProductAndList()		: DaoProductAndList
-	abstract fun daoProductAndPlan()		: DaoProductAndPlan
+	abstract fun daoProductAndMeals()		: DaoProductAndMeals
 
 
 	companion object {

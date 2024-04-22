@@ -57,11 +57,11 @@ class FragmentDialogPickerTime(
 		 */
 		@JvmStatic
 		fun newInstance(
-			listener: DatePickerDialog.OnDateSetListener,
+			listener: TimePickerDialog.OnTimeSetListener,
 			hour: Int,
 			minute: Int
 		) =
-			FragmentDialogPickerDate(listener).apply {
+			FragmentDialogPickerTime(listener).apply {
 				arguments = Bundle().apply {
 					//putParcelable("product", product)
 					putInt(FragmentDialogPickerTime.KEY_TIME_HOUR,		hour)

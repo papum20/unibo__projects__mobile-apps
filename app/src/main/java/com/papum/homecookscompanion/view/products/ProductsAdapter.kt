@@ -23,7 +23,7 @@ class ProductsAdapter(
 
 		fun onClickAddToInventory(product: EntityProduct)
 		fun onClickAddToList(product: EntityProduct)
-		fun onClickAddToPlan(product: EntityProduct)
+		fun onClickAddToMeals(product: EntityProduct)
 
 	}
 
@@ -76,9 +76,9 @@ class ProductsAdapter(
 			holder.btnAddList.setOnClickListener { _ ->
 				buttonsListener.onClickAddToList(product)
 			}
-			// add product to plan
-			holder.btnAddPlan.setOnClickListener { _ ->
-				buttonsListener.onClickAddToPlan(product)
+			// add product to meals
+			holder.btnAddMeals.setOnClickListener { _ ->
+				buttonsListener.onClickAddToMeals(product)
 			}
 		}
 

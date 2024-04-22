@@ -64,11 +64,11 @@ android:layout_height="wrap_content">
                 android:text="@string/recycler_card_products_btn_addInventory" />
 
             <Button
-                android:id="@+id/recycler_card_products_btn_addPlan"
+                android:id="@+id/recycler_card_products_btn_addMeals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/recycler_card_products_btn_addPlan" />
+                android:text="@string/recycler_card_products_btn_addMeals" />
         </LinearLayout>
     </LinearLayout>
 
