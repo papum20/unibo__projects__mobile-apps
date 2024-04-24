@@ -3,26 +3,99 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/fragmentProducts">
+
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.papum.homecookscompanion.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/fragmentInventory"
+        android:name="com.papum.homecookscompanion.view.inventory.FragmentInventory"
+        android:label="FragmentInventory"
+        tools:layout="@layout/page_fragment_inventory" />
+    <fragment
+        android:id="@+id/fragmentList"
+        android:name="com.papum.homecookscompanion.view.list.FragmentList"
+        android:label="FragmentList"
+        tools:layout="@layout/page_fragment_list" />
+
+    <fragment
+        android:id="@+id/fragmentMeals"
+        android:name="com.papum.homecookscompanion.view.meals.FragmentMeals"
+        android:label="FragmentMeals"
+        tools:layout="@layout/page_fragment_meals" />
+
+    <fragment
+        android:id="@+id/fragmentProducts"
+        android:name="com.papum.homecookscompanion.view.products.FragmentProducts"
+        android:label="FragmentProducts"
+        tools:layout="@layout/page_fragment_products" >
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_fragmentProducts_to_fragmentCreateFood3"
+            app:destination="@id/fragmentCreateFood"
+            app:popUpTo="@id/fragmentProducts" />
+        <action
+            android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToList"
+            app:destination="@id/fragmentDialogAddToList"
+            app:popUpTo="@id/fragmentProducts" />
+
+        <action
+            android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToInventory"
+            app:destination="@id/fragmentDialogAddToInventory"
+            app:popUpTo="@id/fragmentProducts" />
+
+        <action
+            android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToMeals"
+            app:destination="@id/fragmentDialogAddToMeals"
+            app:popUpTo="@id/fragmentProducts" />
+
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.papum.homecookscompanion.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/fragmentStats"
+        android:name="com.papum.homecookscompanion.view.stats.FragmentStats"
+        android:label="FragmentStats"
+        tools:layout="@layout/page_fragment_stats" />
+
+    <fragment
+        android:id="@+id/fragmentCreateFood"
+        android:name="com.papum.homecookscompanion.view.create.food.FragmentCreateFood"
+        android:label="FragmentCreateFood"
+        tools:layout="@layout/fragment_create_food" />
+
+    <dialog
+        android:id="@+id/fragmentDialogAddToList"
+        android:name="com.papum.homecookscompanion.view.products.FragmentDialogAddToList"
+        android:label="FragmentDialogAddToList"
+        tools:layout="@layout/dialog_products_add_to_list" />
+
+    <dialog
+        android:id="@+id/fragmentDialogAddToInventory"
+        android:name="com.papum.homecookscompanion.view.products.FragmentDialogAddToInventory"
+        android:label="FragmentDialogAddToInventory"
+        tools:layout="@layout/dialog_products_add_to_inventory" />
+
+    <dialog
+        android:id="@+id/fragmentDialogAddToMeals"
+        android:name="com.papum.homecookscompanion.view.products.FragmentDialogAddToMeals"
+        android:label="FragmentDialogAddToMeals"
+        tools:layout="@layout/dialog_products_add_to_meals" >
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+            android:id="@+id/action_fragmentDialogAddToMeals_to_fragmentDialogPickerTime"
+            app:destination="@id/fragmentDialogPickerTime"
+            app:popUpTo="@id/fragmentDialogAddToMeals" />
+
+        <action
+            android:id="@+id/action_fragmentDialogAddToMeals_to_fragmentDialogPickerDate"
+            app:destination="@id/fragmentDialogPickerDate"
+            app:popUpTo="@id/fragmentDialogAddToMeals" />
+
+    </dialog>
+    <dialog
+        android:id="@+id/fragmentDialogPickerDate"
+        android:name="com.papum.homecookscompanion.view.dialogs.FragmentDialogPickerDate"
+        android:label="FragmentDialogPickerDate" />
+    <dialog
+        android:id="@+id/fragmentDialogPickerTime"
+        android:name="com.papum.homecookscompanion.view.dialogs.FragmentDialogPickerTime"
+        android:label="FragmentDialogPickerTime" />
 </navigation>
