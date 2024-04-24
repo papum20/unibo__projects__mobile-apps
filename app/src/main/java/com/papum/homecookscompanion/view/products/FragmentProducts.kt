@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
@@ -50,6 +52,8 @@ class FragmentProducts :
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		val navController = findNavController()
+
 		/* Recycler */
 		val adapter = ProductsAdapter(listOf(), this)
 
@@ -66,13 +70,24 @@ class FragmentProducts :
 		/* UI Listeners */
 
 		// update on search
-		val searchEditText: EditText = view.findViewById(R.id.products_editText_search)
-		searchEditText.doOnTextChanged { text, start, before, count ->
-			viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
-				Log.i("PRODUCTS_SEARCH", "found ${products.size} matches for \"$text\"")
-				adapter.updateItems(products)
+		view.findViewById<EditText>(R.id.products_editText_search)
+			.doOnTextChanged { text, start, before, count ->
+				viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
+					Log.i("PRODUCTS_SEARCH", "found ${products.size} matches for \"$text\"")
+					adapter.updateItems(products)
+				}
 			}
-		}
+
+		// create food/recipe
+		view.findViewById<Button>(R.id.products_btn_editFood)
+			.setOnClickListener {
+				navController.navigate(R.id.action_fragmentProducts_to_fragmentEditFood)
+			}
+
+		view.findViewById<Button>(R.id.products_btn_editRecipe)
+			.setOnClickListener {
+				navController.navigate(R.id.action_fragmentProducts_to_fragmentEditRecipe)
+			}
 
 	}
 
@@ -95,7 +110,7 @@ class FragmentProducts :
 			.show(parentFragmentManager, "ADD_MEALS")
 	}
 
-	/* FragmentDialogAddToList.IListenerDialog */
+	/* FragmentDialogAddTo*.IListenerDialog */
 
 	override fun onClickAddToInventory(dialog: DialogFragment, productId: Long, quantity: Float) {
 		Log.d("PRODUCTS_ADD_INVENTORY",  "id $productId to ${quantity}")

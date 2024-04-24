@@ -32,6 +32,7 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoProductAndInventory()			: DaoProductAndInventory
 	abstract fun daoProductAndList()				: DaoProductAndList
 	abstract fun daoProductAndMeals()				: DaoProductAndMeals
+	abstract fun daoProductAndNutrients()			: DaoProductAndNutrients
 	abstract fun daoProductAndMealsWithNutrients()	: DaoProductAndMealsWithNutrients
 
 

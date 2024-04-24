@@ -55,8 +55,13 @@ class ProductsAdapter(
 
 		/* buttons listeners */
 
-		// expand/collapse
+		// open product info and nutrients
 		holder.layoutInfo.setOnClickListener { _ ->
+
+		}
+
+		// expand/collapse
+		holder.btnOpenActions.setOnClickListener { _ ->
 			when(holder.layoutCollapse.visibility) {
 				View.GONE	-> {
 					layoutExpanded?.visibility			= View.GONE

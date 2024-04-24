@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stats"
+    app:startDestination="@id/fragmentStats">
+
+
+
+    <fragment
+        android:id="@+id/fragmentStats"
+        android:name="com.papum.homecookscompanion.view.stats.FragmentStats"
+        android:label="@string/bottom_nav_item_text_stats"
+        tools:layout="@layout/page_fragment_stats" />
+
+</navigation>

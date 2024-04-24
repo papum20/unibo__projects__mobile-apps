@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bottom_nav_item_meals"
+        android:id="@+id/meals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/bottom_nav_item_text_meals" />
     <item
-        android:id="@+id/bottom_nav_item_list"
+        android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/bottom_nav_item_text_list" />
 
     <item
-        android:id="@+id/bottom_nav_item_inventory"
+        android:id="@+id/inventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/bottom_nav_item_text_inventory" />
 
 
     <item
-        android:id="@+id/bottom_nav_item_products"
+        android:id="@+id/products"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/bottom_nav_item_text_products" />
 
     <item
-        android:id="@+id/bottom_nav_item_stats"
+        android:id="@+id/stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/bottom_nav_item_text_stats" />

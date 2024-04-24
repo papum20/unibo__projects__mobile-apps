@@ -7,15 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="393dp"
-        android:layout_height="wrap_content"
-        android:text="@string/bottom_nav_item_text_meals"
-        android:textColor="#43a047"
-        android:textSize="40sp"
-        android:textStyle="italic|bold" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

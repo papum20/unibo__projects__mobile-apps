@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/inventory"
+    app:startDestination="@id/fragmentInventory">
+
+
+
+    <fragment
+        android:id="@+id/fragmentInventory"
+        android:name="com.papum.homecookscompanion.view.inventory.FragmentInventory"
+        android:label="@string/bottom_nav_item_text_inventory"
+        tools:layout="@layout/page_fragment_inventory" />
+
+</navigation>

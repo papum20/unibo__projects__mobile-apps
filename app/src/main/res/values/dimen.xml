@@ -7,9 +7,9 @@
 
     <dimen name="dialog_addTo_meals_et_height">70dp</dimen>
 
-    <dimen name="fontSize_create_title">22sp</dimen>
-    <dimen name="fontSize_create_text">16sp</dimen>
+    <dimen name="fontSize_edit_title">22sp</dimen>
+    <dimen name="fontSize_edit_text">16sp</dimen>
 
-    <dimen name="height_create_et">60dp</dimen>
+    <dimen name="height_edit_et">60dp</dimen>
 
 </resources>

@@ -18,8 +18,20 @@ interface DaoProductAndNutrients {
     """)
 	fun getAll(): LiveData<List<EntityProductAndList>>
 
+	/* insert */
+
+	@Insert
+	fun _insertNutrients(product: EntityNutrients)
+
+	@Insert
+	fun _insertProduct(product: EntityProduct): Long
+
 	@Transaction
 	@Insert
-	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients)
+	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
+		val productId	= _insertProduct(product)
+		nutrients.id	= productId
+		_insertNutrients(nutrients)
+	}
 
 }

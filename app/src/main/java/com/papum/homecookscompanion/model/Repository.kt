@@ -12,10 +12,12 @@ import com.papum.homecookscompanion.model.database.DaoProductAndInventory
 import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.DaoProductAndMeals
 import com.papum.homecookscompanion.model.database.DaoProductAndMealsWithNutrients
+import com.papum.homecookscompanion.model.database.DaoProductAndNutrients
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
+import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
@@ -36,6 +38,7 @@ class Repository(app: Application) {
 	var daoProductAndInventory			: DaoProductAndInventory
 	var daoProductAndList				: DaoProductAndList
 	var daoProductAndMeals				: DaoProductAndMeals
+	var daoProductAndNutrients			: DaoProductAndNutrients
 	var daoProductAndMealsWithNutrients	: DaoProductAndMealsWithNutrients
 
 	init {
@@ -49,6 +52,7 @@ class Repository(app: Application) {
 		daoProductAndInventory			= db.daoProductAndInventory()
 		daoProductAndList				= db.daoProductAndList()
 		daoProductAndMeals				= db.daoProductAndMeals()
+		daoProductAndNutrients			= db.daoProductAndNutrients()
 		daoProductAndMealsWithNutrients	= db.daoProductAndMealsWithNutrients()
 	}
 
@@ -112,6 +116,12 @@ class Repository(app: Application) {
 	fun insertProduct(product: EntityProduct) {
 		Database.databaseWriteExecutor.execute {
 			daoProduct.insertProduct(product)
+		}
+	}
+
+	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
+		Database.databaseWriteExecutor.execute {
+			daoProductAndNutrients.insertProductAndNutrients(product, nutrients)
 		}
 	}
 

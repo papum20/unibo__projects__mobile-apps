@@ -1,24 +1,21 @@
-package com.papum.homecookscompanion.view.create.food
+package com.papum.homecookscompanion.view.edit.recipe
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 
 
 /**
  * A simple [Fragment] subclass.
- * Use the [FragmentCreateFood.newInstance] factory method to
+ * Use the [FragmentEditRecipe.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentCreateFood : Fragment(R.layout.fragment_create_food) {
+class FragmentEditRecipe : Fragment(R.layout.fragment_edit_recipe) {
 
 
     override fun onCreateView(
@@ -26,14 +23,14 @@ class FragmentCreateFood : Fragment(R.layout.fragment_create_food) {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_food, container, false)
+        return inflater.inflate(R.layout.fragment_edit_recipe, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-		val viewModel: CreateFoodViewModel by viewModels {
-			CreateFoodViewModelFactory(
+		val viewModel: EditRecipeViewModel by viewModels {
+			EditRecipeViewModelFactory(
 				Repository(requireActivity().application)
 			)
 		}
@@ -49,6 +46,6 @@ class FragmentCreateFood : Fragment(R.layout.fragment_create_food) {
          */
         @JvmStatic
         fun newInstance() =
-            FragmentCreateFood()
+            FragmentEditRecipe()
     }
 }
