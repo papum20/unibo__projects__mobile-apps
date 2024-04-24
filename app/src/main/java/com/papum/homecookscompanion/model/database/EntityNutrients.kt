@@ -15,13 +15,13 @@ import androidx.room.PrimaryKey
 		ForeignKey(
 			entity = EntityProduct::class,
 			parentColumns	= ["id"],
-			childColumns	= ["id"]
+			childColumns	= ["idProduct"]
 		)
 	]
 )
 class EntityNutrients(
 	@PrimaryKey
-	var id: Long,
+	var idProduct: Long,
 
 	var kcal: Float?,
 	var carbohydrates: Float?,

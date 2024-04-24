@@ -11,6 +11,7 @@ import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +41,8 @@ class FragmentProducts :
 		)
 	}
 
+	private lateinit var navController: NavController
+
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +55,7 @@ class FragmentProducts :
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val navController = findNavController()
+		navController = findNavController()
 
 		/* Recycler */
 		val adapter = ProductsAdapter(listOf(), this)
@@ -81,7 +84,9 @@ class FragmentProducts :
 		// create food/recipe
 		view.findViewById<Button>(R.id.products_btn_editFood)
 			.setOnClickListener {
-				navController.navigate(R.id.action_fragmentProducts_to_fragmentEditFood)
+				navController.navigate(
+					FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(null)
+				)
 			}
 
 		view.findViewById<Button>(R.id.products_btn_editRecipe)
@@ -93,6 +98,12 @@ class FragmentProducts :
 
 
 	/* IListenerOnClickProduct */
+
+	override fun onClickInfo(product: EntityProduct) {
+		navController.navigate(
+			FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(product.id.toString())
+		)
+	}
 
 	override fun onClickAddToInventory(product: EntityProduct) {
 		FragmentDialogAddToInventory.newInstance(this, product)

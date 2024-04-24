@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityProduct
@@ -21,6 +22,7 @@ class ProductsAdapter(
 
 	interface IListenerOnClickProduct {
 
+		fun onClickInfo(product: EntityProduct)
 		fun onClickAddToInventory(product: EntityProduct)
 		fun onClickAddToList(product: EntityProduct)
 		fun onClickAddToMeals(product: EntityProduct)
@@ -55,11 +57,6 @@ class ProductsAdapter(
 
 		/* buttons listeners */
 
-		// open product info and nutrients
-		holder.layoutInfo.setOnClickListener { _ ->
-
-		}
-
 		// expand/collapse
 		holder.btnOpenActions.setOnClickListener { _ ->
 			when(holder.layoutCollapse.visibility) {
@@ -73,6 +70,11 @@ class ProductsAdapter(
 		}
 
 		items?.get(position)?.let { product ->
+			// open product info and nutrients
+			holder.layoutInfo.setOnClickListener { _ ->
+				buttonsListener.onClickInfo(product)
+			}
+
 			// add product to inventory
 			holder.btnAddInventory.setOnClickListener { _ ->
 				buttonsListener.onClickAddToInventory(product)

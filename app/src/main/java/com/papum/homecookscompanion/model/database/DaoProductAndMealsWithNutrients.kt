@@ -15,13 +15,15 @@ interface DaoProductAndMealsWithNutrients {
 	 * Get all entries where date is after `start` and before `end` (extremes included).
 	 * `start` and `end`, just like `date` column, are milliseconds from the epoch.
 	 */
-	@Query("""
+	@Query(
+		"""
         SELECT *
         FROM Product
         INNER JOIN Meals ON Product.id = Meals.idEdible
-		INNER JOIN Nutrients ON Product.id = Nutrients.id
+		INNER JOIN Nutrients ON Product.id = Nutrients.idProduct
 		WHERE date >= :start AND date <= :end
-    """)
+    """
+	)
 	fun getAllFromDateTimeInterval_withNutrients(start: Long, end: Long): LiveData<List<EntityProductAndMealsWithNutrients>>
 
 

@@ -10,7 +10,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 
@@ -22,19 +24,22 @@ import com.papum.homecookscompanion.model.Repository
  */
 class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
+	val args: FragmentEditFoodArgs by navArgs()
 
-    override fun onCreateView(
+
+	override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-		Log.d("AAA", "BBB")
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_food, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		val foodId: String? = args.foodId
 
 		val navController = findNavController()
 
@@ -44,18 +49,39 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			)
 		}
 
+		/* form fields */
+		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
+		val etParent		= view.findViewById<EditText>( R.id.fragment_edit_food_parent)
+		val etKcal			= view.findViewById<EditText>( R.id.fragment_edit_food_kcal)
+		val etCarbohydrates	= view.findViewById<EditText>( R.id.fragment_edit_food_carbohydrates)
+		val etFats			= view.findViewById<EditText>( R.id.fragment_edit_food_fats)
+		val etProteins		= view.findViewById<EditText>( R.id.fragment_edit_food_proteins)
+
+
+		/* if it's editing a food (and not creating), setup */
+		if(foodId != null) {
+			Log.d("EDIT", "id is $foodId")
+			viewModel.getProduct_fromId(foodId.toLong()).observe(viewLifecycleOwner) { food ->
+				Log.d("EDIT", "got ${food}")
+				Log.d("EDIT", "got ${food.product.name}")
+				etName.setText(				food.product.name)
+				etParent.setText(			food.product.parent)
+				etKcal.setText(				food.nutrients.kcal?.toString()				?: "")
+				etCarbohydrates.setText(	food.nutrients.carbohydrates?.toString()	?: "")
+				etFats.setText(				food.nutrients.fats?.toString()				?: "")
+				etProteins.setText(			food.nutrients.proteins?.toString()			?: "")
+			}
+		}
+
 		/* UI listeners */
 
-		Log.d("AAA", view.findViewById<Button>(R.id.fragment_edit_food_btn_confirm).toString())
-
 		view.findViewById<Button>(R.id.fragment_edit_food_btn_confirm).setOnClickListener {
-			Log.d("AAA", "AAA")
-			val name			: String	= view.findViewById<EditText>( R.id.fragment_edit_food_name				).text.toString()
-			val parent			: String	= view.findViewById<EditText>( R.id.fragment_edit_food_parent			).text.toString()
-			val kcal			: Float?	= view.findViewById<EditText>( R.id.fragment_edit_food_kcal				).text.toString().toFloatOrNull()
-			val carbohydrates	: Float?	= view.findViewById<EditText>( R.id.fragment_edit_food_carbohydrates	).text.toString().toFloatOrNull()
-			val fats			: Float?	= view.findViewById<EditText>( R.id.fragment_edit_food_fats				).text.toString().toFloatOrNull()
-			val proteins		: Float?	= view.findViewById<EditText>( R.id.fragment_edit_food_proteins			).text.toString().toFloatOrNull()
+			val name			: String	= etName.text.toString()
+			val parent			: String	= etParent.text.toString()
+			val kcal			: Float?	= etKcal.text.toString().toFloatOrNull()
+			val carbohydrates	: Float?	= etCarbohydrates.text.toString().toFloatOrNull()
+			val fats			: Float?	= etFats.text.toString().toFloatOrNull()
+			val proteins		: Float?	= etProteins.text.toString().toFloatOrNull()
 
 			/* check valid fields */
 			if(name == "") {

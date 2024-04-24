@@ -40,7 +40,12 @@
         android:id="@+id/fragmentEditFood"
         android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
         android:label="@string/fragment_edit_food_title"
-        tools:layout="@layout/fragment_edit_food" />
+        tools:layout="@layout/fragment_edit_food" >
+        <argument
+            android:name="foodId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <dialog
         android:id="@+id/fragmentDialogAddToList"

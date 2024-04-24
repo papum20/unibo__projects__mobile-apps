@@ -18,6 +18,16 @@ interface DaoProductAndNutrients {
     """)
 	fun getAll(): LiveData<List<EntityProductAndList>>
 
+	@Query(
+		"""
+        SELECT *
+		FROM Product
+        LEFT JOIN Nutrients ON Product.id = Nutrients.idProduct
+		WHERE Product.id = :id
+    """
+	)
+	fun getOneFromId(id: String): LiveData<EntityProductAndNutrients>
+
 	/* insert */
 
 	@Insert
@@ -28,10 +38,11 @@ interface DaoProductAndNutrients {
 
 	@Transaction
 	@Insert
-	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
+	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients): Long {
 		val productId	= _insertProduct(product)
-		nutrients.id	= productId
+		nutrients.idProduct	= productId
 		_insertNutrients(nutrients)
+		return productId
 	}
 
 }

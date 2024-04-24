@@ -17,7 +17,7 @@ import java.util.concurrent.Executors
 		EntityMeals::class,
 		EntityProduct::class,
    ],
-	version = 8,
+	version = 11,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -50,15 +50,31 @@ abstract class Database : RoomDatabase() {
 
 				/* What happens when the database gets called for the first time? */
 				databaseWriteExecutor.execute() {
-					val daoProduct		= INSTANCE?.daoProduct()
-					val daoInventory	= INSTANCE?.daoInventory()
-					val daoList			= INSTANCE?.daoList()
+					val daoProduct				= INSTANCE?.daoProduct()
+					val daoInventory			= INSTANCE?.daoInventory()
+					val daoList					= INSTANCE?.daoList()
+					val daoProductAndNutrients	= INSTANCE?.daoProductAndNutrients()
 
-					val idPlant		= daoProduct?.insertProduct(EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false))
-					val idCereal	= daoProduct?.insertProduct(EntityProduct(0, "cereal", "plant",	isEdible=true, isRecipe=false))
-					val idBread		= daoProduct?.insertProduct(EntityProduct(0, "bread", "cereal",	isEdible=true, isRecipe=false))
-					val idPasta		= daoProduct?.insertProduct(EntityProduct(0, "pasta", "cereal",	isEdible=true, isRecipe=false))
-					val idRecipe	= daoProduct?.insertProduct(EntityProduct(0, "recipe", null,		isEdible=true, isRecipe=true))
+					val idPlant		= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false),
+							EntityNutrients(0, null, null, null, null)
+						)
+					val idCereal	= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "cereal", "plant",	isEdible=true, isRecipe=false),
+							EntityNutrients(0, null, null, null, null)
+						)
+					val idBread		= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "bread", "cereal",	isEdible=true, isRecipe=false),
+							EntityNutrients(0, 200F, 40F, 10F, 5F)
+						)
+					val idPasta		= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "pasta", "cereal",	isEdible=true, isRecipe=false),
+							EntityNutrients(0, null, null, null, null)
+						)
+					val idRecipe	= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "recipe", null,		isEdible=true, isRecipe=true),
+							EntityNutrients(0, null, null, null, null)
+						)
 
 					idBread?.let { id ->
 						daoInventory?.insertOne(EntityInventory(id, 1F))

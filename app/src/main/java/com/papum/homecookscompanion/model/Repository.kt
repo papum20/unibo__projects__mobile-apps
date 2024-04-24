@@ -23,6 +23,7 @@ import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
+import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
@@ -68,6 +69,10 @@ class Repository(app: Application) {
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
 		return daoProduct.getOneFromId(id.toString())
+	}
+
+	fun getProductWithNutrients_fromId(id: Long): LiveData<EntityProductAndNutrients> {
+		return daoProductAndNutrients.getOneFromId(id.toString())
 	}
 
 	fun getAllProductsWithInventory(): LiveData<List<EntityProductAndInventory>> {
