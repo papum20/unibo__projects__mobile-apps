@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct

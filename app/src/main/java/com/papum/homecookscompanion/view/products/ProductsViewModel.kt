@@ -52,7 +52,7 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 	}
 
 	fun addToMeals(id: Long, date: LocalDateTime, quantity: Float) {
-		repository.insertInMeals(EntityMeals(id, date, quantity))
+		repository.insertInMeals(EntityMeals(0, id, date, quantity))
 	}
 
 

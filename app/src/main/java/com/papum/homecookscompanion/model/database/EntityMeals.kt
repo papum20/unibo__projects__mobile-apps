@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
 /**
@@ -15,10 +16,12 @@ import java.time.LocalDateTime
 			parentColumns	= ["id"],
 			childColumns	= ["idEdible"]
 		)
-	],
-	primaryKeys = ["date", "idEdible"]
+	]
 )
 class EntityMeals(
+	@PrimaryKey(autoGenerate = true)
+	var idMeal: Long,
+
 	var idEdible: Long,
 	var date: LocalDateTime,
 

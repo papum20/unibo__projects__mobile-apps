@@ -1,8 +1,25 @@
 package com.papum.homecookscompanion
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.ServiceConnection
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.IBinder
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,21 +27,57 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.papum.homecookscompanion.view.inventory.FragmentInventory
-import com.papum.homecookscompanion.view.list.FragmentList
-import com.papum.homecookscompanion.view.meals.FragmentMeals
-import com.papum.homecookscompanion.view.products.FragmentProducts
-import com.papum.homecookscompanion.view.settings.FragmentSettings
-import com.papum.homecookscompanion.view.stats.FragmentStats
+import com.papum.homecookscompanion.services.BroadcastReceiverBoot
+import com.papum.homecookscompanion.services.ServiceNotificationStock
 
 class MainActivity : AppCompatActivity() {
 
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
 
+	/* Permission launchers */
+	private val notificationsPermissionAndNotifyLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestPermission()
+	) { isGranted: Boolean ->
+		if (isGranted) {
+			_fireNotification()
+		}
+	}
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	private val bootPermissionLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestPermission()
+	) { isGranted: Boolean ->
+		if (isGranted) {
+			registerReceiver(broadcastReceiver_boot, IntentFilter(
+				"android.intent.action.BOOT_COMPLETED"
+			))
+		}
+	}
+
+	/* Service connections */
+	private lateinit var serviceNotificationStock: ServiceNotificationStock
+	private val serviceConnection: ServiceConnection = object : ServiceConnection {
+
+		override fun onServiceConnected(className: ComponentName, service: IBinder) {
+			serviceNotificationStock = (service as ServiceNotificationStock.BinderStock).getService()
+		}
+		override fun onServiceDisconnected(name: ComponentName?) {
+			/* Whatever */
+		}
+	}
+
+	private val broadcastReceiver_boot = object : BroadcastReceiver() {
+		override fun onReceive(context: Context?, intent: Intent?) {
+			if (intent!!.action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+				val serviceIntent = Intent(context, ServiceNotificationStock::class.java)
+				context!!.startForegroundService(serviceIntent)
+			}
+		}
+	}
+
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
 		val navHostFragment = supportFragmentManager.findFragmentById(
@@ -33,16 +86,9 @@ class MainActivity : AppCompatActivity() {
 		navController = navHostFragment.navController
 
 
-		// setup toolbar
+		// setup toolbar and navbar
 		setSupportActionBar(findViewById(R.id.toolbar))
-
-		// setup navbar
 		findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
-
-		// set default app entry
-		//bottomNavbar.selectedItemId = R.id.fragmentInventory
-		//setCurrentFragment(fragment_products)
-
 
 		// setup actionbar with top level destinations
 		appBarConfiguration = AppBarConfiguration(
@@ -55,10 +101,153 @@ class MainActivity : AppCompatActivity() {
 			)
 		)
 		setupActionBarWithNavController(navController, appBarConfiguration)
+
+
+		/* Notifications */
+		createNotificationChannel(
+			CHANNEL_ID,
+			getString(R.string.channel_name),
+			getString(R.string.channel_description),
+			NotificationManager.IMPORTANCE_DEFAULT
+		)
+
+
+
+		/* THREAD */
+		/*
+		val threadButton = findViewById<Button>(R.id.buttonThread)
+		val labelCounter = findViewById<TextView>(R.id.labelCounter)
+
+		threadButton.setOnClickListener{
+			Thread(
+				Runnable {
+					var counter = 1000
+					while (counter > 0) {
+						Thread.sleep(10)
+						counter--
+						runOnUiThread{
+							labelCounter.text = counter.toString()
+						}
+					}
+				}).start()
+		}
+
+		/* COROUTINE */
+		suspend fun semaphore(){
+			withContext(Dispatchers.IO) {
+				Thread.sleep(8000)
+				Log.i("Semaphore", "Go on!")
+			}
+		}
+		val coroutineButton = findViewById<Button>(R.id.buttonCoroutine)
+		val scope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+		coroutineButton.setOnClickListener{
+			val job: Job = scope.launch {
+				val deferred: Deferred<Unit> = async{ semaphore() }
+				var counter = 1000
+				while (counter > 0) {
+					delay(10)
+					counter--
+					if (counter < 500) {
+						deferred.await()
+					}
+					labelCounter.text = counter.toString()
+				}
+			}
+		}
+		 */
+
+		/* SERVICE */
+		startService(Intent(this, ServiceNotificationStock::class.java))
+
+		/* BOUND SERVICE */
+
+		bindService(
+			Intent(this, ServiceNotificationStock::class.java),
+			serviceConnection,
+			BIND_AUTO_CREATE
+		)
+		//serviceNotificationStock.sendNotification()
+
+
 	}
+
+
+	/* Navigation */
 
 	override fun onSupportNavigateUp(): Boolean {
 		return navController.navigateUp(appBarConfiguration)
+	}
+
+
+	/* Services */
+
+
+
+	private fun createNotificationChannel(
+		id: String,
+		name: String,
+		descriptionText: String,
+		importance: Int
+	){
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) -- app already requires api >= 33
+		val channel	= NotificationChannel(id, name, importance).apply {
+			description = descriptionText
+		}
+		val notificationManager = NotificationManagerCompat.from(this)
+		notificationManager.createNotificationChannel(channel)
+	}
+
+	/**
+	 * fire a notification;
+	 * doesn't check for permission, use wrapper fireNotificationAndCheck()
+	 */
+	@SuppressLint("MissingPermission")
+	fun _fireNotification() {
+		val intent: Intent = Intent(this, MainActivity::class.java).apply {
+			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+			putExtra("caller", "notification")
+		}
+		val pendingIntent: PendingIntent = PendingIntent.getActivity(
+			this, 0, intent, PendingIntent.FLAG_IMMUTABLE
+		)
+
+		val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+			.setSmallIcon(androidx.core.R.drawable.notification_bg)
+			.setContentTitle("Remember that you will die!")
+			.setContentText("Let me explain a number of reasons why this is the case, blah, blah, blah...")
+			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+			.setAutoCancel(true)
+		builder.addAction(androidx.core.R.drawable.notification_action_background, "PRESS ME", pendingIntent)
+
+		NotificationManagerCompat.from(this)
+			.notify(NOTIFICATION_ID_STOCK, builder.build())
+	}
+
+	fun fireNotificationAndCheck() {
+
+		with(NotificationManagerCompat.from(this)) {
+			if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+				ActivityCompat.checkSelfPermission(
+					this@MainActivity,
+					Manifest.permission.POST_NOTIFICATIONS
+				) != PackageManager.PERMISSION_GRANTED) {
+				// POST_NOTIFICATIONS permission exists and is needed from api 33 TIRAMISU
+				notificationsPermissionAndNotifyLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+				return@with
+			} else {
+				_fireNotification()
+
+			}
+		}
+	}
+
+
+	companion object {
+		const val CHANNEL_ID = "Channel_HomecooksCompanion"
+
+		// notificationId is a unique int for each notification that you must define.
+		const val NOTIFICATION_ID_STOCK = 0
 	}
 
 }
