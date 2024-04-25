@@ -95,6 +95,7 @@ class FragmentProducts :
 				navController.navigate(R.id.action_fragmentProducts_to_fragmentEditRecipe)
 			}
 
+
 	}
 
 

@@ -9,6 +9,7 @@ import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
+import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import java.time.LocalDateTime
 

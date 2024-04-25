@@ -16,6 +16,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -26,9 +27,20 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.impl.TestWorkManagerImpl
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.papum.homecookscompanion.services.BroadcastReceiverBoot
 import com.papum.homecookscompanion.services.ServiceNotificationStock
+import com.papum.homecookscompanion.services.WorkerStock
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneOffset
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -158,17 +170,32 @@ class MainActivity : AppCompatActivity() {
 		 */
 
 		/* SERVICE */
-		startService(Intent(this, ServiceNotificationStock::class.java))
+		//startService(Intent(this, ServiceNotificationStock::class.java))
 
 		/* BOUND SERVICE */
 
+		/*
 		bindService(
 			Intent(this, ServiceNotificationStock::class.java),
 			serviceConnection,
 			BIND_AUTO_CREATE
 		)
+		 */
 		//serviceNotificationStock.sendNotification()
 
+		/* Services (workers) */
+
+		// Create a periodic work request to send notifications
+		val notificationWorkRequest = OneTimeWorkRequestBuilder<WorkerStock>().build()
+
+		// Enqueue the work request to WorkManager
+		WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+			WORKER_STOCK_NAME,
+			ExistingPeriodicWorkPolicy.UPDATE,
+			WorkerStock.createWOrkRequest()
+		)
+
+		Log.d("WORK","${PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS}")
 
 	}
 
@@ -190,7 +217,7 @@ class MainActivity : AppCompatActivity() {
 		descriptionText: String,
 		importance: Int
 	){
-		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) -- app already requires api >= 33
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) -- app already requires api >= 30
 		val channel	= NotificationChannel(id, name, importance).apply {
 			description = descriptionText
 		}
@@ -248,6 +275,9 @@ class MainActivity : AppCompatActivity() {
 
 		// notificationId is a unique int for each notification that you must define.
 		const val NOTIFICATION_ID_STOCK = 0
+
+		const val WORKER_STOCK_NAME = "stock"
+
 	}
 
 }

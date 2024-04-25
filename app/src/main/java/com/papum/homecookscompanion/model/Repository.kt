@@ -1,7 +1,9 @@
 package com.papum.homecookscompanion.model
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
+import com.papum.homecookscompanion.model.database.DaoAlerts
 import com.papum.homecookscompanion.model.database.DaoIngredientOf
 import com.papum.homecookscompanion.model.database.DaoInventory
 import com.papum.homecookscompanion.model.database.DaoList
@@ -9,17 +11,20 @@ import com.papum.homecookscompanion.model.database.DaoNutrients
 import com.papum.homecookscompanion.model.database.DaoMeals
 import com.papum.homecookscompanion.model.database.DaoProduct
 import com.papum.homecookscompanion.model.database.DaoProductAndInventory
+import com.papum.homecookscompanion.model.database.DaoProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.DaoProductAndMeals
 import com.papum.homecookscompanion.model.database.DaoProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.DaoProductAndNutrients
 import com.papum.homecookscompanion.model.database.Database
+import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
+import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
@@ -28,33 +33,35 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
-class Repository(app: Application) {
+class Repository(app: Context) {
 
-	var daoEdible						: DaoNutrients
-	var daoIngredient					: DaoIngredientOf
-	var daoInventory					: DaoInventory
-	var daoList							: DaoList
-	var daoMeals						: DaoMeals
-	var daoProduct						: DaoProduct
-	var daoProductAndInventory			: DaoProductAndInventory
-	var daoProductAndList				: DaoProductAndList
-	var daoProductAndMeals				: DaoProductAndMeals
-	var daoProductAndNutrients			: DaoProductAndNutrients
-	var daoProductAndMealsWithNutrients	: DaoProductAndMealsWithNutrients
+	var daoAlerts							: DaoAlerts
+	var daoIngredient						: DaoIngredientOf
+	var daoInventory						: DaoInventory
+	var daoList								: DaoList
+	var daoMeals							: DaoMeals
+	var daoProduct							: DaoProduct
+	var daoProductAndInventory				: DaoProductAndInventory
+	var daoProductAndInventoryWithAlerts	: DaoProductAndInventoryWithAlerts
+	var daoProductAndList					: DaoProductAndList
+	var daoProductAndMeals					: DaoProductAndMeals
+	var daoProductAndNutrients				: DaoProductAndNutrients
+	var daoProductAndMealsWithNutrients		: DaoProductAndMealsWithNutrients
 
 	init {
 		val db = Database.getDatabase(app)
-		daoEdible						= db.daoNutrients()
-		daoIngredient					= db.daoIngredient()
-		daoInventory					= db.daoInventory()
-		daoList							= db.daoList()
-		daoMeals						= db.daoMeals()
-		daoProduct						= db.daoProduct()
-		daoProductAndInventory			= db.daoProductAndInventory()
-		daoProductAndList				= db.daoProductAndList()
-		daoProductAndMeals				= db.daoProductAndMeals()
-		daoProductAndNutrients			= db.daoProductAndNutrients()
-		daoProductAndMealsWithNutrients	= db.daoProductAndMealsWithNutrients()
+		daoAlerts							= db.daoAlerts()
+		daoIngredient						= db.daoIngredient()
+		daoInventory						= db.daoInventory()
+		daoList								= db.daoList()
+		daoMeals							= db.daoMeals()
+		daoProduct							= db.daoProduct()
+		daoProductAndInventory				= db.daoProductAndInventory()
+		daoProductAndInventoryWithAlerts	= db.daoProductAndInventoryWithAlerts()
+		daoProductAndList					= db.daoProductAndList()
+		daoProductAndMeals					= db.daoProductAndMeals()
+		daoProductAndNutrients				= db.daoProductAndNutrients()
+		daoProductAndMealsWithNutrients		= db.daoProductAndMealsWithNutrients()
 	}
 
 	/* Get */
@@ -67,20 +74,20 @@ class Repository(app: Application) {
 		return daoProduct.getAllMatches_lowercase("%${substr.lowercase()}%")
 	}
 
-	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
-		return daoProduct.getOneFromId(id.toString())
-	}
-
-	fun getProductWithNutrients_fromId(id: Long): LiveData<EntityProductAndNutrients> {
-		return daoProductAndNutrients.getOneFromId(id.toString())
-	}
-
 	fun getAllProductsWithInventory(): LiveData<List<EntityProductAndInventory>> {
 		return daoProductAndInventory.getAll()
 	}
 
 	fun getAllProductsWithInventory_fromId(id: Long): LiveData<List<EntityProductAndInventory>> {
 		return daoProductAndInventory.getAllFromId(id.toString())
+	}
+
+	fun getAllProductsWithInventoryAndAlerts(): List<EntityProductAndInventoryWithAlerts> {
+		return daoProductAndInventoryWithAlerts.getAll()
+	}
+
+	fun getAllProductsWithInventoryAndAlerts_lowStocks(): List<EntityProductAndInventoryWithAlerts> {
+		return daoProductAndInventoryWithAlerts.getAllLowStocks()
 	}
 
 	fun getAllProductsWithList(): LiveData<List<EntityProductAndList>> {
@@ -115,18 +122,20 @@ class Repository(app: Application) {
 		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval_withNutrients(startOfDay, endOfDay)
 	}
 
+	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
+		return daoProduct.getOneFromId(id.toString())
+	}
+
+	fun getProductWithNutrients_fromId(id: Long): LiveData<EntityProductAndNutrients> {
+		return daoProductAndNutrients.getOneFromId(id.toString())
+	}
+
 
 	/* Insert */
 
-	fun insertProduct(product: EntityProduct) {
+	fun insertAlert(alert: EntityAlerts) {
 		Database.databaseWriteExecutor.execute {
-			daoProduct.insertProduct(product)
-		}
-	}
-
-	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
-		Database.databaseWriteExecutor.execute {
-			daoProductAndNutrients.insertProductAndNutrients(product, nutrients)
+			daoAlerts.insertOne(alert)
 		}
 	}
 
@@ -148,7 +157,25 @@ class Repository(app: Application) {
 		}
 	}
 
+	fun insertProduct(product: EntityProduct) {
+		Database.databaseWriteExecutor.execute {
+			daoProduct.insertProduct(product)
+		}
+	}
+
+	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
+		Database.databaseWriteExecutor.execute {
+			daoProductAndNutrients.insertProductAndNutrients(product, nutrients)
+		}
+	}
+
 	/* Delete */
+
+	fun deleteAlert_fromId(id: Long) {
+		Database.databaseWriteExecutor.execute {
+			daoAlerts.deleteOne_withId(id.toString())
+		}
+	}
 
 	fun deleteProducts(products: List<EntityProduct>) {
 		Database.databaseWriteExecutor.execute {
@@ -157,5 +184,6 @@ class Repository(app: Application) {
 			}
 		}
 	}
+
 
 }

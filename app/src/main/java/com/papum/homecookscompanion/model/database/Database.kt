@@ -10,6 +10,7 @@ import java.util.concurrent.Executors
 
 @androidx.room.Database(
 	entities = [
+		EntityAlerts::class,
 		EntityNutrients::class,
 		EntityIngredientOf::class,
 		EntityInventory::class,
@@ -17,12 +18,13 @@ import java.util.concurrent.Executors
 		EntityMeals::class,
 		EntityProduct::class,
    ],
-	version = 12,
+	version = 13,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase() {
 
+	abstract fun daoAlerts()    	    			: DaoAlerts
 	abstract fun daoNutrients()    	    			: DaoNutrients
 	abstract fun daoIngredient()					: DaoIngredientOf
 	abstract fun daoInventory()						: DaoInventory
@@ -30,6 +32,7 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoMeals()							: DaoMeals
 	abstract fun daoProduct()						: DaoProduct
 	abstract fun daoProductAndInventory()			: DaoProductAndInventory
+	abstract fun daoProductAndInventoryWithAlerts()	: DaoProductAndInventoryWithAlerts
 	abstract fun daoProductAndList()				: DaoProductAndList
 	abstract fun daoProductAndMeals()				: DaoProductAndMeals
 	abstract fun daoProductAndNutrients()			: DaoProductAndNutrients
@@ -50,6 +53,7 @@ abstract class Database : RoomDatabase() {
 
 				/* What happens when the database gets called for the first time? */
 				databaseWriteExecutor.execute() {
+					val daoAlerts				= INSTANCE?.daoAlerts()
 					val daoProduct				= INSTANCE?.daoProduct()
 					val daoInventory			= INSTANCE?.daoInventory()
 					val daoList					= INSTANCE?.daoList()
@@ -77,20 +81,24 @@ abstract class Database : RoomDatabase() {
 						)
 
 					idBread?.let { id ->
+						daoAlerts?.insertOne(EntityAlerts(id, 2F))
 						daoInventory?.insertOne(EntityInventory(id, 1F))
-					}
-					idPasta?.let { id ->
-						daoInventory?.insertOne(EntityInventory(id, 2.5F))
-					}
-					idBread?.let { id ->
 						daoList?.insertOne(EntityList(id, 12F))
 					}
 					idPasta?.let { id ->
+						daoAlerts?.insertOne(EntityAlerts(id, 3F))
+						daoInventory?.insertOne(EntityInventory(id, 2.5F))
 						daoList?.insertOne(EntityList(id, 15F))
 					}
 					idCereal?.let { id ->
+						daoAlerts?.insertOne(EntityAlerts(id, 1F))
+						daoInventory?.insertOne(EntityInventory(id, 2F))
 						daoList?.insertOne(EntityList(id, 1F))
 					}
+					idPlant?.let { id ->
+						daoAlerts?.insertOne(EntityAlerts(id, 1F))
+					}
+
 				}
 			}
 		}
