@@ -30,17 +30,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.impl.TestWorkManagerImpl
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.papum.homecookscompanion.services.ServiceNotificationStock
 import com.papum.homecookscompanion.services.WorkerStock
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneOffset
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -192,10 +185,10 @@ class MainActivity : AppCompatActivity() {
 		WorkManager.getInstance(this).enqueueUniquePeriodicWork(
 			WORKER_STOCK_NAME,
 			ExistingPeriodicWorkPolicy.UPDATE,
-			WorkerStock.createWOrkRequest()
+			WorkerStock.createWorkRequest()
 		)
 
-		Log.d("WORK","${PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS}")
+		Log.d("WORK","MIN_PERIODIC_INTERVAL_MILLIS: ${PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000}")
 
 	}
 

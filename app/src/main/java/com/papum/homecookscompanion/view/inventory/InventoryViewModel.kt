@@ -5,11 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
+import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 
 class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
-	fun getAllProducts(): LiveData<List<EntityProductAndInventory>> {
+	fun getAllProductsInInventory(): LiveData<List<EntityProductAndInventory>> {
 		return repository.getAllProductsWithInventory()
+	}
+
+	fun getAllProductsInInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
+		return repository.getAllProductsWithInventoryAndAlerts()
 	}
 
 	/*

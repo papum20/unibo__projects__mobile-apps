@@ -67,7 +67,7 @@ class FragmentProducts :
 
 		// first fetch all
 		viewModel.getAllProducts().observe(viewLifecycleOwner) { products ->
-			Log.d("PRODUCTS", "products ids: ${products.map{ p -> "${p.id}.${p.name};" }}")
+			Log.d("PRODUCTS_ALL", "products ids: ${products.map{ p -> "${p.id}.${p.name};" }}")
 			adapter.updateItems(products)
 		}
 
@@ -77,7 +77,7 @@ class FragmentProducts :
 		view.findViewById<EditText>(R.id.products_editText_search)
 			.doOnTextChanged { text, start, before, count ->
 				viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
-					Log.i("PRODUCTS_SEARCH", "found ${products.size} matches for \"$text\"")
+					Log.d("PRODUCTS_SEARCH", "products ids: ${products.map{ p -> "${p.id}.${p.name};" }}")
 					adapter.updateItems(products)
 				}
 			}

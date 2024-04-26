@@ -12,13 +12,29 @@ interface DaoProductAndInventoryWithAlerts {
 
 	/* query */
 
+	/**
+	 * Get all products either in inventory or alerts (not necessarily in both).
+	 */
+	@Transaction
+	fun getAll(): List<EntityProductAndInventoryWithAlerts> {
+		return getAllInAlerts() + getAllInInventory()
+	}
+
 	@Query("""
         SELECT *
-        FROM Product
-		INNER JOIN Alerts ON Product.id = Alerts.idProduct
-        LEFT JOIN Inventory ON Product.id = Inventory.idProduct
+		FROM Alerts
+		LEFT JOIN Inventory ON Alerts.idProduct = Inventory.idProduct
+        LEFT JOIN Product ON Alerts.idProduct = Product.id
     """)
-	fun getAll(): List<EntityProductAndInventoryWithAlerts>
+	fun getAllInAlerts(): List<EntityProductAndInventoryWithAlerts>
+
+	@Query("""
+        SELECT *
+		FROM Inventory
+		LEFT JOIN Alerts ON Inventory.idProduct = Alerts.idProduct
+        LEFT JOIN Product ON Inventory.idProduct = Product.id
+    """)
+	fun getAllInInventory(): List<EntityProductAndInventoryWithAlerts>
 
 	/**
 	 * Get all items with stock lower than alerts.

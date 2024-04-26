@@ -67,4 +67,7 @@ dependencies {
 	androidTestImplementation("androidx.work:work-testing:$work_version")
 	// optional - Multiprocess support
 	implementation("androidx.work:work-multiprocess:$work_version")
+
+	// ia vision
+	implementation("com.google.android.gms:play-services-vision:20.1.3")
 }

@@ -17,7 +17,7 @@ class EntityProductAndInventoryWithAlerts (
 		parentColumn = "id",
 		entityColumn = "idProduct"
 	)
-	val alert: EntityAlerts
+	val alert: EntityAlerts?
  
 )
 

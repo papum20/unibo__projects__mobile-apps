@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityProductAndInventory
+import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 
 
-class InventoryAdapter(var items:List<EntityProductAndInventory>?) : Adapter<InventoryViewHolder>() {
+class InventoryAdapter(var items:List<EntityProductAndInventoryWithAlerts>?) : Adapter<InventoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InventoryViewHolder {
         return InventoryViewHolder(
@@ -20,21 +21,27 @@ class InventoryAdapter(var items:List<EntityProductAndInventory>?) : Adapter<Inv
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
 		Log.d("INVENTORY_VIEW_HOLDER", "create at position ${position}")
 
-		val name: String = items?.get(position)?.let {
-			it.product?.parent?.let { p ->
+		holder.tvAlert.text = items?.get(position)?.let {
+			it.alert?.let { alert ->
+				alert.quantity.toString()
+			} ?: "(none)"
+		}
+
+		holder.tvName.text = items?.get(position)?.let {
+			it.product.parent?.let { p ->
 				"${it.product.name}, $p"
 			} ?: it.product.name
 		} ?: "[wrong entry]"
-		val type: String = items?.get(position)?.let {
+
+		holder.tvQuantity.text = items?.get(position)?.inventoryItem?.let { item ->
+			item.quantity.toString()
+		}?: "??"
+
+		holder.tvType.text = items?.get(position)?.let {
 			if(!it.product.isEdible)		"(NonEdible)"
 			else if(it.product.isRecipe)	"(Recipe)"
 			else							"(Food)"
 		} ?: "(UnknownType)"
-		val quantity: String = items?.get(position)?.inventoryItem?.quantity.toString() ?: "??"
-
-		holder.tvType.text		= type
-		holder.tvName.text		= name
-		holder.tvQuantity.text	= quantity
     }
 
     override fun getItemCount(): Int {

@@ -3,6 +3,7 @@ package com.papum.homecookscompanion.model
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.papum.homecookscompanion.model.database.DaoAlerts
 import com.papum.homecookscompanion.model.database.DaoIngredientOf
 import com.papum.homecookscompanion.model.database.DaoInventory
@@ -82,9 +83,25 @@ class Repository(app: Context) {
 		return daoProductAndInventory.getAllFromId(id.toString())
 	}
 
-	fun getAllProductsWithInventoryAndAlerts(): List<EntityProductAndInventoryWithAlerts> {
-		return daoProductAndInventoryWithAlerts.getAll()
+	/**
+	 * Get all products either in inventory or alerts (not necessarily in both).
+	 */
+	fun getAllProductsWithInventoryAndAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
+
+		val products = MutableLiveData<List<EntityProductAndInventoryWithAlerts>>()
+		Database.databaseWriteExecutor.execute {
+			val alerts = daoProductAndInventoryWithAlerts.getAllInAlerts()
+			products.postValue(
+				alerts + daoProductAndInventoryWithAlerts.getAllInInventory().filter { product ->
+					alerts.find { alert ->
+						alert.alert?.idProduct == product.inventoryItem?.idProduct
+					} == null
+				}
+			)
+		}
+		return products
 	}
+
 
 	fun getAllProductsWithInventoryAndAlerts_lowStocks(): List<EntityProductAndInventoryWithAlerts> {
 		return daoProductAndInventoryWithAlerts.getAllLowStocks()

@@ -1,45 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
 android:layout_height="wrap_content">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        app:srcCompat="@android:drawable/ic_menu_agenda" />
+        <ImageView
+            android:id="@+id/recycler_card_inventory_img_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_agenda" />
 
-    <TextView
-        android:id="@+id/recycler_card_inventory_type"
-        android:layout_width="32dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingHorizontal="5dp"
-        android:text="@string/placeholder_product_type"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/recycler_card_inventory_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="5dp"
+            android:text="@string/placeholder_product_type"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_text"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_img_type"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/recycler_card_inventory_text"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/placeholder_product_text"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/recycler_card_inventory_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="@dimen/recycler_card_product_padding"
+            android:text="@string/placeholder_product_text"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_quantity"
+            app:layout_constraintStart_toEndOf="@+id/recycler_card_inventory_type"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/recycler_card_inventory_quantity"
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="@string/placeholder_product_quantity" />
+        <TextView
+            android:id="@+id/recycler_card_inventory_quantity"
+            android:layout_width="34dp"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_product_quantity"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_card_inventory_alert"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_measure"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/recycler_card_inventory_measure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_alert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_quantity"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/measure_text" />
+
+        <ImageView
+            android:id="@+id/recycler_card_inventory_img_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_alert"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
+            app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_quantity"
+            app:srcCompat="@android:drawable/ic_popup_reminder" />
+
+        <TextView
+            android:id="@+id/recycler_card_inventory_alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/recycler_card_inventory_img_alert"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_inventory_measure" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

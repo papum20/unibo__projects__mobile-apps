@@ -1,19 +1,20 @@
 package com.papum.homecookscompanion.view.inventory
 
+import android.R.attr.bitmap
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.vision.Frame
+import com.google.android.gms.vision.text.TextRecognizer
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.view.products.ProductsAdapter
-import com.papum.homecookscompanion.view.products.ProductsViewModel
-import com.papum.homecookscompanion.view.products.ProductsViewModelFactory
 
 
 /**
@@ -40,33 +41,51 @@ class FragmentInventory : Fragment(R.layout.page_fragment_inventory) {
 			)
 		}
 
+		/* recycler */
 		val adapter = InventoryAdapter(listOf())
 
 		val recycler = view.findViewById<RecyclerView>(R.id.inventory_recycler_view)
 		recycler.adapter = adapter
 		recycler.layoutManager = LinearLayoutManager(context)
 
-
-
-		viewModel.getAllProducts().observe(viewLifecycleOwner) { newdata ->
+		viewModel.getAllProductsInInventoryWithAlerts().observe(viewLifecycleOwner) { products ->
 			adapter.let {
-				it.items = newdata
+				it.items = products
 				it.notifyDataSetChanged()
-				//Log.d("PRODUCTS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
-				Log.d("INVENTORY_ACTIVITY_UPDATE", "products: ${it.itemCount}")
+				Log.d("INVENTORY_ALL", "products: ${it.itemCount}")
+				Log.d("INVENTORY_ALL", "products ids: ${products.map{ p -> "${p.product.id}.${p.product.name}-${p.inventoryItem?.quantity}-${p.alert?.quantity};" }}")
 			}
+		}
+
+		/* UI listeners */
+
+		view.findViewById<Button>(R.id.inventory_recycler_btn_scan).setOnClickListener {
+			/*
+			context?.let { context ->
+				val textRecognizer = TextRecognizer.Builder(context).build()
+
+				val imageFrame = Frame.Builder()
+					.setBitmap(bitmap) // your image bitmap
+					.build()
+
+				var imageText = ""
+
+
+				val textBlocks = textRecognizer.detect(imageFrame)
+
+				for (i in 0 until textBlocks.size()) {
+					val textBlock = textBlocks[textBlocks.keyAt(i)]
+					imageText = textBlock.value // return string
+				}
+			}
+			 */
 		}
 
 	}
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             FragmentInventory()
     }
 }

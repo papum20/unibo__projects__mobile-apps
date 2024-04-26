@@ -38,6 +38,8 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 5.	esportazione/importazione dati: si possono esportare dati (per es. ricette) come archivio - per esempio, come backup o per condividerli;
 6.	condivisione dati: per es. si condivide il suddetto archivio con qualcuno (che lo potrà poi importare nell'app dal file);
 7.	[V]	notifiche: si possono impostare notifiche per quando le scorte di un determinato oggetto scendono sotto una certa soglia (per es. se rimangono meno di 0,5kg di farina).
+	*	nota: serve un primo avvio dell'app per farle partire; inoltre, serve di nuovo se si fa un arresto forzato
+	*	nota: funziona anche al restart
 8.	ricerca prezzo migliore per un prodotto, in base alle esperienze degli altri utenti: ogni utente, alla registrazione di un acquisto, invia a un'API esterna il prezzo pagato per il prodotto, e può visualizzare il negozio (tra quelli in un certo raggio dalla sua posizione) che offre al miglior prezzo un dato prodotto (soprattutto per quelli nella sua lista della spesa);
 9.	suggerimento dei prodotti più convenienti in un negozio: l'utente, quando si trova in un negozio, può visualizzare quali prodotti, tra quelli nella lista della spesa, gli convenga comprare lì, e quali meglio se da un'altra parte.
 10.	prodotti
@@ -76,6 +78,11 @@ make table with full names from hierarchy
 dialogs addTo:
 *	error dialog if wrong parameters (e.g. missing quantity/or put default val)
 
+notification:
+*	 on click open app
+	*	possibly on inventory
+*	settings: hour of day
+
 implementation :
 *	fragments args (newinstance/constructor)
 *	bundle keys in R.strings
@@ -95,3 +102,6 @@ implementation :
 		}
 	}
 	```
+
+repo:
+*	queries dont use db's thread, why?

@@ -38,7 +38,6 @@ class ProductsAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
-		Log.d("PRODUCTS_VIEW_HOLDER", "create at position ${position}")
 
 		/* fill fields */
 		val name: String = items?.get(position)?.let {

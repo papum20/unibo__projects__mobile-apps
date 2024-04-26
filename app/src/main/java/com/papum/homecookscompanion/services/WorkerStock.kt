@@ -2,35 +2,22 @@ package com.papum.homecookscompanion.services
 
 import android.Manifest
 import android.R
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.LiveData
 import androidx.work.Constraints
+import androidx.work.Data
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkRequest
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -55,7 +42,7 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 				postfix = (
 						if(products_lowStock.size > PRODUCTS_NAMES_IN_NOTIFICATION_COUNT) "..."
 						else ""
-						)
+					)
 			)
 
 		sendNotification("${products_lowStock.size} products in low stock!", names)
@@ -64,12 +51,21 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		return Result.success()
 	}
 
-	private fun sendNotification(text: String, title: String) {
+	private fun sendNotification(title: String, text: String) {
+
+		val intent: Intent = Intent(applicationContext, MainActivity::class.java).apply {
+			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+		}
+		val pendingIntent: PendingIntent = PendingIntent.getActivity(
+			applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE
+		)
+
 		val builder = NotificationCompat.Builder(applicationContext, MainActivity.CHANNEL_ID)
 			.setSmallIcon(R.drawable.ic_dialog_info)
 			.setContentTitle(title)
 			.setContentText(text)
 			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+			.setContentIntent(pendingIntent)
 
 		val notificationManager = NotificationManagerCompat.from(applicationContext)
 		if (ActivityCompat.checkSelfPermission(
@@ -84,6 +80,10 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 
 	companion object {
 
+		/* arguments keys */
+		private const val KEY_PENDING_INTENT = "pendingIntent"
+
+		/* worker params */
 		private const val PRODUCTS_NAMES_IN_NOTIFICATION_COUNT = 3
 
 		private const val PERIODIC_INTERVAL_HOURS: Long = 24
@@ -97,8 +97,8 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 			.setRequiresBatteryNotLow(true)
 			.build()
 
-		/*
-		fun createWOrkRequest() : PeriodicWorkRequest {
+		fun createWorkRequest() : PeriodicWorkRequest {
+
 			val stockWork_nextTime = LocalDateTime.now()
 				.with(LocalTime.MIN)
 				.withHour(REPEATING_HOUR)
@@ -109,15 +109,18 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 				.setInitialDelay( Duration.between(LocalDateTime.now(), stockWork_nextTime) )
 				.build()
 		}
-		*/
 
-		fun createWOrkRequest() : PeriodicWorkRequest {
+		/*
+		// Do it every 1000s, for debug
+		fun createWorkRequest() : PeriodicWorkRequest {
 
 			// Check stocks once a day, for that day
-			return PeriodicWorkRequestBuilder<WorkerStock>(100000, TimeUnit.SECONDS)
+			return PeriodicWorkRequestBuilder<WorkerStock>(1000, TimeUnit.SECONDS)
 				.setConstraints(createConstraints())
 				.build()
 		}
+		 */
+
 	}
 
 }

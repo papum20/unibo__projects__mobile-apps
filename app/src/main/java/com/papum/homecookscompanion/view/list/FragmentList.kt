@@ -44,7 +44,7 @@ class FragmentList : Fragment(R.layout.page_fragment_list) {
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
-		viewModel.getAllProducts().observe(viewLifecycleOwner) { newdata ->
+		viewModel.getAllProductsInList().observe(viewLifecycleOwner) { newdata ->
 			adapter.let {
 				it.items = newdata
 				it.notifyDataSetChanged()

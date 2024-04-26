@@ -60,10 +60,9 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 		/* if it's editing a food (and not creating), setup */
 		if(foodId != null) {
-			Log.d("EDIT", "id is $foodId")
+			Log.d("PRODUCT_EDIT", "product to edit has id $foodId")
 			viewModel.getProduct_fromId(foodId.toLong()).observe(viewLifecycleOwner) { food ->
-				Log.d("EDIT", "got ${food}")
-				Log.d("EDIT", "got ${food.product.name}")
+				Log.d("PRODUCT_EDIT", "product to edit fetched, it's ${food.product.name}")
 				etName.setText(				food.product.name)
 				etParent.setText(			food.product.parent)
 				etKcal.setText(				food.nutrients.kcal?.toString()				?: "")
@@ -92,14 +91,14 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 				viewModel.createFoodWithNutrients(
 					name, parent, kcal, carbohydrates, fats, proteins
 				)
-				Log.i("EDIT_PRODUCT", "added $name $parent")
+				Log.i("PRODUCT_EDIT", "added $name $parent")
 				Toast.makeText(activity, "Added: $name !", Toast.LENGTH_SHORT).show()
 				navController.navigateUp()
 			}
 		}
 
 		view.findViewById<Button>(R.id.fragment_edit_food_btn_cancel).setOnClickListener {
-			Log.i("EDIT_PRODUCT", "not added")
+			Log.i("PRODUCT_EDIT", "not added")
 			navController.navigateUp()
 		}
 

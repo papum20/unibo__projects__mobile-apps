@@ -29,12 +29,12 @@
             android:name=".services.ServiceNotificationStock"
             android:enabled="true"
             android:exported="true"
-            android:foregroundServiceType=""></service>
+            android:foregroundServiceType="" />
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_main"
+            android:label="@string/activity_main_label"
             android:theme="@style/Theme.HomecooksCompanion">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
