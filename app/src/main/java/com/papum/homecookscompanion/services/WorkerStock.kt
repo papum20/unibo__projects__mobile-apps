@@ -21,6 +21,7 @@ import com.papum.homecookscompanion.model.Repository
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 
@@ -99,14 +100,17 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 
 		fun createWorkRequest() : PeriodicWorkRequest {
 
-			val stockWork_nextTime = LocalDateTime.now()
-				.with(LocalTime.MIN)
-				.withHour(REPEATING_HOUR)
+			val delayTo_nextTime = LocalDateTime.now().let { now ->
+				now.with(LocalTime.MIN)
+					.withHour(REPEATING_HOUR)
+					.toInstant(ZoneOffset.UTC)
+					.toEpochMilli() - now.toInstant(ZoneOffset.UTC).toEpochMilli()
+			}
 
 			// Check stocks once a day, for that day
 			return PeriodicWorkRequestBuilder<WorkerStock>(PERIODIC_INTERVAL_HOURS, TimeUnit.HOURS)
 				.setConstraints(createConstraints())
-				.setInitialDelay( Duration.between(LocalDateTime.now(), stockWork_nextTime) )
+				.setInitialDelay( delayTo_nextTime, TimeUnit.MILLISECONDS )
 				.build()
 		}
 

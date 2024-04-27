@@ -5,7 +5,8 @@
     <dimen name="recycler_card_plan_edge_left">62dp</dimen>
     <dimen name="recycler_card_meals_width_right">75dp</dimen>
 
-    <dimen name="recycler_card_product_padding">3dp</dimen>
+    <dimen name="recycler_card_padding_text">3dp</dimen>
+    <dimen name="recycler_card_padding_h">6dp</dimen>
 
     <dimen name="dialog_addTo_meals_et_height">70dp</dimen>
 

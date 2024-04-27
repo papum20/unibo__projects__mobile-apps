@@ -23,7 +23,7 @@ android:layout_height="wrap_content">
             android:id="@+id/recycler_card_meals_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_product_text"
+            android:text="@string/product_placeholder_text"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/recycler_card_meals_type"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout"
@@ -35,7 +35,7 @@ android:layout_height="wrap_content">
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="5dp"
-            android:text="@string/placeholder_product_type"
+            android:text="@string/product_placeholder_type"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/linearLayout"
@@ -57,13 +57,13 @@ android:layout_height="wrap_content">
                 android:id="@+id/recycler_card_meals_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_product_quantity" />
+                android:text="@string/product_placeholder_quantity" />
 
             <TextView
                 android:id="@+id/recycler_card_meals_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_product_time" />
+                android:text="@string/product_format_time" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

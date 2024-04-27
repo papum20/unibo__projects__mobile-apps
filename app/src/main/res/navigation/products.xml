@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/fragmentEditFood"
         android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
-        android:label="@string/fragment_edit_food_title"
+        android:label="@string/editFood_title"
         tools:layout="@layout/fragment_edit_food" >
         <argument
             android:name="foodId"

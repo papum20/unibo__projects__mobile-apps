@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
@@ -85,7 +84,7 @@ class FragmentMeals : Fragment(R.layout.page_fragment_meals) {
 	private fun updateDisplayedDate(date: LocalDateTime?) {
 		date?.let { d ->
 			viewDate.text = getString(
-				R.string.meals_date_placeholder,
+				R.string.product_format_date,
 				d.dayOfMonth, d.monthValue, d.year
 			)
 		}

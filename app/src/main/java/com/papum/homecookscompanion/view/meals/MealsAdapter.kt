@@ -32,7 +32,7 @@ class MealsAdapter(var items:List<EntityProductAndMeals>?) : Adapter<MealsViewHo
 				else if(item.product.isRecipe)	"(Recipe)"
 				else							"(Food)"
 			holder.tvQuantity.text	= item.mealsItem.quantity.toString()
-			holder.tvTime.text		= holder.itemView.context.getString( R.string.placeholder_product_time,
+			holder.tvTime.text		= holder.itemView.context.getString( R.string.product_format_time,
 				localDate.hour, localDate.minute )
 		}
 

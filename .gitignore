@@ -1,6 +1,23 @@
-*.iml
+
+## bin?
+opencv/native/
+
+# build
+**/build/
+
+# other
+.cxx
 .gradle
+local.properties
 /local.properties
+
+
+# dflt by android studio
+/captures
+.externalNativeBuild
+*.iml
+
+## idea
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -8,8 +25,3 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties

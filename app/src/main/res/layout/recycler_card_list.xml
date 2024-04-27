@@ -22,7 +22,7 @@ android:layout_height="wrap_content">
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:paddingHorizontal="5dp"
-        android:text="@string/placeholder_product_type"
+        android:text="@string/product_placeholder_type"
         android:textSize="20sp" />
 
     <TextView
@@ -30,7 +30,7 @@ android:layout_height="wrap_content">
         android:layout_width="195dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/placeholder_product_text"
+        android:text="@string/product_placeholder_text"
         android:textSize="20sp" />
 
     <TextView
@@ -38,7 +38,7 @@ android:layout_height="wrap_content">
         android:layout_width="34dp"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="@string/placeholder_product_quantity" />
+        android:text="@string/product_placeholder_quantity" />
 
 </LinearLayout>
 

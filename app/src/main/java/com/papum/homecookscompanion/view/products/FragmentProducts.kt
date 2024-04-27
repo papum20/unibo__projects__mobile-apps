@@ -92,7 +92,9 @@ class FragmentProducts :
 
 		view.findViewById<Button>(R.id.products_btn_editRecipe)
 			.setOnClickListener {
-				navController.navigate(R.id.action_fragmentProducts_to_fragmentEditRecipe)
+				navController.navigate(
+					FragmentProductsDirections.actionFragmentProductsToFragmentEditRecipe()
+				)
 			}
 
 

@@ -130,7 +130,7 @@ class FragmentDialogAddToMeals(
 		)
 
 		viewDialog.findViewById<Button>(R.id.dialog_products_addToMeals_date_btn)?.text =
-			getString(R.string.dialog_products_addTo_date_placeholder,
+			getString(R.string.dialog_addTo_format_date,
 				currentlySetDateTime.dayOfMonth, currentlySetDateTime.monthValue, currentlySetDateTime.year)
 	}
 
@@ -148,7 +148,7 @@ class FragmentDialogAddToMeals(
 		Log.d("DIALOG_DATE", this.view.toString())
 
 		viewDialog.findViewById<Button>(R.id.dialog_products_addToMeals_time_btn)?.text =
-			getString(R.string.dialog_products_addTo_time_placeholder,
+			getString(R.string.dialog_addTo_format_time,
 				currentlySetDateTime.hour, currentlySetDateTime.minute)
 	}
 

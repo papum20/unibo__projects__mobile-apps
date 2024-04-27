@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.text.TextRecognizer
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.view.products.FragmentProductsDirections
 
 
 /**
@@ -24,7 +27,10 @@ import com.papum.homecookscompanion.model.Repository
  */
 class FragmentInventory : Fragment(R.layout.page_fragment_inventory) {
 
-    override fun onCreateView(
+	private lateinit var navController: NavController
+
+
+	override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -34,6 +40,8 @@ class FragmentInventory : Fragment(R.layout.page_fragment_inventory) {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		navController = findNavController()
 
 		val viewModel: InventoryViewModel by viewModels {
 			InventoryViewModelFactory(
@@ -60,6 +68,10 @@ class FragmentInventory : Fragment(R.layout.page_fragment_inventory) {
 		/* UI listeners */
 
 		view.findViewById<Button>(R.id.inventory_recycler_btn_scan).setOnClickListener {
+			navController.navigate(
+				FragmentInventoryDirections.actionFragmentInventoryToFragmentScanReceipt()
+			)
+
 			/*
 			context?.let { context ->
 				val textRecognizer = TextRecognizer.Builder(context).build()

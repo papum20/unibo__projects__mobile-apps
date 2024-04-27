@@ -10,7 +10,7 @@
         android:layout_height="@dimen/height_edit_et"
         android:layout_weight="0"
         android:ems="10"
-        android:hint="@string/fragment_edit_food_placeholder_name"
+        android:hint="@string/editFood_placeholder_name"
         android:inputType="text"
         android:textSize="@dimen/fontSize_edit_text" />
 
@@ -20,7 +20,7 @@
         android:layout_height="@dimen/height_edit_et"
         android:layout_weight="0"
         android:ems="10"
-        android:hint="@string/fragment_edit_food_placeholder_parent"
+        android:hint="@string/editFood_placeholder_parent"
         android:inputType="text"
         android:textSize="@dimen/fontSize_edit_text" />
 
@@ -35,7 +35,7 @@
             android:id="@+id/fragment_edit_food_nutrients_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/fragment_edit_nutrients_title"
+            android:text="@string/nutrients_title"
             android:textAlignment="center"
             android:textSize="@dimen/fontSize_edit_title"
             android:textStyle="bold" />
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_edit_et"
             android:ems="10"
-            android:hint="@string/fragment_edit_placeholder_kcal"
+            android:hint="@string/nutrients_placeholder_kcal"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/fontSize_edit_text" />
 
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_edit_et"
             android:ems="10"
-            android:hint="@string/fragment_edit_placeholder_carbohydrates"
+            android:hint="@string/nutrients_placeholder_carbohydrates"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/fontSize_edit_text" />
 
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_edit_et"
             android:ems="10"
-            android:hint="@string/fragment_edit_placeholder_fats"
+            android:hint="@string/nutrients_placeholder_fats"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/fontSize_edit_text" />
 
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_edit_et"
             android:ems="10"
-            android:hint="@string/fragment_edit_placeholder_proteins"
+            android:hint="@string/nutrients_placeholder_proteins"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/fontSize_edit_text" />
 
@@ -89,14 +89,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_edit_food_btn_confirm" />
+            android:text="@string/editFood_btn_confirm" />
 
         <Button
             android:id="@+id/fragment_edit_food_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_edit_food_btn_cancel" />
+            android:text="@string/editFood_btn_cancel" />
     </LinearLayout>
 
 </LinearLayout>

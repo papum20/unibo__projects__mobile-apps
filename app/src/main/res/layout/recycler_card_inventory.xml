@@ -7,7 +7,8 @@ android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/recycler_card_padding_h">
 
         <ImageView
             android:id="@+id/recycler_card_inventory_img_type"
@@ -24,7 +25,7 @@ android:layout_height="wrap_content">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="5dp"
-            android:text="@string/placeholder_product_type"
+            android:text="@string/product_placeholder_type"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_text"
@@ -35,8 +36,8 @@ android:layout_height="wrap_content">
             android:id="@+id/recycler_card_inventory_text"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="@dimen/recycler_card_product_padding"
-            android:text="@string/placeholder_product_text"
+            android:padding="@dimen/recycler_card_padding_text"
+            android:text="@string/product_placeholder_text"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_quantity"
@@ -47,7 +48,7 @@ android:layout_height="wrap_content">
             android:id="@+id/recycler_card_inventory_quantity"
             android:layout_width="34dp"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_product_quantity"
+            android:text="@string/product_placeholder_quantity"
             app:layout_constraintBottom_toTopOf="@+id/recycler_card_inventory_alert"
             app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_measure"
             app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
@@ -57,11 +58,11 @@ android:layout_height="wrap_content">
             android:id="@+id/recycler_card_inventory_measure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/measure_text"
             app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_alert"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_quantity"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/measure_text" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/recycler_card_inventory_img_alert"

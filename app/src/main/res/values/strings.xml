@@ -53,42 +53,50 @@
     <string name="bottom_nav_item_text_products">All products</string>
     <string name="bottom_nav_item_text_settings">settings</string>
 
-    <string name="placeholder_product_alert">{}</string>
-    <string name="placeholder_product_quantity">q.ty</string>
-    <string name="placeholder_product_text">some recipe</string>
-    <string name="placeholder_product_time">%02d:%02d</string>
-    <string name="placeholder_product_type">(Recipe)</string>
+    <string name="nav_label_scan">Scan a receipt</string>
 
-    <string name="measure_text">g</string>
+    <!-- hints, placeholder, formats -->
+    <string name="dialog_addTo_format_date">%02d/%02d/%04d</string>
+    <string name="dialog_addTo_format_time">%02d:%02d</string>
+    <string name="dialog_addTo_placeholder_tv">Insert quantity of {} to add to {}:</string>
+    <string name="dialog_addTo_placeholder_et">(quantity)</string>
+
+    <string name="editFood_placeholder_name">(name)</string>
+    <string name="editFood_placeholder_parent">(parent category)</string>
+
+    <string name="nutrients_placeholder_carbohydrates">(carbohydrates)</string>
+    <string name="nutrients_placeholder_fats">(fats)</string>
+    <string name="nutrients_placeholder_kcal">(kcal)</string>
+    <string name="nutrients_placeholder_proteins">(proteins)</string>
+
+    <string name="product_placeholder_alert">{}</string>
+    <string name="product_format_date">%02d/%02d/%04d</string>
+    <string name="product_placeholder_quantity">q.ty</string>
+    <string name="product_placeholder_text">some recipe</string>
+    <string name="product_format_time">%02d:%02d</string>
+    <string name="product_placeholder_type">(Recipe)</string>
+
+    <!-- fragments texts -->
+    <string name="editFood_title">Create a food</string>
+    <string name="editFood_btn_cancel">Cancel</string>
+    <string name="editFood_btn_confirm">Create</string>
+    <string name="editRecipe_title">Create a recipe</string>
 
     <string name="inventory_btn_scan">Scan a receipt</string>
-    <string name="meals_date_placeholder">%02d/%02d/%04d</string>
+
+    <string name="nutrients_title">Nutrients</string>
+
     <string name="meals_date_btn_left_description">button previous day</string>
     <string name="meals_date_btn_right_description">button next day</string>
+
     <string name="products_search_textInput_placeholder">Search a product</string>
+    <string name="products_btn_addToList">+List</string>
+    <string name="products_btn_addToInventory">+Inventory</string>
+    <string name="products_btn_addToMeals">+Meals</string>
     <string name="products_btn_editFood">new Food</string>
     <string name="products_btn_editRecipe">new Recipe</string>
 
-    <string name="recycler_card_products_btn_addList">+List</string>
-    <string name="recycler_card_products_btn_addInventory">+Inventory</string>
-    <string name="recycler_card_products_btn_addMeals">+Meals</string>
-
-    <string name="dialog_products_addTo_tv_placeholder">Insert quantity of {} to add to {}:</string>
-    <string name="dialog_products_addTo_et_placeholder">(quantity)</string>
-    <string name="dialog_products_addTo_date_placeholder">%02d/%02d/%04d</string>
-    <string name="dialog_products_addTo_time_placeholder">%02d:%02d</string>
-
-    <string name="fragment_edit_food_title">Create a food</string>
-    <string name="fragment_edit_recipe_title">Create a recipe</string>
-    <string name="fragment_edit_food_placeholder_name">(name)</string>
-    <string name="fragment_edit_food_placeholder_parent">(parent category)</string>
-    <string name="fragment_edit_food_btn_confirm">Create</string>
-    <string name="fragment_edit_food_btn_cancel">Cancel</string>
-
-    <string name="fragment_edit_nutrients_title">Nutrients</string>
-    <string name="fragment_edit_placeholder_kcal">(kcal)</string>
-    <string name="fragment_edit_placeholder_carbohydrates">(carbohydrates)</string>
-    <string name="fragment_edit_placeholder_fats">(fats)</string>
-    <string name="fragment_edit_placeholder_proteins">(proteins)</string>
+    <!-- other texts -->
+    <string name="measure_text">g</string>
 
 </resources>

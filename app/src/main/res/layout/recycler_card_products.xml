@@ -27,7 +27,7 @@ android:layout_height="wrap_content">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="5dp"
-                android:text="@string/placeholder_product_type"
+                android:text="@string/product_placeholder_type"
                 android:textSize="20sp" />
 
             <TextView
@@ -35,7 +35,7 @@ android:layout_height="wrap_content">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/placeholder_product_text"
+                android:text="@string/product_placeholder_text"
                 android:textSize="20sp" />
 
             <Button
@@ -60,7 +60,7 @@ android:layout_height="wrap_content">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/recycler_card_products_btn_addList"
+                android:text="@string/products_btn_addToList"
                 android:visibility="visible" />
 
             <Button
@@ -68,14 +68,14 @@ android:layout_height="wrap_content">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/recycler_card_products_btn_addInventory" />
+                android:text="@string/products_btn_addToInventory" />
 
             <Button
                 android:id="@+id/recycler_card_products_btn_addMeals"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/recycler_card_products_btn_addMeals" />
+                android:text="@string/products_btn_addToMeals" />
         </LinearLayout>
     </LinearLayout>
 

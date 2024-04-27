@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/dialog_products_addTo_tv_placeholder" />
+        android:text="@string/dialog_addTo_placeholder_tv" />
 
     <EditText
         android:id="@+id/dialog_products_addToList_et"
@@ -17,6 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="@string/dialog_products_addTo_et_placeholder"
+        android:hint="@string/dialog_addTo_placeholder_et"
         android:inputType="number|numberSigned" />
 </LinearLayout>
