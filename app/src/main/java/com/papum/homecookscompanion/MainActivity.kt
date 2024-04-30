@@ -32,8 +32,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.papum.homecookscompanion.services.ServiceNotificationStock
-import com.papum.homecookscompanion.services.WorkerStock
+import com.papum.homecookscompanion.view.services.ServiceNotificationStock
+import com.papum.homecookscompanion.view.services.WorkerStock
 
 class MainActivity : AppCompatActivity() {
 

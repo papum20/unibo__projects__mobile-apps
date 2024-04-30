@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.services
+package com.papum.homecookscompanion.view.services
 
 import android.Manifest
 import android.R
