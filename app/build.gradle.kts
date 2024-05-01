@@ -75,4 +75,19 @@ dependencies {
 	})
 	implementation(project(":opencv"))	// add opencv dependency
 
+	/* google OCR (ML Kit) */
+	// For bundling the model with your app:
+	implementation("com.google.mlkit:text-recognition:16.0.0")				// latin script
+	//implementation("com.google.mlkit:text-recognition-chinese:16.0.0")
+	//implementation("com.google.mlkit:text-recognition-devanagari:16.0.0")
+	//implementation("com.google.mlkit:text-recognition-japanese:16.0.0")
+	//implementation("com.google.mlkit:text-recognition-korean:16.0.0")
+
+	// For using the model in Google Play Services:
+	//implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")				// latin script
+	//implementation("com.google.android.gms:play-services-mlkit-text-recognition-chinese:16.0.0")
+	//implementation("com.google.android.gms:play-services-mlkit-text-recognition-devanagari:16.0.0")
+	//implementation("com.google.android.gms:play-services-mlkit-text-recognition-japanese:16.0.0")
+	//implementation("com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.0")
+
 }

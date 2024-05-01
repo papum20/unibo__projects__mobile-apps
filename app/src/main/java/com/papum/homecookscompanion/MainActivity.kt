@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -34,6 +35,7 @@ import androidx.work.WorkManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.papum.homecookscompanion.view.services.ServiceNotificationStock
 import com.papum.homecookscompanion.view.services.WorkerStock
+import org.opencv.android.OpenCVLoader
 
 class MainActivity : AppCompatActivity() {
 
@@ -85,6 +87,16 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
+		// load openCV at app start
+		if (OpenCVLoader.initLocal()) {
+			Log.i("OPENCV", "OpenCV loaded successfully")
+		} else {
+			Log.e("OPENCV", "OpenCV initialization failed!")
+			(Toast.makeText(this, "OpenCV initialization failed!", Toast.LENGTH_LONG)).show()
+			return
+		}
+
+		// nav host fragment
 		val navHostFragment = supportFragmentManager.findFragmentById(
 			R.id.fragment_nav_container
 		) as NavHostFragment

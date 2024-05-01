@@ -148,7 +148,8 @@ android {
     buildFeatures {
         aidl = true
         prefabPublishing = true
-        buildConfig = true
+		//OpenCV project uses buildConfig feature. Please enable it in MyApplication/OpenCV/build.gradle file to android block:
+		buildConfig = true
     }
 	/*
     prefab {

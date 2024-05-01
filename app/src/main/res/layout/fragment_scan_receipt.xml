@@ -11,11 +11,20 @@
         android:layout_weight="1"
         android:text="TextView" />
 
+    <!--
+    <org.opencv.android.JavaCameraView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        android:id="@+id/scan_java_surface_view"
+        opencv:show_fps="true"
+        opencv:camera_id="any" />
+    -->
+
     <Button
         android:id="@+id/scan_btn_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
         android:text="Button"
         android:textAlignment="center" />
 </LinearLayout>
