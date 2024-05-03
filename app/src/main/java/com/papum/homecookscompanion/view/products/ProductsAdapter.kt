@@ -103,23 +103,4 @@ class ProductsAdapter(
 		Log.d("PRODUCTS_UPDATE", "products: $itemCount")
 	}
 
-	/*
-    fun addItem(newItem: ListItem) {
-        items?.let {
-			it.add(newItem)
-			notifyItemInserted(it.size - 1)
-		}
-    }
-
-    fun deleteItem(name:String) {
-		items?.let {
-			val index = it.indexOf(
-				it.find { item -> item.name == name }
-			)
-			it.removeAt(index)
-			notifyItemRemoved(index)
-		}
-	}
-	*/
-
 }

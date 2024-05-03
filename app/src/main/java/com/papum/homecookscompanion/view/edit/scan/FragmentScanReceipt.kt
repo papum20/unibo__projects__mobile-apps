@@ -1,8 +1,5 @@
 package com.papum.homecookscompanion.view.edit.scan
 
-import android.content.ComponentName
-import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,16 +12,16 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.papum.homecookscompanion.R
-import org.opencv.android.OpenCVLoader
-import org.opencv.android.Utils
-import org.opencv.core.Mat
-import org.opencv.core.Size
-import org.opencv.imgproc.Imgproc
+import com.papum.homecookscompanion.model.Repository
 import java.io.IOException
+import kotlin.math.max
 
 
 /**
@@ -32,9 +29,22 @@ import java.io.IOException
  * Use the [FragmentScanReceipt.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentScanReceipt : Fragment(R.layout.fragment_scan_receipt) {
+class FragmentScanReceipt
+	: Fragment(R.layout.fragment_scan_receipt),
+	ScanAdapter.`IListenerOnClickReceiptEntry`
+{
 
-	val mLauncher: ActivityResultLauncher<String> =
+	private val receiptItems = mutableListOf<ScanModel>()
+
+	// View Model
+	private val viewModel: ScanViewModel by viewModels {
+		ScanViewModelFactory(
+			Repository(requireActivity().application)
+		)
+	}
+	private val adapter = ScanAdapter(receiptItems, this)
+
+	private val launcher: ActivityResultLauncher<String> =
 		registerForActivityResult(
 			ActivityResultContracts.GetContent(),
 			ActivityResultCallback<Uri?>() { uri: Uri? ->
@@ -48,23 +58,6 @@ class FragmentScanReceipt : Fragment(R.layout.fragment_scan_receipt) {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-		if (OpenCVLoader.initLocal()) {
-			Log.i("OpenCV", "OpenCV successfully loaded.")
-		}
-
-		/*
-		// An example: Resize an image using OpenCV
-		val bitmap =
-			BitmapFactory.decodeFile(Companion.IMAGE_FILE_PATH) // load the image
-		if (bitmap != null) {
-			val resizedBitmap =
-				getResizedBitmapCV(bitmap, 400, 600) // image resized using OpenCV
-
-			// Other code goes here ...
-		}
-		*/
-
 		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.fragment_scan_receipt, container, false)
 	}
@@ -72,22 +65,21 @@ class FragmentScanReceipt : Fragment(R.layout.fragment_scan_receipt) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		view.findViewById<Button>(R.id.scan_btn_scan).setOnClickListener {
-			getFile()
-			/*
-			val intent: Intent = Intent()
-			intent.setComponent(
-				ComponentName(
-				requireContext(),
-				ActivityCamera::class.java
-			)
-			)
-			startActivity(intent)
-			*/
-		}
+		/* Recycler */
+		val recycler = view.findViewById<RecyclerView>(R.id.scan_recycler_view)
+		recycler.adapter = adapter
+		recycler.layoutManager = LinearLayoutManager(context)
 
+		/* UI listeners */
+		view.findViewById<Button>(R.id.scan_btn_scan).setOnClickListener { _ ->
+			pickFileAndScan()
+		}
     }
 
+
+	/**
+	 * Parse the recognized text, coupling the i-th found product with the i-th found price.
+	 */
 	private fun processImage(uri: Uri?) {
 
 		if(uri == null) {
@@ -97,44 +89,49 @@ class FragmentScanReceipt : Fragment(R.layout.fragment_scan_receipt) {
 		}
 
 		val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-		val image: InputImage
 
 		try {
-			image = InputImage.fromFilePath(requireContext(), uri)
+			val image = InputImage.fromFilePath(requireContext(), uri)
 
-			val result = recognizer.process(image)
+			recognizer.process(image)
 				.addOnSuccessListener { visionText ->
 
-					val resultText = visionText.text
-					Log.i("SCAN", resultText)
+					Log.i(LOG_TAG_SCAN, visionText.text)
+
+					val products	= mutableListOf<String>()
+					val prices		= mutableListOf<String>()
+
 					for (block in visionText.textBlocks) {
 						val blockText = block.text
-						val blockCornerPoints = block.cornerPoints
-						val blockFrame = block.boundingBox
-						Log.i("SCAN", blockText)
-						Log.i("SCAN", blockCornerPoints.toString())
-						Log.i("SCAN", blockFrame.toString())
+						Log.i(LOG_TAG_SCAN, "block with ${block.lines.size} lines : $blockText")
+
 						for (line in block.lines) {
 							val lineText = line.text
-							val lineCornerPoints = line.cornerPoints
-							val lineFrame = line.boundingBox
-							Log.i("SCANLINE", lineText)
-							Log.i("SCANLINE", lineCornerPoints.toString())
-							Log.i("SCANLINE", lineFrame.toString())
-							for (element in line.elements) {
-								val elementText = element.text
-								val elementCornerPoints = element.cornerPoints
-								val elementFrame = element.boundingBox
-								Log.i("SCANEL", elementText)
-								Log.i("SCANEL", elementCornerPoints.toString())
-								Log.i("SCANEL", elementFrame.toString())
-							}
+							Log.i(LOG_TAG_SCAN, "line : '$lineText'")
+
+							if(REGEX_ONLY_PRICE.matches(lineText))
+								prices.add(
+									// if , was used, replace with . for convenience
+									lineText.replace(",",".")
+								)
+							else if(!REGEX_ONLY_TAXES.matches(lineText) and REGEX_ITEM.matches(lineText))
+								products.add(lineText)
 						}
 					}
+
+					receiptItems.clear()
+					for(i in 0..max(products.size, prices.size))
+						receiptItems.add(ScanModel(
+							products.getOrNull(i) ?: "not found",
+							prices.getOrNull(i) ?: "not found",
+							null,
+							prices.getOrNull(i) ?: "not found"
+						))
+
+					adapter.updateItems(receiptItems)
 				}
 				.addOnFailureListener { e ->
 					// Task failed with an exception
-					// ...
 				}
 
 
@@ -143,8 +140,8 @@ class FragmentScanReceipt : Fragment(R.layout.fragment_scan_receipt) {
 		}
 	}
 
-	private fun getFile() {
-		mLauncher.launch("image/*")
+	private fun pickFileAndScan() {
+		launcher.launch("image/*")
 		//var chooseFile = Intent(Intent.ACTION_GET_CONTENT)
 		//chooseFile.setType("*/*")
 		//chooseFile = Intent.createChooser(chooseFile, "Choose a file")
@@ -153,32 +150,25 @@ class FragmentScanReceipt : Fragment(R.layout.fragment_scan_receipt) {
 
 	}
 
-	private fun getResizedBitmapCV(
-		inputBitmap: Bitmap,
-		newWidth: Int,
-		newHeight: Int
-	): Bitmap {
-		// Convert the input Bitmap to a Mat
-		val inputMat = Mat()
-		Utils.bitmapToMat(inputBitmap, inputMat)
 
-		// Create a new Mat for the resized image
-		val resizedMat = Mat()
-		Imgproc.resize(inputMat, resizedMat, Size(newWidth.toDouble(), newHeight.toDouble()))
+	/* ScanAdapter.IListenerOnClickSelectProduct */
 
-		// Convert the resized Mat back to a Bitmap
-		val resizedBitmap =
-			Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
-		Utils.matToBitmap(resizedMat, resizedBitmap)
-		inputMat.release()
-		resizedMat.release()
-		return resizedBitmap
+	override fun onClickSelectProduct() {
+		TODO("Not yet implemented")
 	}
+
+	override fun onClickRemove(position: Int) {
+		adapter.deleteItem(position)
+	}
+
 
     companion object {
 
-		// Replace with the actual path to your image file
-		private const val IMAGE_FILE_PATH = "/path/to/your/image.jpg"
+		private const val LOG_TAG_SCAN = "SCAN"
+
+		private val REGEX_ONLY_PRICE = Regex("^-?\\d+[.,]\\d{2}$")
+		private val REGEX_ONLY_TAXES = Regex("^\\d+%")
+		private val REGEX_ITEM = Regex("[^\\n]+")
 
 		/**
          * Use this factory method to create a new instance of

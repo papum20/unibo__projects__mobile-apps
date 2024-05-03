@@ -16,9 +16,11 @@ import java.util.concurrent.Executors
 		EntityInventory::class,
 		EntityList::class,
 		EntityMeals::class,
+		EntityPurchases::class,
 		EntityProduct::class,
+		EntityShops::class,
    ],
-	version = 13,
+	version = 14,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -30,6 +32,7 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoInventory()						: DaoInventory
 	abstract fun daoList()							: DaoList
 	abstract fun daoMeals()							: DaoMeals
+	abstract fun daoPurchases()						: DaoPurchases
 	abstract fun daoProduct()						: DaoProduct
 	abstract fun daoProductAndInventory()			: DaoProductAndInventory
 	abstract fun daoProductAndInventoryWithAlerts()	: DaoProductAndInventoryWithAlerts
@@ -37,6 +40,7 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoProductAndMeals()				: DaoProductAndMeals
 	abstract fun daoProductAndNutrients()			: DaoProductAndNutrients
 	abstract fun daoProductAndMealsWithNutrients()	: DaoProductAndMealsWithNutrients
+	abstract fun daoShops()							: DaoShops
 
 
 	companion object {

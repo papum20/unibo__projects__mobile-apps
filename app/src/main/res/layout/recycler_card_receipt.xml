@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/recycler_card_receipt_recognized"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="5dp"
+            android:text="@string/recognized_placeholder"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_recognized_price"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_receipt_product"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent=".5" />
+
+        <TextView
+            android:id="@+id/recycler_card_receipt_recognized_price"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/recognized_placeholder_price"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_remove"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_receipt_product_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_recognized"
+            app:layout_constraintWidth_percent=".5" />
+
+        <TextView
+            android:id="@+id/recycler_card_receipt_product"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/product_placeholder_text"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_product_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_recognized"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/recycler_card_receipt_btn_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_remove"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_receipt_btn_product"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_card_receipt_recognized_price" />
+
+        <EditText
+            android:id="@+id/recycler_card_receipt_product_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            android:text="@string/receipt_placeholder_price"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_recognized_price"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_product" />
+
+        <Button
+            android:id="@+id/recycler_card_receipt_btn_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:contentDescription="@string/description_btn_select_product"
+            android:text="@string/btn_select_product"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/recycler_card_receipt_btn_remove"
+            app:layout_constraintTop_toBottomOf="@id/recycler_card_receipt_product_price" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -70,10 +70,6 @@ dependencies {
 
 	// ia vision
 	implementation("com.google.android.gms:play-services-vision:20.1.3")
-	implementation(fileTree("libs") {
-		include("*.jar")
-	})
-	implementation(project(":opencv"))	// add opencv dependency
 
 	/* google OCR (ML Kit) */
 	// For bundling the model with your app:

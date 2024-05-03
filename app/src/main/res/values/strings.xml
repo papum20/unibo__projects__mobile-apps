@@ -72,9 +72,14 @@
     <string name="product_placeholder_alert">{}</string>
     <string name="product_format_date">%02d/%02d/%04d</string>
     <string name="product_placeholder_quantity">q.ty</string>
-    <string name="product_placeholder_text">some recipe</string>
+    <string name="product_placeholder_text">some product</string>
     <string name="product_format_time">%02d:%02d</string>
-    <string name="product_placeholder_type">(Recipe)</string>
+    <string name="product_placeholder_type">(Type)</string>
+
+    <string name="receipt_placeholder_price">\??,??</string>
+
+    <string name="recognized_placeholder">(Recognized product)</string>
+    <string name="recognized_placeholder_price">(Recognized price)</string>
 
     <!-- fragments texts -->
     <string name="editFood_title">Create a food</string>
@@ -95,6 +100,21 @@
     <string name="products_btn_addToMeals">+Meals</string>
     <string name="products_btn_editFood">new Food</string>
     <string name="products_btn_editRecipe">new Recipe</string>
+
+    <string name="receipt_header_recognized">Recognized product /</string>
+    <string name="receipt_header_recognized_price">Recognized price</string>
+    <string name="receipt_header_selected">Selected product /</string>
+    <string name="receipt_header_selected_price">Selected price</string>
+    <string name="receipt_info">Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first)</string>
+
+    <!-- buttons -->
+    <string name="btn_remove">Remove</string>
+
+    <string name="btn_select_product">Select product</string>
+    <string name="btn_select_image_receipt">Select a receipt image</string>
+
+    <!-- descriptions -->
+    <string name="description_btn_select_product">Select a product</string>
 
     <!-- other texts -->
     <string name="measure_text">g</string>

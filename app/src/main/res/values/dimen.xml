@@ -15,4 +15,8 @@
 
     <dimen name="height_edit_et">60dp</dimen>
 
+    <dimen name="title_tv_height">30dp</dimen>
+
+    <dimen name="tv_padding">3dp</dimen>
+
 </resources>

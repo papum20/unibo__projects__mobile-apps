@@ -50,8 +50,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.edit.scan.ActivityCamera" />
-
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ocr" />

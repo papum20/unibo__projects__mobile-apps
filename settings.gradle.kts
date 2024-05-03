@@ -17,6 +17,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Homecook's companion"
 include(":app")
-
-include(":opencv")
-project(":opencv").projectDir = File(opencvsdk)

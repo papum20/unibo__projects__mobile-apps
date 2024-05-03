@@ -1,6 +1,5 @@
 package com.papum.homecookscompanion.model
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +7,8 @@ import com.papum.homecookscompanion.model.database.DaoAlerts
 import com.papum.homecookscompanion.model.database.DaoIngredientOf
 import com.papum.homecookscompanion.model.database.DaoInventory
 import com.papum.homecookscompanion.model.database.DaoList
-import com.papum.homecookscompanion.model.database.DaoNutrients
 import com.papum.homecookscompanion.model.database.DaoMeals
+import com.papum.homecookscompanion.model.database.DaoPurchases
 import com.papum.homecookscompanion.model.database.DaoProduct
 import com.papum.homecookscompanion.model.database.DaoProductAndInventory
 import com.papum.homecookscompanion.model.database.DaoProductAndInventoryWithAlerts
@@ -17,6 +16,7 @@ import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.DaoProductAndMeals
 import com.papum.homecookscompanion.model.database.DaoProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.DaoProductAndNutrients
+import com.papum.homecookscompanion.model.database.DaoShops
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
@@ -30,6 +30,8 @@ import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
+import com.papum.homecookscompanion.model.database.EntityPurchases
+import com.papum.homecookscompanion.model.database.EntityShops
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
@@ -41,6 +43,7 @@ class Repository(app: Context) {
 	var daoInventory						: DaoInventory
 	var daoList								: DaoList
 	var daoMeals							: DaoMeals
+	var daoPurchases						: DaoPurchases
 	var daoProduct							: DaoProduct
 	var daoProductAndInventory				: DaoProductAndInventory
 	var daoProductAndInventoryWithAlerts	: DaoProductAndInventoryWithAlerts
@@ -48,6 +51,7 @@ class Repository(app: Context) {
 	var daoProductAndMeals					: DaoProductAndMeals
 	var daoProductAndNutrients				: DaoProductAndNutrients
 	var daoProductAndMealsWithNutrients		: DaoProductAndMealsWithNutrients
+	var daoShops							: DaoShops
 
 	init {
 		val db = Database.getDatabase(app)
@@ -56,6 +60,7 @@ class Repository(app: Context) {
 		daoInventory						= db.daoInventory()
 		daoList								= db.daoList()
 		daoMeals							= db.daoMeals()
+		daoPurchases						= db.daoPurchases()
 		daoProduct							= db.daoProduct()
 		daoProductAndInventory				= db.daoProductAndInventory()
 		daoProductAndInventoryWithAlerts	= db.daoProductAndInventoryWithAlerts()
@@ -63,6 +68,7 @@ class Repository(app: Context) {
 		daoProductAndMeals					= db.daoProductAndMeals()
 		daoProductAndNutrients				= db.daoProductAndNutrients()
 		daoProductAndMealsWithNutrients		= db.daoProductAndMealsWithNutrients()
+		daoShops							= db.daoShops()
 	}
 
 	/* Get */
@@ -174,6 +180,12 @@ class Repository(app: Context) {
 		}
 	}
 
+	fun insertPurchase(purchase: EntityPurchases) {
+		Database.databaseWriteExecutor.execute {
+			daoPurchases.insertOne(purchase)
+		}
+	}
+
 	fun insertProduct(product: EntityProduct) {
 		Database.databaseWriteExecutor.execute {
 			daoProduct.insertProduct(product)
@@ -183,6 +195,12 @@ class Repository(app: Context) {
 	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
 		Database.databaseWriteExecutor.execute {
 			daoProductAndNutrients.insertProductAndNutrients(product, nutrients)
+		}
+	}
+
+	fun insertShop(shop: EntityShops) {
+		Database.databaseWriteExecutor.execute {
+			daoShops.insertOne(shop)
 		}
 	}
 
