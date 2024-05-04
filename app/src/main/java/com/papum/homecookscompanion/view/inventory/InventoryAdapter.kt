@@ -9,25 +9,25 @@ import android.widget.LinearLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
+import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
-import com.papum.homecookscompanion.view.products.ProductsAdapter
 
 
 class InventoryAdapter(
 	var items:List<EntityProductAndInventoryWithAlerts>?,
-	private val buttonsListener: InventoryAdapter.IListenerOnClickInventoryItem
+	private val uiListener: InventoryAdapter.IListenerInventoryItem
 ) : Adapter<InventoryViewHolder>() {
 
 	private var layoutExpanded: LinearLayout? = null	// item's layout currently expanded (max 1 is expanded at a time)
 
 
-	interface IListenerOnClickInventoryItem {
+	interface IListenerInventoryItem {
 
 		fun onClickInfo(product: EntityProduct)
-		fun onClickAddToInventory(product: EntityProduct)
 		fun onClickAddToList(product: EntityProduct)
 		fun onClickAddToMeals(product: EntityProduct)
+		fun onSetQuantity(inventoryItem: EntityInventory, quantity: Float)
 
 	}
 
@@ -81,21 +81,21 @@ class InventoryAdapter(
 		items?.get(position)?.let { item ->
 			// open product info and nutrients
 			holder.layoutInfo.setOnClickListener { _ ->
-				buttonsListener.onClickInfo(item.product)
+				uiListener.onClickInfo(item.product)
 			}
 
 			// add product to inventory
 			holder.etQuantity.doOnTextChanged { text, start, before, count ->
-				buttonsListener.onClickAddToInventory(item)
+				uiListener.onSetQuantity(item.inventoryItem, text.toString().toFloat())
 			}
 
 			// add product to list
 			holder.btnAddList.setOnClickListener { _ ->
-				buttonsListener.onClickAddToList(item)
+				uiListener.onClickAddToList(item.product)
 			}
 			// add product to meals
 			holder.btnAddMeals.setOnClickListener { _ ->
-				buttonsListener.onClickAddToMeals(item)
+				uiListener.onClickAddToMeals(item.product)
 			}
 		}
 

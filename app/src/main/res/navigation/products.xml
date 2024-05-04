@@ -32,7 +32,9 @@
             app:popUpTo="@id/fragmentProducts" />
         <action
             android:id="@+id/action_fragmentProducts_to_fragmentEditRecipe"
-            app:destination="@id/fragmentEditRecipe" />
+            app:destination="@id/fragmentEditRecipe"
+            app:popUpTo="@id/fragmentProducts" />
+
 
     </fragment>
 

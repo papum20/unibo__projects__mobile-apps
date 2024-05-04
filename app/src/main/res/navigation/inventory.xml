@@ -14,12 +14,29 @@
         tools:layout="@layout/page_fragment_inventory" >
         <action
             android:id="@+id/action_fragmentInventory_to_fragmentScanReceipt"
-            app:destination="@id/fragmentScanReceipt" />
+            app:destination="@id/fragmentScanReceipt"
+            app:popUpTo="@id/fragmentInventory" />
+
+        <action
+            android:id="@+id/action_fragmentInventory_to_fragmentEditFoodFromInventory"
+            app:destination="@id/fragmentEditFoodFromInventory"
+            app:popUpTo="@id/fragmentInventory" />
+
     </fragment>
     <fragment
         android:id="@+id/fragmentScanReceipt"
         android:name="com.papum.homecookscompanion.view.edit.scan.FragmentScanReceipt"
         android:label="@string/nav_label_scan"
         tools:layout="@layout/fragment_scan_receipt" />
+    <fragment
+        android:id="@+id/fragmentEditFoodFromInventory"
+        android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
+        android:label="FragmentEditFood"
+        tools:layout="@layout/fragment_edit_food">
+        <argument
+            android:name="foodId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>

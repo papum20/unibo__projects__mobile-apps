@@ -235,5 +235,11 @@ class Repository(app: Context) {
 		}
 	}
 
+	/* Update */
+
+	fun updateInventoryItem(inventoryItem: EntityInventory) {
+		daoInventory.updateOne(inventoryItem)
+	}
+
 
 }

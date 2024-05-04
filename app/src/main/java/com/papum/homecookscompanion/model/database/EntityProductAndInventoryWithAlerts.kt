@@ -12,7 +12,7 @@ class EntityProductAndInventoryWithAlerts (
 		parentColumn = "id",
 		entityColumn = "idProduct"
 	)
-    val inventoryItem: EntityInventory?,
+    val inventoryItem: EntityInventory,
 	@Relation(
 		parentColumn = "id",
 		entityColumn = "idProduct"
