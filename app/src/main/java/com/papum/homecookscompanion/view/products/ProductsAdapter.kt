@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityProduct
@@ -57,7 +56,7 @@ class ProductsAdapter(
 		/* buttons listeners */
 
 		// expand/collapse
-		holder.btnOpenActions.setOnClickListener { _ ->
+		holder.btnExpand.setOnClickListener { _ ->
 			when(holder.layoutCollapse.visibility) {
 				View.GONE	-> {
 					layoutExpanded?.visibility			= View.GONE

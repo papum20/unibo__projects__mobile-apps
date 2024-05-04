@@ -74,6 +74,11 @@ class FragmentScanReceipt
 		view.findViewById<Button>(R.id.scan_btn_scan).setOnClickListener { _ ->
 			pickFileAndScan()
 		}
+
+		view.findViewById<Button>(R.id.scan_btn_confirm).setOnClickListener { _ ->
+			// TODO: 
+		}
+
     }
 
 

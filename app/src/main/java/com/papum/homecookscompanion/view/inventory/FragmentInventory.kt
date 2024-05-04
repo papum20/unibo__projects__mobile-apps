@@ -58,10 +58,9 @@ class FragmentInventory : Fragment(R.layout.page_fragment_inventory) {
 
 		viewModel.getAllProductsInInventoryWithAlerts().observe(viewLifecycleOwner) { products ->
 			adapter.let {
-				it.items = products
-				it.notifyDataSetChanged()
 				Log.d("INVENTORY_ALL", "products: ${it.itemCount}")
 				Log.d("INVENTORY_ALL", "products ids: ${products.map{ p -> "${p.product.id}.${p.product.name}-${p.inventoryItem?.quantity}-${p.alert?.quantity};" }}")
+				it.updateItems(products)
 			}
 		}
 

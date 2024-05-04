@@ -15,7 +15,7 @@ class ProductsViewHolder(itemView: View) : ViewHolder(itemView) {
     val tvName:TextView			= itemView.findViewById(R.id.recycler_card_products_text)
     val tvType:TextView			= itemView.findViewById(R.id.recycler_card_products_type)
 
-	val btnOpenActions:Button	= itemView.findViewById(R.id.recycler_card_products_btn_actions)
+	val btnExpand:Button		= itemView.findViewById(R.id.recycler_card_products_btn_expand)
 	val btnAddInventory:Button	= itemView.findViewById(R.id.recycler_card_products_btn_addInventory)
     val btnAddList:Button		= itemView.findViewById(R.id.recycler_card_products_btn_addList)
     val btnAddMeals:Button		= itemView.findViewById(R.id.recycler_card_products_btn_addMeals)

@@ -17,6 +17,8 @@
 
     <dimen name="title_tv_height">30dp</dimen>
 
+    <dimen name="btn_expand_width">50dp</dimen>
+
     <dimen name="tv_padding">3dp</dimen>
 
 </resources>

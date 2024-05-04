@@ -180,6 +180,21 @@ class Repository(app: Context) {
 		}
 	}
 
+	/**
+	 * Update quantity from inventory (or delete if quantity=0),
+	 * then (if didn't give error) add to meals.
+	 * Update quantity to null if null.
+	 */
+	fun insertMealFromInventory(mealsProduct: EntityMeals, inventoryProduct: EntityInventory) {
+		Database.databaseWriteExecutor.execute {
+			inventoryProduct.quantity?.let { q ->
+				if(q <= 0F) daoInventory.deleteOne(inventoryProduct)
+				else daoInventory.updateOne(inventoryProduct)
+			}
+			daoMeals.insertOne(mealsProduct)
+		}
+	}
+
 	fun insertPurchase(purchase: EntityPurchases) {
 		Database.databaseWriteExecutor.execute {
 			daoPurchases.insertOne(purchase)
