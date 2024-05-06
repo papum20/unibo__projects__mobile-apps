@@ -16,6 +16,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +33,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import org.osmdroid.config.Configuration.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.papum.homecookscompanion.view.services.ServiceNotificationStock
 import com.papum.homecookscompanion.view.services.WorkerStock
@@ -85,6 +87,13 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
+
+		/* osm */
+		//handle permissions first, before map is created. not depicted here
+
+		//load/initialize the osmdroid configuration, this can be done
+		// This won't work unless you have imported this: org.osmdroid.config.Configuration.*
+		getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
 
 		// nav host fragment
 		val navHostFragment = supportFragmentManager.findFragmentById(

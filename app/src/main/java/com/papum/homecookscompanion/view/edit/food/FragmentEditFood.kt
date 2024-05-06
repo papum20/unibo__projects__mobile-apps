@@ -15,6 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
 
 
 /**
@@ -25,6 +28,8 @@ import com.papum.homecookscompanion.model.Repository
 class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 	val args: FragmentEditFoodArgs by navArgs()
+
+	private lateinit var map : MapView
 
 
 	override fun onCreateView(
@@ -48,6 +53,17 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 				Repository(requireActivity().application)
 			)
 		}
+
+		/* osm map */
+
+		map = view.findViewById<MapView>(R.id.fragment_edit_food_map)
+		map.setTileSource(TileSourceFactory.MAPNIK)
+
+		val mapController = map.controller
+		mapController.setZoom(9.5)
+		val startPoint = GeoPoint(48.8583, 2.2944);
+		mapController.setCenter(startPoint);
+
 
 		/* form fields */
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
@@ -103,6 +119,26 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		}
 
     }
+
+
+	override fun onResume() {
+		super.onResume()
+		//this will refresh the osmdroid configuration on resuming.
+		//if you make changes to the configuration, use
+		//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		//Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
+		map.onResume() //needed for compass, my location overlays, v6.0.0 and up
+	}
+
+	override fun onPause() {
+		super.onPause()
+		//this will refresh the osmdroid configuration on resuming.
+		//if you make changes to the configuration, use
+		//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		//Configuration.getInstance().save(this, prefs);
+		map.onPause()  //needed for compass, my location overlays, v6.0.0 and up
+	}
+
 
     companion object {
         /**
