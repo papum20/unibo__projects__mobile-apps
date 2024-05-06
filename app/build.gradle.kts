@@ -86,4 +86,10 @@ dependencies {
 	//implementation("com.google.android.gms:play-services-mlkit-text-recognition-japanese:16.0.0")
 	//implementation("com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.0")
 
+	/* OSMdroid */
+	implementation("org.osmdroid:osmdroid-android:6.1.18")
+	//implementation("org.osmdroid:osmdroid-wms:6.1.18")		// Adds basic support for WMS servers, specifically GeoServer
+	//implementation("org.osmdroid:osmdroid-mapsforge:6.1.18")	// Adds Maps Forge support
+	//iplementation("org.osmdroid:osmdroid-geopackage:6.1.18")	// Adds geopackage support
+
 }

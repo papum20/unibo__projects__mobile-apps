@@ -32,9 +32,10 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 	*	[V]	lista di oggetti posseduti,
 	*	[V]	di cui si salva la quantità.
 	*	Gli oggetti possono essere aggiunti automaticamente aggiungendo una spesa effettuata (per es. copiando lo scontrino, o scansionandolo con la telecamera e convertendolo in testo*),
-	*	(o rimossi)
-	*	 o manualmente, uno per uno (per es. per effettuare correzioni),
-	*	mentre vengono rimossi quando si aggiungono a un pasto;
+	*	[V] (o rimossi)
+		*	note: if new_quantity = 0
+	*	[V] o manualmente, uno per uno (per es. per effettuare correzioni),
+	*	[V] mentre vengono rimossi quando si aggiungono a un pasto;
 5.	esportazione/importazione dati: si possono esportare dati (per es. ricette) come archivio - per esempio, come backup o per condividerli;
 6.	condivisione dati: per es. si condivide il suddetto archivio con qualcuno (che lo potrà poi importare nell'app dal file);
 7.	[V]	notifiche: si possono impostare notifiche per quando le scorte di un determinato oggetto scendono sotto una certa soglia (per es. se rimangono meno di 0,5kg di farina).
@@ -105,3 +106,10 @@ implementation :
 
 repo:
 *	queries dont use db's thread, why?
+
+inventory:
+*	error if add to meal more than you have
+
+OCR:
+*	fix
+*	use heights to correlate lines of product - price
