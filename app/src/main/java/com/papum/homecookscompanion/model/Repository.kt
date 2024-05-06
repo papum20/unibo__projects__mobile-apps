@@ -156,15 +156,23 @@ class Repository(app: Context) {
 
 	/* Insert */
 
-	fun insertAlert(alert: EntityAlerts) {
+	fun insertAlert(alert: EntityAlerts): EntityAlerts {
+		var newId: Long = alert.idProduct
 		Database.databaseWriteExecutor.execute {
-			daoAlerts.insertOne(alert)
+			newId = daoAlerts.insertOne(alert)
+		}
+		return alert.apply {
+			idProduct = newId
 		}
 	}
 
-	fun insertInInventory(inventoryProduct: EntityInventory) {
+	fun insertInInventory(inventoryProduct: EntityInventory): EntityInventory {
+		var newId: Long = inventoryProduct.idProduct
 		Database.databaseWriteExecutor.execute {
-			daoInventory.insertOne(inventoryProduct)
+			newId = daoInventory.insertOne(inventoryProduct)
+		}
+		return inventoryProduct.apply {
+			idProduct = newId
 		}
 	}
 
@@ -238,7 +246,15 @@ class Repository(app: Context) {
 	/* Update */
 
 	fun updateInventoryItem(inventoryItem: EntityInventory) {
-		daoInventory.updateOne(inventoryItem)
+		Database.databaseWriteExecutor.execute {
+			daoInventory.updateOne(inventoryItem)
+		}
+	}
+
+	fun updateAlert(alert: EntityAlerts) {
+		Database.databaseWriteExecutor.execute {
+			daoAlerts.updateOne(alert)
+		}
 	}
 
 

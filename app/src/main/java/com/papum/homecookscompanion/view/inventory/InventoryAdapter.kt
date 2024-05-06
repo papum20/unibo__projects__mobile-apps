@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.res.TypedArrayUtils
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
+import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 
 
 class InventoryAdapter(
-	var items:List<EntityProductAndInventoryWithAlerts>?,
+	var items:MutableList<EntityProductAndInventoryWithAlerts>?,
 	private val uiListener: InventoryAdapter.IListenerInventoryItem
 ) : Adapter<InventoryViewHolder>() {
 
@@ -27,7 +29,12 @@ class InventoryAdapter(
 		fun onClickInfo(product: EntityProduct)
 		fun onClickAddToList(product: EntityProduct)
 		fun onClickAddToMeals(product: EntityProduct)
-		fun onSetQuantity(inventoryItem: EntityInventory, quantity: Float)
+
+		/**
+		 * `id` used to create entry if not existing in inventory.
+		 */
+		fun onSetQuantity(id: Long, inventoryItem: EntityInventory?, quantity: Float)
+		fun onSetAlert(id: Long, alert: EntityAlerts?, quantity: Float)
 
 	}
 
@@ -42,21 +49,23 @@ class InventoryAdapter(
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
 		Log.d("INVENTORY_VIEW_HOLDER", "create at position ${position}")
 
-		holder.tvAlert.text = items?.get(position)?.let {
-			it.alert?.let { alert ->
-				alert.quantity.toString()
-			} ?: "(none)"
-		}
+		holder.etAlert.setText( items?.get(position)?.let {
+				it.alert?.let { alert ->
+					alert.quantity.toString()
+				} ?: "(none)"
+			}
+		)
+
+		holder.etQuantity.setText(items?.get(position)?.inventoryItem?.let { item ->
+			item.quantity.toString()
+		}?: "0.00"
+		)
 
 		holder.tvName.text = items?.get(position)?.let {
 			it.product.parent?.let { p ->
 				"${it.product.name}, $p"
 			} ?: it.product.name
 		} ?: "[wrong entry]"
-
-		holder.etQuantity.text = items?.get(position)?.inventoryItem?.let { item ->
-			item.quantity.toString()
-		}?: "??"
 
 		holder.tvType.text = items?.get(position)?.let {
 			if(!it.product.isEdible)		"(NonEdible)"
@@ -84,10 +93,31 @@ class InventoryAdapter(
 				uiListener.onClickInfo(item.product)
 			}
 
-			// add product to inventory
-			holder.etQuantity.doOnTextChanged { text, start, before, count ->
-				uiListener.onSetQuantity(item.inventoryItem, text.toString().toFloat())
+			/*
+			// update product quantity for alert
+			holder.etAlert.setOnEditorActionListener { v, actionId, event ->
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					val quantity = v.text.toString().toFloatOrNull() ?: 0.0f
+					uiListener.onSetAlert(item.product.id, item.alert, quantity)
+				}
+				true
 			}
+			*/
+
+			// update product quantity for alert
+			holder.etAlert.doOnTextChanged { text, start, before, count ->
+				text.toString().toFloatOrNull()?.let { quantity ->
+					uiListener.onSetAlert(item.product.id, item.alert, quantity)
+				}
+			}
+
+			// update product quantity to inventory
+			holder.etQuantity.doOnTextChanged { text, start, before, count ->
+				text.toString().toFloatOrNull()?.let { quantity ->
+					uiListener.onSetQuantity(item.product.id, item.inventoryItem, quantity)
+					}
+				}
+
 
 			// add product to list
 			holder.btnAddList.setOnClickListener { _ ->
@@ -106,12 +136,40 @@ class InventoryAdapter(
     }
 
 	@SuppressLint("NotifyDataSetChanged")	// all fetched products change
-	fun updateItems(newItems: List<EntityProductAndInventoryWithAlerts>) {
+	fun updateItems(newItems: MutableList<EntityProductAndInventoryWithAlerts>) {
 		layoutExpanded?.visibility = View.GONE
 		layoutExpanded = null
 		items = newItems
 		notifyDataSetChanged()
 		Log.d("INVENTORY_UPDATE", "products: $itemCount")
+	}
+
+	fun updateItemInInventory(newInventoryItem: EntityInventory) {
+		items?.find { item -> item.product.id == newInventoryItem.idProduct }?.let { foundItem ->
+			items?.indexOf(foundItem)?.let { position ->
+				layoutExpanded?.visibility = View.GONE
+				layoutExpanded = null
+				items?.set( position,
+					foundItem.apply { inventoryItem = newInventoryItem }
+				)
+				notifyItemChanged(position)
+				Log.d("TAG", "Updated item at position $position; products: $itemCount")
+			}
+		}
+	}
+
+	fun updateItemAlert(newAlert: EntityAlerts) {
+		items?.find { item -> item.product.id == newAlert.idProduct }?.let { foundItem ->
+			items?.indexOf(foundItem)?.let { position ->
+				layoutExpanded?.visibility = View.GONE
+				layoutExpanded = null
+				items?.set( position,
+					foundItem.apply { alert = newAlert }
+				)
+				notifyItemChanged(position)
+				Log.d("TAG", "Updated item at position $position; products: $itemCount")
+			}
+		}
 	}
 
 	/*
@@ -132,5 +190,11 @@ class InventoryAdapter(
 		}
 	}
 	*/
+
+
+	companion object {
+
+		private  const val TAG = "INVENTORY_adapter"
+	}
 
 }

@@ -1,5 +1,3 @@
-val opencvsdk="opencv/"
-
 pluginManagement {
     repositories {
         google()
@@ -17,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Homecook's companion"
 include(":app")
+include(":osmdroid-android")

@@ -22,7 +22,7 @@
         android:layout_height="@dimen/dialog_addTo_meals_et_height"
         android:ems="10"
         android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberSigned"
+        android:inputType="number|numberDecimal|numberSigned"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/dialog_products_addToMeals_date_btn"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
@@ -33,6 +34,14 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
 	/* Insert */
 
+	fun addAlert(id: Long, quantity: Float): EntityAlerts {
+		return repository.insertAlert(EntityAlerts(id, quantity))
+	}
+
+	fun addToInventory(id: Long, quantity: Float): EntityInventory {
+		return repository.insertInInventory(EntityInventory(id, quantity))
+	}
+
 	fun addToList(id: Long, quantity: Float) {
 		repository.insertInList(EntityList(id, quantity))
 	}
@@ -49,6 +58,14 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 	fun updateInventory(inventoryItem: EntityInventory, newQuantity: Float) {
 		repository.updateInventoryItem(
 			inventoryItem.apply {
+				this.quantity = newQuantity
+			}
+		)
+	}
+	
+	fun updateAlert(alert: EntityAlerts, newQuantity: Float) {
+		repository.updateAlert(
+			alert.apply {
 				this.quantity = newQuantity
 			}
 		)

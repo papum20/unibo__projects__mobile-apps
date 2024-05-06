@@ -103,6 +103,7 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 			val delayTo_nextTime = LocalDateTime.now().let { now ->
 				now.with(LocalTime.MIN)
 					.withHour(REPEATING_HOUR)
+					.plusDays(1)
 					.toInstant(ZoneOffset.UTC)
 					.toEpochMilli() - now.toInstant(ZoneOffset.UTC).toEpochMilli()
 			}

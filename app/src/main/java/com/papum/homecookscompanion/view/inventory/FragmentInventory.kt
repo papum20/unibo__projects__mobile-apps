@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
-import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.view.products.FragmentDialogAddToList
 import com.papum.homecookscompanion.view.products.FragmentDialogAddToMeals
 import java.time.LocalDateTime
@@ -42,7 +42,7 @@ class FragmentInventory :
 		)
 	}
 
-	val adapter = InventoryAdapter(listOf(), this)
+	val adapter = InventoryAdapter(mutableListOf(), this)
 
 
 	override fun onCreateView(
@@ -67,7 +67,7 @@ class FragmentInventory :
 			adapter.let {
 				Log.d("INVENTORY_ALL", "products: ${it.itemCount}")
 				Log.d("INVENTORY_ALL", "products ids: ${products.map{ p -> "${p.product.id}.${p.product.name}-${p.inventoryItem?.quantity}-${p.alert?.quantity};" }}")
-				it.updateItems(products)
+				it.updateItems(products.toMutableList())
 			}
 		}
 
@@ -121,27 +121,36 @@ class FragmentInventory :
 		)
 	}
 
-	override fun onSetQuantity(inventoryItem: EntityInventory, quantity: Float) {
-		viewModel.updateInventory(inventoryItem, quantity)
+	override fun onSetQuantity(id: Long, inventoryItem: EntityInventory?, quantity: Float) {
+		val _inventoryItem = inventoryItem ?: viewModel.addToInventory(id, quantity)
+		viewModel.updateInventory(_inventoryItem, quantity)
+	}
+
+	override fun onSetAlert(id: Long, alert: EntityAlerts?, quantity: Float) {
+		val _alert = alert ?: viewModel.addAlert(id, quantity)
+		viewModel.updateAlert(_alert, quantity)
 	}
 
 	/* FragmentDialogAddTo*.IListenerDialog */
 
 	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
-		Log.d("INVENTORY_ADD_LIST",  "id $productId to ${quantity}")
+		Log.d(TAG,  "Adding to list: id $productId to ${quantity}")
 		viewModel.addToList(productId, quantity)
 	}
 
 	override fun onClickAddToMeals(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
-		Log.d("INVENTORY_ADD_MEALS",  "id $productId to ${quantity}")
+		Log.d(TAG,  "Adding to meals: id $productId to ${quantity}")
 		adapter.items?.find { item -> item.product.id == productId }?.let { item ->
-			viewModel.addToMealsFromInventory(
-				item.inventoryItem.apply {
-					this.quantity?.let { quantityCurrent ->
-						this.quantity = quantityCurrent - quantity
+			item.inventoryItem?.let { inventoryItem ->
+				val _inventoryItem = inventoryItem.apply {
+						this.quantity?.let { quantityCurrent ->
+							this.quantity = quantityCurrent - quantity
+						}
 					}
-				}, date, quantity
-			)
+				viewModel.addToMealsFromInventory(_inventoryItem, date, quantity)
+				adapter.updateItemInInventory(_inventoryItem)
+
+			} ?: Log.e(TAG, "Tried to add to a meal a product not in inventory.")
 		}
 	}
 
@@ -156,6 +165,9 @@ class FragmentInventory :
 
 
 	companion object {
+
+		private const val TAG = "INVENTORY"
+
         @JvmStatic
         fun newInstance() =
             FragmentInventory()

@@ -1,0 +1,52 @@
+description = 'An Android library to display OpenStreetMap views.'
+apply plugin: 'com.android.library'
+apply plugin: "maven-publish"
+
+
+android {
+    namespace = "org.osmdroid"
+    compileSdkVersion 34
+
+    defaultConfig{
+        targetSdkVersion  34
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+	testOptions { 
+       unitTests.returnDefaultValues = true
+   }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+
+import org.apache.tools.ant.filters.*
+task copyFiles(type: Copy) {
+    from 'src/main/filtered/org/osmdroid'
+    into 'src/main/java/org/osmdroid'
+}
+
+
+
+task androidSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+//    archives packageReleaseJar
+    archives androidSourcesJar
+
+}
+preBuild.dependsOn(copyFiles)
+

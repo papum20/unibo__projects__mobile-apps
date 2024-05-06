@@ -75,7 +75,7 @@
     <string name="product_placeholder_type">(Type)</string>
     <string name="product_format_date">%02d/%02d/%04d</string>
     <string name="product_format_time">%02d:%02d</string>
-    <string name="product_format_quantity">%05d.%02d</string>
+    <string name="product_format_quantity">%5.2f</string>
 
     <string name="receipt_placeholder_price">\??,??</string>
 

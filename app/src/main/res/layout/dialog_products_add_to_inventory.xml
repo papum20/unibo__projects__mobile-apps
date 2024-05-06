@@ -18,5 +18,5 @@
         android:layout_weight="1"
         android:ems="10"
         android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberSigned" />
+        android:inputType="number|numberDecimal|numberSigned" />
 </LinearLayout>
