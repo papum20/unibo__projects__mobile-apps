@@ -1,20 +1,25 @@
 package com.papum.homecookscompanion.view.edit.food
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.view.maps.FragmentMap
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -29,7 +34,15 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 	val args: FragmentEditFoodArgs by navArgs()
 
-	private lateinit var map : MapView
+	private lateinit var navController: NavController
+
+	private val requestMultiplePermissionsLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestMultiplePermissions()
+	) { permissions ->
+			permissions.entries.forEach {
+				Log.d(TAG, "Permission requested result: ${it.key}: ${it.value}")
+			}
+		}
 
 
 	override fun onCreateView(
@@ -44,6 +57,13 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		navController = findNavController()
+
+		/* permissions */
+		requestPermissionsIfNecessary(PERMISSIONS_MAPS)
+
+		/* args */
+
 		val foodId: String? = args.foodId
 
 		val navController = findNavController()
@@ -56,14 +76,19 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 		/* osm map */
 
-		map = view.findViewById<MapView>(R.id.fragment_edit_food_map)
-		map.setTileSource(TileSourceFactory.MAPNIK)
 
-		val mapController = map.controller
-		mapController.setZoom(9.5)
-		val startPoint = GeoPoint(48.8583, 2.2944);
-		mapController.setCenter(startPoint);
-
+		if (parentFragmentManager.findFragmentByTag(FRAGMENT_TAG_MAP) == null) {
+			navController.navigate(R.id.action_fragmentEditFood_to_fragmentMap)
+			/*
+			parentFragmentManager.beginTransaction()
+				.run {
+					setReorderingAllowed(true)
+					replace(R.id.fragment_edit_food_container_map, FragmentMap::class.java, null, FRAGMENT_TAG_MAP)
+					addToBackStack("MyLabel")
+					commit()
+				}
+			 */
+		}
 
 		/* form fields */
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
@@ -127,7 +152,8 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		//if you make changes to the configuration, use
 		//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		//Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
-		map.onResume() //needed for compass, my location overlays, v6.0.0 and up
+
+		//map.onResume() //needed for compass, my location overlays, v6.0.0 and up
 	}
 
 	override fun onPause() {
@@ -136,17 +162,42 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		//if you make changes to the configuration, use
 		//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		//Configuration.getInstance().save(this, prefs);
-		map.onPause()  //needed for compass, my location overlays, v6.0.0 and up
+
+		//map.onPause()  //needed for compass, my location overlays, v6.0.0 and up
 	}
 
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         */
-        @JvmStatic
-        fun newInstance() =
-            FragmentEditFood()
-    }
+	private fun requestPermissionsIfNecessary(permissions: Array<String>) {
+		val permissionsToRequest = ArrayList<String>()
+		permissions.forEach { permission ->
+		if ( ContextCompat.checkSelfPermission(requireContext(), permission)
+			!= PackageManager.PERMISSION_GRANTED) {
+				permissionsToRequest.add(permission)
+			}
+		}
+		if (permissionsToRequest.size > 0) {
+			requestMultiplePermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+		}
+	}
+
+
+	companion object {
+
+		private const val TAG = "FOOD"
+		private const val FRAGMENT_TAG_MAP = "fragment_map_edit_food"
+
+		private val PERMISSIONS_MAPS = arrayOf(
+			Manifest.permission.ACCESS_COARSE_LOCATION,
+			Manifest.permission.ACCESS_FINE_LOCATION
+		)
+
+		/**
+		 * Use this factory method to create a new instance of
+		 * this fragment using the provided parameters.
+		 */
+		@JvmStatic
+		fun newInstance() =
+			FragmentEditFood()
+
+	}
 }

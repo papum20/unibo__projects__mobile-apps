@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
@@ -81,9 +81,10 @@
                 android:inputType="number|numberDecimal|numberSigned"
                 android:textSize="@dimen/fontSize_edit_text" />
 
-            <org.osmdroid.views.MapView android:id="@+id/fragment_edit_food_map"
+            <FrameLayout
+                android:id="@+id/fragment_edit_food_container_map"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/map_height" />
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
 
@@ -110,4 +111,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

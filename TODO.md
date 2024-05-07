@@ -113,3 +113,7 @@ inventory:
 OCR:
 *	fix
 *	use heights to correlate lines of product - price
+
+## future
+
+*	map in edit food : nested fragment, not separate

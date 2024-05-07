@@ -47,7 +47,18 @@
             android:name="foodId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_fragmentEditFood_to_fragmentMap"
+            app:destination="@id/fragmentMap"
+            app:popUpTo="@id/fragmentEditFood" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/fragmentMap"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMap"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 
     <dialog
         android:id="@+id/fragmentDialogAddToList"
