@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
@@ -16,6 +17,9 @@ import java.time.LocalDateTime
 			parentColumns	= ["id"],
 			childColumns	= ["idEdible"]
 		)
+	],
+	indices = [
+		Index("idEdible")
 	]
 )
 class EntityMeals(

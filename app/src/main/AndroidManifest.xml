@@ -24,6 +24,10 @@
     -->
     <!-- Also, hw acceleration could cause problems, consider turning it off -->
 
+    <!-- geofencing -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- ACCESS_FINE_LOCATION -->
+
     <uses-sdk
         android:targetSdkVersion="34"
         android:minSdkVersion="30"

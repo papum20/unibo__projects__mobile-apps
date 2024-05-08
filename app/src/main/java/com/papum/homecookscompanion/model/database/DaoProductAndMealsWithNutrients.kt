@@ -24,6 +24,7 @@ interface DaoProductAndMealsWithNutrients {
 		WHERE date >= :start AND date <= :end
     """
 	)
+	@Transaction
 	fun getAllFromDateTimeInterval_withNutrients(start: Long, end: Long): LiveData<List<EntityProductAndMealsWithNutrients>>
 
 

@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import java.time.LocalDateTime
 
 /**
@@ -12,7 +13,7 @@ import java.time.LocalDateTime
  * Brand can also be last name of hierarchy.
  */
 @Entity(
-	tableName = "Prices",
+	tableName = "Purchases",
 	foreignKeys = [
 		ForeignKey(
 			entity = EntityShops::class,
@@ -25,6 +26,10 @@ import java.time.LocalDateTime
 			childColumns	= ["idProduct"]
 		)
 	],
+	indices = [
+		Index(value = ["idProduct", "date"], unique = true),
+		Index(value = ["idShop"])
+  	],
 	primaryKeys = ["idProduct", "date"]
 )
 class EntityPurchases(

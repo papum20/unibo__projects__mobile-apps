@@ -26,6 +26,7 @@ interface DaoProductAndInventoryWithAlerts {
 		LEFT JOIN Inventory ON Alerts.idProduct = Inventory.idProduct
         LEFT JOIN Product ON Alerts.idProduct = Product.id
     """)
+	@Transaction
 	fun getAllInAlerts(): List<EntityProductAndInventoryWithAlerts>
 
 	@Query("""
@@ -34,6 +35,7 @@ interface DaoProductAndInventoryWithAlerts {
 		LEFT JOIN Alerts ON Inventory.idProduct = Alerts.idProduct
         LEFT JOIN Product ON Inventory.idProduct = Product.id
     """)
+	@Transaction
 	fun getAllInInventory(): List<EntityProductAndInventoryWithAlerts>
 
 	/**
@@ -46,6 +48,7 @@ interface DaoProductAndInventoryWithAlerts {
         LEFT JOIN Inventory ON Product.id = Inventory.idProduct
 		WHERE Inventory.quantity IS NULL OR Inventory.quantity < Alerts.quantity
     """)
+	@Transaction
 	fun getAllLowStocks(): List<EntityProductAndInventoryWithAlerts>
 
 }

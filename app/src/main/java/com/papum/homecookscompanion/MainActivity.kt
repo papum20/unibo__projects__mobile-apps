@@ -18,7 +18,6 @@ import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -33,8 +32,13 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
 import org.osmdroid.config.Configuration.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 import com.papum.homecookscompanion.view.services.ServiceNotificationStock
 import com.papum.homecookscompanion.view.services.WorkerStock
 
@@ -43,12 +47,28 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
 
+	/* geolocalization */
+	private lateinit var geofencingClient: GeofencingClient
+	private val geofenceList: MutableList<Geofence> = mutableListOf()
+
 	/* Permission launchers */
-	private val notificationsPermissionAndNotifyLauncher = registerForActivityResult(
+	private val backgroundPermissionLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestPermission()
+	) { isGranted ->
+		if (isGranted) {
+			registerGeofencesAndCheckPermissions()
+		} else {
+			finish()
+		}
+	}
+
+	private val notificationsPermissionLauncher = registerForActivityResult(
 		ActivityResultContracts.RequestPermission()
 	) { isGranted: Boolean ->
 		if (isGranted) {
-			_fireNotification()
+			fireNotificationAndCheckPermissions()
+		} else {
+			finish()
 		}
 	}
 
@@ -201,6 +221,9 @@ class MainActivity : AppCompatActivity() {
 
 		Log.d("WORK","MIN_PERIODIC_INTERVAL_MILLIS: ${PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000}")
 
+		// Geofencing
+		registerGeofencesAndCheckPermissions()
+
 	}
 
 
@@ -234,7 +257,18 @@ class MainActivity : AppCompatActivity() {
 	 * doesn't check for permission, use wrapper fireNotificationAndCheck()
 	 */
 	@SuppressLint("MissingPermission")
-	fun _fireNotification() {
+	fun fireNotificationAndCheckPermissions() {
+
+		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+			ActivityCompat.checkSelfPermission(
+				this@MainActivity,
+				Manifest.permission.POST_NOTIFICATIONS
+		) != PackageManager.PERMISSION_GRANTED) {
+			// POST_NOTIFICATIONS permission exists and is needed from api 33 TIRAMISU
+			notificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+			return
+		}
+
 		val intent: Intent = Intent(this, MainActivity::class.java).apply {
 			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 			putExtra("caller", "notification")
@@ -255,23 +289,54 @@ class MainActivity : AppCompatActivity() {
 			.notify(NOTIFICATION_ID_STOCK, builder.build())
 	}
 
-	fun fireNotificationAndCheck() {
 
-		with(NotificationManagerCompat.from(this)) {
-			if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-				ActivityCompat.checkSelfPermission(
-					this@MainActivity,
-					Manifest.permission.POST_NOTIFICATIONS
-				) != PackageManager.PERMISSION_GRANTED) {
-				// POST_NOTIFICATIONS permission exists and is needed from api 33 TIRAMISU
-				notificationsPermissionAndNotifyLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-				return@with
-			} else {
-				_fireNotification()
+	/* geolocalization */
+	private fun registerGeofencesAndCheckPermissions() {
 
+		if (ActivityCompat.checkSelfPermission(
+				this,
+				Manifest.permission.ACCESS_FINE_LOCATION
+			) != PackageManager.PERMISSION_GRANTED
+		) {
+			backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+			return
+		}
+
+		val pendingIntent: PendingIntent by lazy {
+			val intent = Intent(this, BroadcastReceiverGeofence::class.java)
+			// We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
+			// addGeofences() and removeGeofences().
+			PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+		}
+
+		geofenceList.add(
+			Geofence.Builder()
+				.setRequestId(GEOFENCE_ID)
+				.setCircularRegion(
+					BOLOGNA_POINT.latitude,
+					BOLOGNA_POINT.longitude,
+					GEOFENCE_RADIUS)
+				.setExpirationDuration(GEOFENCE_DURATION)
+				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+				.build()
+		)
+		val geofencingRequest = GeofencingRequest.Builder().apply {
+			setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+			addGeofences(geofenceList)
+		}.build()
+
+		geofencingClient.addGeofences(geofencingRequest, pendingIntent).run {
+			addOnSuccessListener {
+				/* IF THIS FAILS GO TO Settings | Security & location | Location | Mode and set "high accuracy" */
+				Log.d("GEOFENCE", "Geofences were added")
+			}
+			addOnFailureListener {
+				Log.w("GEOFENCE", "Failed to add geofences")
 			}
 		}
+
 	}
+
 
 
 	companion object {
@@ -281,6 +346,12 @@ class MainActivity : AppCompatActivity() {
 		const val NOTIFICATION_ID_STOCK = 0
 
 		const val WORKER_STOCK_NAME = "stock"
+
+		private val BOLOGNA_POINT = LatLng(44.496781,11.356387)
+		private const val GEOFENCE_ID = "in_shop"
+		private const val GEOFENCE_RADIUS = 1000f
+		private const val GEOFENCE_DURATION = 1000000L
+
 
 	}
 

@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -17,6 +18,9 @@ import androidx.room.PrimaryKey
 			parentColumns	= ["id"],
 			childColumns	= ["idProduct"]
 		)
+	],
+	indices = [
+		Index("idProduct")
 	]
 )
 class EntityNutrients(

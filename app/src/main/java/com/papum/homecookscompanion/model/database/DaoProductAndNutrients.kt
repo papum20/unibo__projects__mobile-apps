@@ -16,6 +16,7 @@ interface DaoProductAndNutrients {
         FROM Product
         INNER JOIN List ON Product.id = List.idProduct
     """)
+	@Transaction
 	fun getAll(): LiveData<List<EntityProductAndList>>
 
 	@Query(
@@ -26,6 +27,7 @@ interface DaoProductAndNutrients {
 		WHERE Product.id = :id
     """
 	)
+	@Transaction
 	fun getOneFromId(id: String): LiveData<EntityProductAndNutrients>
 
 	/* insert */

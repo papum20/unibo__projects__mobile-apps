@@ -17,6 +17,7 @@ import com.papum.homecookscompanion.model.database.DaoProductAndMeals
 import com.papum.homecookscompanion.model.database.DaoProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.DaoProductAndNutrients
 import com.papum.homecookscompanion.model.database.DaoShops
+import com.papum.homecookscompanion.model.database.DaoShopsWithPurchases
 import com.papum.homecookscompanion.model.database.Database
 import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
@@ -32,26 +33,28 @@ import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutr
 import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
 import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
+import com.papum.homecookscompanion.model.database.EntityShopsWithPurchases
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
 class Repository(app: Context) {
 
-	var daoAlerts							: DaoAlerts
-	var daoIngredient						: DaoIngredientOf
-	var daoInventory						: DaoInventory
-	var daoList								: DaoList
-	var daoMeals							: DaoMeals
-	var daoPurchases						: DaoPurchases
-	var daoProduct							: DaoProduct
-	var daoProductAndInventory				: DaoProductAndInventory
-	var daoProductAndInventoryWithAlerts	: DaoProductAndInventoryWithAlerts
-	var daoProductAndList					: DaoProductAndList
-	var daoProductAndMeals					: DaoProductAndMeals
-	var daoProductAndNutrients				: DaoProductAndNutrients
-	var daoProductAndMealsWithNutrients		: DaoProductAndMealsWithNutrients
-	var daoShops							: DaoShops
+	private var daoAlerts							: DaoAlerts
+	private var daoIngredient						: DaoIngredientOf
+	private var daoInventory						: DaoInventory
+	private var daoList								: DaoList
+	private var daoMeals							: DaoMeals
+	private var daoPurchases						: DaoPurchases
+	private var daoProduct							: DaoProduct
+	private var daoProductAndInventory				: DaoProductAndInventory
+	private var daoProductAndInventoryWithAlerts	: DaoProductAndInventoryWithAlerts
+	private var daoProductAndList					: DaoProductAndList
+	private var daoProductAndMeals					: DaoProductAndMeals
+	private var daoProductAndNutrients				: DaoProductAndNutrients
+	private var daoProductAndMealsWithNutrients		: DaoProductAndMealsWithNutrients
+	private var daoShops							: DaoShops
+	private var daoShopsWithPurchases				: DaoShopsWithPurchases
 
 	init {
 		val db = Database.getDatabase(app)
@@ -69,6 +72,7 @@ class Repository(app: Context) {
 		daoProductAndNutrients				= db.daoProductAndNutrients()
 		daoProductAndMealsWithNutrients		= db.daoProductAndMealsWithNutrients()
 		daoShops							= db.daoShops()
+		daoShopsWithPurchases				= db.daoShopsWithPurchases()
 	}
 
 	/* Get */
@@ -143,6 +147,10 @@ class Repository(app: Context) {
 		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
 		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
 		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval_withNutrients(startOfDay, endOfDay)
+	}
+
+	fun getAllShopsAndPurchases_fromProductId(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
+		return daoShopsWithPurchases.getAllFromProductId(productId.toString())
 	}
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
