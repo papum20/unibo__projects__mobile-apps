@@ -35,6 +35,7 @@ import androidx.work.WorkManager
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
 import org.osmdroid.config.Configuration.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -56,9 +57,28 @@ class MainActivity : AppCompatActivity() {
 		ActivityResultContracts.RequestPermission()
 	) { isGranted ->
 		if (isGranted) {
-			registerGeofencesAndCheckPermissions()
+			Log.d("PERMISSION","granted")
+			_registerGeofences()
 		} else {
-			finish()
+			Log.d("PERMISSION","not granted")
+		}
+	}
+	val locationPermissionRequest = registerForActivityResult(
+		ActivityResultContracts.RequestMultiplePermissions()
+	) { permissions ->
+		when {
+			permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+				Log.d(TAG_PERMISSION, "granted coarse location")
+			}
+			permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+				Log.d(TAG_PERMISSION, "granted fine location")
+			}
+			permissions.getOrDefault(Manifest.permission.ACCESS_BACKGROUND_LOCATION, false) -> {
+				Log.d(TAG_PERMISSION, "granted bg location")
+				_registerGeofences()
+			} else -> {
+			// No location access granted.
+			}
 		}
 	}
 
@@ -222,6 +242,7 @@ class MainActivity : AppCompatActivity() {
 		Log.d("WORK","MIN_PERIODIC_INTERVAL_MILLIS: ${PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000}")
 
 		// Geofencing
+		geofencingClient = LocationServices.getGeofencingClient(this)
 		registerGeofencesAndCheckPermissions()
 
 	}
@@ -261,7 +282,7 @@ class MainActivity : AppCompatActivity() {
 
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
 			ActivityCompat.checkSelfPermission(
-				this@MainActivity,
+				this,
 				Manifest.permission.POST_NOTIFICATIONS
 		) != PackageManager.PERMISSION_GRANTED) {
 			// POST_NOTIFICATIONS permission exists and is needed from api 33 TIRAMISU
@@ -290,17 +311,12 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
-	/* geolocalization */
-	private fun registerGeofencesAndCheckPermissions() {
-
-		if (ActivityCompat.checkSelfPermission(
-				this,
-				Manifest.permission.ACCESS_FINE_LOCATION
-			) != PackageManager.PERMISSION_GRANTED
-		) {
-			backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-			return
-		}
+	/* geolocation */
+	/**
+	 * Should be called with permissions checked.
+	 */
+	@SuppressLint("MissingPermission")
+	private fun _registerGeofences() {
 
 		val pendingIntent: PendingIntent by lazy {
 			val intent = Intent(this, BroadcastReceiverGeofence::class.java)
@@ -337,9 +353,34 @@ class MainActivity : AppCompatActivity() {
 
 	}
 
+	private fun registerGeofencesAndCheckPermissions() {
+
+		val permissionsToAsk = listOf(
+			Manifest.permission.ACCESS_COARSE_LOCATION,
+			Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.ACCESS_BACKGROUND_LOCATION
+		).filter { permission ->
+			ActivityCompat.checkSelfPermission(
+				this,
+				permission
+			) != PackageManager.PERMISSION_GRANTED
+		}.toTypedArray()
+
+		if (permissionsToAsk.isNotEmpty()) {
+			Log.d("PERMISSION", "asking ${permissionsToAsk.joinToString(", ")}")
+			locationPermissionRequest.launch(permissionsToAsk)
+			//backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+			return
+		}
+
+	}
+
 
 
 	companion object {
+
+		private const val TAG_PERMISSION = "PERMISSIONS"
+
 		const val CHANNEL_ID = "Channel_HomecooksCompanion"
 
 		// notificationId is a unique int for each notification that you must define.
