@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,9 +37,10 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
-import org.osmdroid.config.Configuration.*
 import com.google.android.gms.maps.model.LatLng
+import org.osmdroid.config.Configuration.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 import com.papum.homecookscompanion.view.services.ServiceNotificationStock
 import com.papum.homecookscompanion.view.services.WorkerStock
@@ -141,12 +143,12 @@ class MainActivity : AppCompatActivity() {
 		) as NavHostFragment
 		navController = navHostFragment.navController
 
-
 		// setup toolbar and navbar
 		setSupportActionBar(findViewById(R.id.toolbar))
 		findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
 
 		// setup actionbar with top level destinations
+		val drawerLayout: DrawerLayout = findViewById(R.id.drawer)
 		appBarConfiguration = AppBarConfiguration(
 			setOf(
 				R.id.inventory,
@@ -154,10 +156,11 @@ class MainActivity : AppCompatActivity() {
 				R.id.meals,
 				R.id.products,
 				R.id.stats
-			)
+			), drawerLayout
 		)
 		setupActionBarWithNavController(navController, appBarConfiguration)
-
+		val navView: NavigationView = findViewById(R.id.nav_view)
+		navView.setupWithNavController(navController)
 
 		/* Notifications */
 		createNotificationChannel(

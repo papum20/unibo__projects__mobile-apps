@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings"
+    app:startDestination="@id/fragmentSettings">
+
+
+
+    <fragment
+        android:id="@+id/fragmentSettings"
+        android:name="com.papum.homecookscompanion.view.settings.FragmentSettings"
+        android:label="@string/nav_item_text_settings"
+        tools:layout="@layout/page_fragment_settings" />
+
+</navigation>

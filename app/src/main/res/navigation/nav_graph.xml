@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/products">
-    <include app:graph="@navigation/products" />
     <include app:graph="@navigation/inventory" />
     <include app:graph="@navigation/list" />
-    <include app:graph="@navigation/stats" />
     <include app:graph="@navigation/meals" />
+    <include app:graph="@navigation/settings" />
+    <include app:graph="@navigation/stats" />
+    <include app:graph="@navigation/products" />
 </navigation>
