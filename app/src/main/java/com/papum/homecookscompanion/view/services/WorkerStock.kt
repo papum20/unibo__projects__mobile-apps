@@ -62,7 +62,7 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		)
 
 		val builder = NotificationCompat.Builder(applicationContext, MainActivity.CHANNEL_ID)
-			.setSmallIcon(R.drawable.ic_dialog_info)
+			.setSmallIcon(R.drawable.ic_popup_reminder)
 			.setContentTitle(title)
 			.setContentText(text)
 			.setPriority(NotificationCompat.PRIORITY_DEFAULT)

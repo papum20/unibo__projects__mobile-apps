@@ -242,8 +242,7 @@ class MainActivity : AppCompatActivity() {
 	 * fire a notification;
 	 * doesn't check for permission, use wrapper fireNotificationAndCheck()
 	 */
-	@SuppressLint("MissingPermission")
-	fun fireNotificationAndCheckPermissions() {
+	private fun fireNotificationAndCheckPermissions() {
 
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
 			ActivityCompat.checkSelfPermission(
@@ -282,7 +281,8 @@ class MainActivity : AppCompatActivity() {
 		const val CHANNEL_ID = "Channel_HomecooksCompanion"
 
 		// notificationId is a unique int for each notification that you must define.
-		const val NOTIFICATION_ID_STOCK = 0
+		const val NOTIFICATION_ID_STOCK			= 0
+		const val NOTIFICATION_ID_GEOFENCE_SHOP	= 1
 
 		const val WORKER_STOCK_NAME = "stock"
 

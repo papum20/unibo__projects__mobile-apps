@@ -20,7 +20,6 @@ import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 
@@ -148,6 +147,8 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 			val dialog: AlertDialog = builder.create()
 			dialog.show()
+		} else {
+			registerGeofences()
 		}
 
 	}
@@ -179,12 +180,12 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 				.setCircularRegion(
 					BOLOGNA_POINT.latitude,
 					BOLOGNA_POINT.longitude,
-					GEOFENCE_RADIUS
+					GEOFENCE_RADIUS_METERS
 				)
-				.setExpirationDuration(GEOFENCE_DURATION)
-				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
 				.build()
 		)
+
 		val geofencingRequest = GeofencingRequest.Builder().apply {
 			setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
 			addGeofences(geofenceList)
@@ -195,19 +196,43 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 				Manifest.permission.ACCESS_BACKGROUND_LOCATION
 			) != PackageManager.PERMISSION_GRANTED
 		) {
+			Log.e(TAG_GEOFENCES, "Missing background permission")
+			Toast.makeText(context, "Aborted: Missing background permission", Toast.LENGTH_SHORT)
+				.show()
 			return
 		}
 
 		geofencingClient.addGeofences(geofencingRequest, pendingIntent).run {
 			addOnSuccessListener {
 				/* IF THIS FAILS GO TO Settings | Security & location | Location | Mode and set "high accuracy" */
-				Log.d("GEOFENCE", "Geofences were added")
+				Log.i(TAG_GEOFENCES, "Geofences were added")
+				Log.d(TAG_GEOFENCES, "geofences added: ${geofencingRequest.geofences}")
+				Toast.makeText(context, "Success: Geofences were added", Toast.LENGTH_SHORT)
+					.show()
 			}
 			addOnFailureListener {
-				Log.w("GEOFENCE", "Failed to add geofences")
+				Log.e(TAG_GEOFENCES, "Failed to add geofences")
+				Toast.makeText(context, "Aborted: Failed to add geofences", Toast.LENGTH_SHORT)
+					.show()
 			}
 		}
 
+		/*
+		geofencingClient.removeGeofences(pendingIntent).run {
+			addOnSuccessListener {
+				// Geofences removed
+				// ...
+				Log.d(TAG_GEOFENCES, "Geofences were removed")
+				Log.d(TAG_GEOFENCES, "geofences: ${geofencingRequest.geofences}")
+			}
+			addOnFailureListener {
+				// Failed to remove geofences
+				// ...
+				Log.e(TAG_GEOFENCES, "Failed to remove geofences")
+				Log.d(TAG_GEOFENCES, "geofences: ${geofencingRequest.geofences}")
+			}
+		}
+		 */
 	}
 
 
@@ -252,12 +277,13 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 	companion object {
 
-		private const val TAG_PERMISSION = "PERMISSIONS"
+		private const val TAG_GEOFENCES		= "GEOFENCES"
+		private const val TAG_PERMISSION	= "PERMISSIONS"
 
-		private val BOLOGNA_POINT = LatLng(44.496781,11.356387)
-		private const val GEOFENCE_ID = "in_shop"
-		private const val GEOFENCE_RADIUS = 1000f
-		private const val GEOFENCE_DURATION = 1000000L
+		private val BOLOGNA_POINT					= LatLng(44.496781,11.356387)
+		private const val GEOFENCE_ID				= "in_shop"
+		private const val GEOFENCE_RADIUS_METERS	= 150f
+		private const val GEOFENCE_DURATION_MILLIS	= 1000000L
 
 
 		/**
