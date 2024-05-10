@@ -1,7 +1,6 @@
 package com.papum.homecookscompanion.view.services
 
 import android.Manifest
-import android.R
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -62,7 +61,7 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		)
 
 		val builder = NotificationCompat.Builder(applicationContext, MainActivity.CHANNEL_ID)
-			.setSmallIcon(R.drawable.ic_popup_reminder)
+			.setSmallIcon(android.R.drawable.ic_popup_reminder)
 			.setContentTitle(title)
 			.setContentText(text)
 			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
