@@ -12,7 +12,7 @@
         android:ems="10"
         android:hint="@string/editFood_placeholder_name"
         android:inputType="text"
-        android:textSize="@dimen/fontSize_edit_text" />
+        android:textSize="@dimen/et_fontSize" />
 
     <EditText
         android:id="@+id/fragment_edit_food_parent"
@@ -22,7 +22,7 @@
         android:ems="10"
         android:hint="@string/editFood_placeholder_parent"
         android:inputType="text"
-        android:textSize="@dimen/fontSize_edit_text" />
+        android:textSize="@dimen/et_fontSize" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/nutrients_title"
             android:textAlignment="center"
-            android:textSize="@dimen/fontSize_edit_title"
+            android:textSize="@dimen/h2_fontSize"
             android:textStyle="bold" />
 
         <EditText
@@ -47,7 +47,7 @@
             android:ems="10"
             android:hint="@string/nutrients_placeholder_kcal"
             android:inputType="number|numberSigned"
-            android:textSize="@dimen/fontSize_edit_text" />
+            android:textSize="@dimen/et_fontSize" />
 
         <EditText
             android:id="@+id/fragment_edit_food_carbohydrates"
@@ -56,7 +56,7 @@
             android:ems="10"
             android:hint="@string/nutrients_placeholder_carbohydrates"
             android:inputType="number|numberSigned"
-            android:textSize="@dimen/fontSize_edit_text" />
+            android:textSize="@dimen/et_fontSize" />
 
         <EditText
             android:id="@+id/fragment_edit_food_fats"
@@ -65,7 +65,7 @@
             android:ems="10"
             android:hint="@string/nutrients_placeholder_fats"
             android:inputType="number|numberSigned"
-            android:textSize="@dimen/fontSize_edit_text" />
+            android:textSize="@dimen/et_fontSize" />
 
         <EditText
             android:id="@+id/fragment_edit_food_proteins"
@@ -74,7 +74,7 @@
             android:ems="10"
             android:hint="@string/nutrients_placeholder_proteins"
             android:inputType="number|numberSigned"
-            android:textSize="@dimen/fontSize_edit_text" />
+            android:textSize="@dimen/et_fontSize" />
 
     </LinearLayout>
 

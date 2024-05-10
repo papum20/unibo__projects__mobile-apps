@@ -117,7 +117,6 @@ class FragmentProducts :
 	override fun onClickAddToList(product: EntityProduct) {
 		FragmentDialogAddToList.newInstance(this, product)
 			.show(parentFragmentManager, "ADD_INVENTORY")
-
 	}
 
 	override fun onClickAddToMeals(product: EntityProduct) {

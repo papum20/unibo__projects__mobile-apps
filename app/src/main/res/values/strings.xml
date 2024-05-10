@@ -108,9 +108,14 @@
     <string name="receipt_header_selected_price">Selected price</string>
     <string name="receipt_info">Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first)</string>
 
+    <string name="settings_header_notifications">Notifications</string>
+    <string name="settings_geofence">get notified when you\'re in a shop</string>
+
     <!-- buttons -->
     <string name="btn_confirm">Confirm</string>
     <string name="btn_remove">Remove</string>
+    <string name="btn_enable">Enable</string>
+    <string name="btn_cancel">Cancel</string>
 
     <string name="btn_select_product">Select product</string>
     <string name="btn_select_image_receipt">Select a receipt image</string>

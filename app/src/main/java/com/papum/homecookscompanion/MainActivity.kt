@@ -50,40 +50,6 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var navController: NavController
 	private lateinit var appBarConfiguration: AppBarConfiguration
 
-	/* geolocalization */
-	private lateinit var geofencingClient: GeofencingClient
-	private val geofenceList: MutableList<Geofence> = mutableListOf()
-
-	/* Permission launchers */
-	private val backgroundPermissionLauncher = registerForActivityResult(
-		ActivityResultContracts.RequestPermission()
-	) { isGranted ->
-		if (isGranted) {
-			Log.d("PERMISSION","granted")
-			_registerGeofences()
-		} else {
-			Log.d("PERMISSION","not granted")
-		}
-	}
-	val locationPermissionRequest = registerForActivityResult(
-		ActivityResultContracts.RequestMultiplePermissions()
-	) { permissions ->
-		when {
-			permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-				Log.d(TAG_PERMISSION, "granted coarse location")
-			}
-			permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-				Log.d(TAG_PERMISSION, "granted fine location")
-			}
-			permissions.getOrDefault(Manifest.permission.ACCESS_BACKGROUND_LOCATION, false) -> {
-				Log.d(TAG_PERMISSION, "granted bg location")
-				_registerGeofences()
-			} else -> {
-			// No location access granted.
-			}
-		}
-	}
-
 	private val notificationsPermissionLauncher = registerForActivityResult(
 		ActivityResultContracts.RequestPermission()
 	) { isGranted: Boolean ->
@@ -244,10 +210,6 @@ class MainActivity : AppCompatActivity() {
 
 		Log.d("WORK","MIN_PERIODIC_INTERVAL_MILLIS: ${PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000}")
 
-		// Geofencing
-		geofencingClient = LocationServices.getGeofencingClient(this)
-		registerGeofencesAndCheckPermissions()
-
 	}
 
 
@@ -314,75 +276,8 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
-	/* geolocation */
-	/**
-	 * Should be called with permissions checked.
-	 */
-	@SuppressLint("MissingPermission")
-	private fun _registerGeofences() {
-
-		val pendingIntent: PendingIntent by lazy {
-			val intent = Intent(this, BroadcastReceiverGeofence::class.java)
-			// We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
-			// addGeofences() and removeGeofences().
-			PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-		}
-
-		geofenceList.add(
-			Geofence.Builder()
-				.setRequestId(GEOFENCE_ID)
-				.setCircularRegion(
-					BOLOGNA_POINT.latitude,
-					BOLOGNA_POINT.longitude,
-					GEOFENCE_RADIUS)
-				.setExpirationDuration(GEOFENCE_DURATION)
-				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-				.build()
-		)
-		val geofencingRequest = GeofencingRequest.Builder().apply {
-			setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-			addGeofences(geofenceList)
-		}.build()
-
-		geofencingClient.addGeofences(geofencingRequest, pendingIntent).run {
-			addOnSuccessListener {
-				/* IF THIS FAILS GO TO Settings | Security & location | Location | Mode and set "high accuracy" */
-				Log.d("GEOFENCE", "Geofences were added")
-			}
-			addOnFailureListener {
-				Log.w("GEOFENCE", "Failed to add geofences")
-			}
-		}
-
-	}
-
-	private fun registerGeofencesAndCheckPermissions() {
-
-		val permissionsToAsk = listOf(
-			Manifest.permission.ACCESS_COARSE_LOCATION,
-			Manifest.permission.ACCESS_FINE_LOCATION,
-			Manifest.permission.ACCESS_BACKGROUND_LOCATION
-		).filter { permission ->
-			ActivityCompat.checkSelfPermission(
-				this,
-				permission
-			) != PackageManager.PERMISSION_GRANTED
-		}.toTypedArray()
-
-		if (permissionsToAsk.isNotEmpty()) {
-			Log.d("PERMISSION", "asking ${permissionsToAsk.joinToString(", ")}")
-			locationPermissionRequest.launch(permissionsToAsk)
-			//backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-			return
-		}
-
-	}
-
-
 
 	companion object {
-
-		private const val TAG_PERMISSION = "PERMISSIONS"
 
 		const val CHANNEL_ID = "Channel_HomecooksCompanion"
 
@@ -390,12 +285,6 @@ class MainActivity : AppCompatActivity() {
 		const val NOTIFICATION_ID_STOCK = 0
 
 		const val WORKER_STOCK_NAME = "stock"
-
-		private val BOLOGNA_POINT = LatLng(44.496781,11.356387)
-		private const val GEOFENCE_ID = "in_shop"
-		private const val GEOFENCE_RADIUS = 1000f
-		private const val GEOFENCE_DURATION = 1000000L
-
 
 	}
 
