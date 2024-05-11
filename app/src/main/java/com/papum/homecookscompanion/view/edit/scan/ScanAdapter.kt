@@ -34,9 +34,9 @@ class ScanAdapter(
 
 		items?.get(position)?.let { item ->
 			holder.tvRecognized.text		= item.recognizedProduct
-			holder.tvRecognizedPrice.text	= item.recognizedPrice
+			holder.tvRecognizedPrice.text	= item.recognizedPrice.toString()
 			holder.tvProduct.text			= item.product
-			holder.etPrice.setText(item.recognizedPrice)
+			holder.etPrice.setText(item.recognizedPrice.toString())
 		}
 
 		/* UI listeners */
@@ -45,12 +45,12 @@ class ScanAdapter(
 		}
 
 		holder.btnRemove.setOnClickListener { _ ->
-			buttonsListener.onClickRemove(position)
+			buttonsListener.onClickRemove(holder.adapterPosition)
 		}
 
 		holder.etPrice.doOnTextChanged { text, start, before, count ->
-			items?.get(position)?.let { item ->
-				item.price = text.toString()
+			items?.get(holder.adapterPosition)?.let { item ->
+				item.price = text.toString().toFloatOrNull()
 			}
 		}
 

@@ -1,6 +1,5 @@
 package com.papum.homecookscompanion.view.edit.scan
 
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -23,8 +22,6 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import java.io.IOException
-import kotlin.math.max
-import kotlin.math.min
 
 
 /**
@@ -104,95 +101,25 @@ class FragmentScanReceipt
 			recognizer.process(image)
 				.addOnSuccessListener { visionText ->
 
-					Log.i(LOG_TAG_SCAN, visionText.text)
+					Log.d(LOG_TAG_SCAN, visionText.text)
 
-					val products	= mutableListOf<String>()
-					val prices		= mutableListOf<String>()
-
-					val textsWithHeights = mutableListOf<Pair<Rect, String>>()
 					val recognizedLines = mutableListOf<Line>()
-
-					for (block in visionText.textBlocks) {
-						val blockText = block.text
-						Log.i(LOG_TAG_SCAN, "block with ${block.lines.size} lines; midY: ${block.boundingBox?.centerY()}; points: ${block.cornerPoints?.joinToString() }}; text: $blockText")
-
-						for (line in block.lines) {
-							val lineText = line.text
-							Log.i(LOG_TAG_SCAN, "line with midY: ${line.boundingBox?.centerY()}; points: ${line.cornerPoints?.joinToString() }; text: '$lineText'")
-							//textsWithHeights.add(Pair(line.boundingBox!!, "${line.cornerPoints!!.joinToString()} - $lineText"))
-							textsWithHeights.add(Pair(line.boundingBox!!, lineText))
+					for (block in visionText.textBlocks)
+						for (line in block.lines)
 							recognizedLines.add(line)
 
-							if(REGEX_ONLY_PRICE.matches(lineText))
-								prices.add(
-									// if , was used, replace with . for convenience
-									lineText.replace(",",".")
-								)
-							else if(!REGEX_ONLY_TAXES.matches(lineText) and REGEX_ITEM.matches(lineText))
-								products.add(lineText)
-						}
-					}
-
-					val textsWithHeights_sorted = textsWithHeights.sortedBy { it.first.centerY() }
-					//Log.i(LOG_TAG_SCAN, textsWithHeights_sorted.joinToString("\n"))
-
-					val lines_ = mutableListOf<List<Pair<Rect, String>>>()
-					var i_ = 0
-					while(i_ < textsWithHeights_sorted.size) {
-						var j = i_ + 1	// sublist(i, j) excluding j is always on same line
-						// && instead of 'and' is important: it's short-circuit/lazy
-						while( (j + 1 <= textsWithHeights_sorted.size) &&
-							areBlocksAtSameY_(textsWithHeights_sorted.subList(i_, j+1))
-						) {
-							j++
-						}
-
-						lines_.add( textsWithHeights_sorted.subList(i_, j) )
-						i_ = j
-					}
-
-					Log.i(LOG_TAG_SCAN, lines_.joinToString("\n") { it.joinToString("\t") { "${it.first}, ${it.second}, ${it.first.centerY()}" } })
-
-
-
-					val recognizedLines_sorted = recognizedLines.sortedBy { it.boundingBox?.centerY() }
-					Log.i(LOG_TAG_SCAN, recognizedLines_sorted.joinToString{"${it.text}\n"})
-
-					val lines = mutableListOf<List<Line>>()
-					var i = 0
-					while(i < recognizedLines_sorted.size) {
-						var j = i + 1	// sublist(i, j) excluding j is always on same line
-						// && instead of 'and' is important: it's short-circuit/lazy
-						while( (j + 1 <= recognizedLines_sorted.size) &&
-							areBlocksAtSameY(recognizedLines_sorted.subList(i, j+1))
-						) {
-							j++
-						}
-
-						lines.add( recognizedLines_sorted.subList(i, j) )
-						i = j
-					}
+					val lines = groupBlocksInLines(recognizedLines)
+					updateReceiptItems(lines)
+					adapter.updateItems(receiptItems)
 
 					Log.i(LOG_TAG_SCAN, lines.joinToString("\n") {
 							it.joinToString("\t") {
-								"ITEM: ${it.boundingBox}, ${it.boundingBox!!.centerY()}, ${it.text}"
+								//"ITEM: ${it.boundingBox}, ${it.boundingBox!!.centerY()}, ${it.text}"
+								"{${it.text}}"
 							}
 						}
 					)
 
-
-
-
-					receiptItems.clear()
-					for(i in 0..max(products.size, prices.size))
-						receiptItems.add(ScanModel(
-							products.getOrNull(i) ?: "not found",
-							prices.getOrNull(i) ?: "not found",
-							null,
-							prices.getOrNull(i) ?: "not found"
-						))
-
-					adapter.updateItems(receiptItems)
 				}
 				.addOnFailureListener { e ->
 					// Task failed with an exception
@@ -214,10 +141,35 @@ class FragmentScanReceipt
 
 	}
 
+	/** Group lines with same Y, and sort by X.
+	 */
+	private fun groupBlocksInLines(blocks: List<Line>): MutableList<List<Line>> {
+
+		// sort by height
+		val blocks_sorted = blocks.sortedBy { it.boundingBox?.centerY() }
+		//Log.i(LOG_TAG_SCAN + "2", recognizedLines_sorted.joinToString("\n") { it.text })
+
+		val lines = mutableListOf<List<Line>>()
+		var i = 0
+		while(i < blocks_sorted.size) {
+			var j = i + 1	// sublist(i, j) excluding j is always on same line
+			// && instead of 'and' is important: it's short-circuit/lazy
+			while( (j + 1 <= blocks_sorted.size) &&
+				areBlocksAtSameY(blocks_sorted.subList(i, j+1))
+			) {
+				j++
+			}
+			lines.add( blocks_sorted.subList(i, j).sortedBy { it.boundingBox?.left } )
+			i = j
+		}
+
+		return lines
+	}
+
 	/**
-	 * Given, for a block, its corners and edges, we use the average slope of its horizontal edges
-	 * and its centerY to determine a straight line; so, we check that, for each pair of blocks
-	 * in the input list, the line of the first passes through both the vertical edges of the second.
+	 * Checks that all recognized blocks are at the "same" Y (so in same line).
+	 * Specifically, checks that, for each pair of input blocks, the Y-coordinate of the first
+	 * falls in the range of the minimum and maximum Y of the second.
 	 */
 	private fun areBlocksAtSameY(blocksWithTexts: List<Line>): Boolean {
 
@@ -230,92 +182,110 @@ class FragmentScanReceipt
 				return false
 		}
 
-		// straight lines
-		val slopes = mutableListOf<Double>()
 		for(i in blocksWithTexts.indices) {
-			with(blocksWithTexts[i].cornerPoints!!) {
-				val slope_top = (get(1).y - get(0).y).toDouble() / (get(1).x - get(0).x)
-				val slope_bottom = (get(3).y - get(2).y).toDouble() / (get(3).x - get(2).x)
-				slopes.add( (slope_top + slope_bottom) / 2 )
-			}
-		}
-
-		// for each pair, check both ways
-		for(i in 0..(blocksWithTexts.size - 2) ) {
-			val j = i+1
-			//for(j in i+1..<blocksWithTexts.size) {
-
-				val first: Line
-				val second: Line
-				val first_slope: Double
-				val second_slope: Double
-				if(blocksWithTexts[i].boundingBox!!.centerX() <= blocksWithTexts[j].boundingBox!!.centerX()) {
-					first = blocksWithTexts[i]
-					second = blocksWithTexts[j]
-					first_slope = slopes[i]
-					second_slope = slopes[j]
-				} else {
-					first = blocksWithTexts[j]
-					second = blocksWithTexts[i]
-					first_slope = slopes[j]
-					second_slope = slopes[i]
-				}
-
-				val first_x_start	= (first.cornerPoints!![0].x	+ first.cornerPoints!![3].x) / 2
-				val first_x_end		= (first.cornerPoints!![1].x	+ first.cornerPoints!![2].x) / 2
-				val second_x_start	= (second.cornerPoints!![0].x	+ second.cornerPoints!![3].x) / 2
-				val second_x_end	= (second.cornerPoints!![1].x	+ second.cornerPoints!![2].x) / 2
-
-				val firstLine_at_secondStart_y = (
-						first_slope		* (second_x_start - first.boundingBox!!.centerX())	+ first.boundingBox!!.centerY()
-					).toInt()
-				val firstLine_at_secondEnd_y = (
-						first_slope		* (second_x_end - first.boundingBox!!.centerX())	+ first.boundingBox!!.centerY()
-					).toInt()
-				val secondLine_at_firstStart_y = (
-						second_slope	* (first_x_start - second.boundingBox!!.centerX())	+ second.boundingBox!!.centerY()
-					).toInt()
-				val secondLine_at_firstEnd_y = (
-						second_slope	* (first_x_end - second.boundingBox!!.centerX())	+ second.boundingBox!!.centerY()
-					).toInt()
-
-				Log.d("SCANNITEM", "texts: ${first.text}, ${second.text};\n" +
-					"slopes: $first_slope, $second_slope;\n" +
-					"first_at_second_y: $firstLine_at_secondStart_y, $firstLine_at_secondEnd_y;\n" +
-					"second_at_first_y: $secondLine_at_firstStart_y, $secondLine_at_firstEnd_y;\n" +
-					"first_corners: ${first.cornerPoints!!.joinToString()}\n" +
-					"second_corners: ${second.cornerPoints!!.joinToString()}\n" +
-					"first_center: ${first.boundingBox!!.centerX()}, ${first.boundingBox!!.centerY()}\n" +
-					"second_center: ${second.boundingBox!!.centerX()}, ${second.boundingBox!!.centerY()}"
-				)
-
-				if( (firstLine_at_secondStart_y	!in first.cornerPoints!![0]!!.y .. first.cornerPoints!![3]!!.y)		or
-					//(firstLine_at_secondEnd_y	!in first.cornerPoints!![1]!!.y .. first.cornerPoints!![2]!!.y)		or
-					//(secondLine_at_firstStart_y	!in second.cornerPoints!![0]!!.y .. second.cornerPoints!![3]!!.y) 	or
-					(secondLine_at_firstEnd_y	!in second.cornerPoints!![1]!!.y .. second.cornerPoints!![2]!!.y)
+			for(j in i+1..<blocksWithTexts.size) {
+				val yi_min = blocksWithTexts[j].boundingBox!!.top
+				val yi_max = blocksWithTexts[j].boundingBox!!.bottom
+				val yj_min = blocksWithTexts[j].boundingBox!!.top
+				val yj_max = blocksWithTexts[j].boundingBox!!.bottom
+				if ((blocksWithTexts[i].boundingBox!!.centerY() !in yi_min..yi_max) or
+					(blocksWithTexts[j].boundingBox!!.centerY() !in yj_min..yj_max)
 				)
 					return false
-
-			//}
+			}
 		}
 		return true
 	}
 
-	private fun areBlocksAtSameY_(blocksWithTexts: List<Pair<Rect, String>>): Boolean {
+	/** Update receiptItems.
+	 * Extract products names and prices, with regex;
+	 * in case of repeated products/prices for a line, take the first one.
+	 * Also, save data found in rows for price/weight or price/pieces,
+	 * to try to add it to the correct product.
 
-		for(i in blocksWithTexts.indices) {
-			for(j in i+1..<blocksWithTexts.size) {
-				val yi_min = blocksWithTexts[j].first.top
-				val yi_max = blocksWithTexts[j].first.bottom
-				val yj_min = blocksWithTexts[j].first.top
-				val yj_max = blocksWithTexts[j].first.bottom
-				if( !blocksWithTexts[i].first.centerY().let { it in yi_min..yi_max } or
-					!blocksWithTexts[j].first.centerY().let { it in yj_min..yj_max }
-				)
-					return false
+	 */
+	private fun updateReceiptItems(lines: List<List<Line>>) {
+
+		receiptItems.clear()
+
+		var last_pieces: Float?		= null
+		var last_price_kg: Float?	= null
+		var last_price_pieces: Float? = null
+		var last_weight_kg: Float?	= null
+
+		for(i in lines.indices) {
+			var product: String?	= null
+			var price: Float?		= null
+			for(block in lines[i]) {
+
+				if(REGEX_PRICE_ONLY.matches(block.text)) {
+					if (price == null)
+					// if , was used, replace with . for convenience
+						price = block.text.replace(",", ".").toFloat()
+				} else if(!REGEX_TAXES_ONLY.matches(block.text) and REGEX_PRODUCT.matches(block.text)) {
+					if (product == null)
+						product =block.text
+				}
 			}
+
+			// if row didn't contain a price, maybe it contains price/weight or price/pieces
+			if( (product != null) and (price == null) ) {
+
+				// give priority to weight over pieces (as it's more precise)
+				REGEX_PRICE.find(product!!)?.value?.let { price_unit ->
+
+					REGEX_WEIGHT_KG.find(product)?.value?.let { weight_kg ->
+						/* In case, override last saved, as it was probably found too soon and
+						not matched to any product. */
+						last_pieces		= null
+						last_price_kg	= price_unit.toFloat()
+						last_price_pieces = null
+						last_weight_kg	= weight_kg.toFloat()
+					}
+						?: kotlin.run {
+							// don't search pieces inside price and weight (which would match)
+							REGEX_PIECES.find(
+								product.replace(REGEX_PRICE, "")
+									.replace(REGEX_WEIGHT_KG, "")
+							)?.value?.let { pieces ->
+								last_pieces		= pieces.toFloat()
+								last_price_kg	= null
+								last_price_pieces = price_unit.toFloat()
+								last_weight_kg	= null
+							}
+						}
+				}
+
+				// TODO: mode to add weight/pieces of this item to the previous one instead of the next
+
+			}
+			// else check if you can add the previously saved data to the current product
+			else if( (product != null) and (price != null) ) {
+				if(last_weight_kg != null) {
+					// TODO:
+				} else if(last_pieces != null) {
+					// TODO:
+				}
+
+				last_pieces		= null
+				last_price_kg	= null
+				last_price_pieces = null
+				last_weight_kg	= null
+			}
+
+			// add default values if a field was not found
+			receiptItems.add(
+				ScanModel(
+					product ?: DFLT_ITEM,
+					price ?: DFLT_PRICE,
+					null,
+					price ?: DFLT_PRICE,
+					null,
+					null,
+					null,
+					null
+				))
 		}
-		return true
 	}
 
 
@@ -334,9 +304,16 @@ class FragmentScanReceipt
 
 		private const val LOG_TAG_SCAN = "SCAN"
 
-		private val REGEX_ONLY_PRICE = Regex("^-?\\d+[.,]\\d{2}$")
-		private val REGEX_ONLY_TAXES = Regex("^\\d+%")
-		private val REGEX_ITEM = Regex("[^\\n]+")
+		private val REGEX_PRODUCT		= Regex("^\\w+")
+		// ?: is a non-capturing group; \\D is a non-digit
+		private val REGEX_PIECES		= Regex("\\d+ ?(?:\\D|$)", RegexOption.IGNORE_CASE)
+		private val REGEX_PRICE			= Regex("-?\\d+[.,] ?\\d{2}+")
+		private val REGEX_PRICE_ONLY	= Regex("^-?\\d+[.,] ?\\d{2}$")
+		private val REGEX_TAXES_ONLY	= Regex("^\\d+%")
+		private val REGEX_WEIGHT_KG		= Regex("\\d+[.,] ?\\d{3}")
+
+		private const val DFLT_ITEM		= "[Not found]"
+		private const val DFLT_PRICE	= 0.00F
 
 		/**
          * Use this factory method to create a new instance of
