@@ -85,7 +85,7 @@ notification:
 *	settings: hour of day
 
 implementation :
-*	fragments args (newinstance/constructor)
+*	fragments args: remove and use oter (newinstance/constructor; budle; viewModel, context)
 *	bundle keys in R.strings
 *	use R strings formatters (e.g. list {} ...)
 *	repo singleton

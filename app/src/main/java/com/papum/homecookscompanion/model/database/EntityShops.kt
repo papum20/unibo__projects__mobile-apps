@@ -12,7 +12,12 @@ import androidx.room.PrimaryKey
 )
 class EntityShops(
 	@PrimaryKey(autoGenerate = true)
-	var id: Long,
-	
-	var brand: String
+	val id: Long,
+
+	val address: String,
+	val brand: String,
+	val city: String,
+	val state: String,
+	val latitude: Double,
+	val longitude: Double
 )

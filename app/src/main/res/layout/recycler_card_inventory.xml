@@ -17,7 +17,7 @@ android:layout_height="wrap_content">
             android:paddingHorizontal="@dimen/recycler_card_padding_h">
 
             <ImageView
-                android:id="@+id/recycler_card_inventory_img_type"
+                android:id="@+id/recycler_productExpandable_img_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -35,7 +35,7 @@ android:layout_height="wrap_content">
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_text"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_img_type"
+                app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_img_type"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

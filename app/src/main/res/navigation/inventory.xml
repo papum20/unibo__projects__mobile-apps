@@ -27,7 +27,12 @@
         android:id="@+id/fragmentScanReceipt"
         android:name="com.papum.homecookscompanion.view.edit.scan.FragmentScanReceipt"
         android:label="@string/nav_label_scan"
-        tools:layout="@layout/fragment_scan_receipt" />
+        tools:layout="@layout/fragment_scan_receipt" >
+        <action
+            android:id="@+id/action_fragmentScanReceipt_to_fragmentProductsWithResult"
+            app:destination="@id/fragmentProductsWithResult"
+            app:popUpTo="@id/fragmentScanReceipt" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentEditFoodFromInventory"
         android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
@@ -38,5 +43,11 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentProductsWithResult"
+        android:name="com.papum.homecookscompanion.view.products.FragmentProductsWithResult"
+        android:label="FragmentProductsWithResult"
+        tools:layout="@layout/fragment_products_with_result"
+        />
 
 </navigation>

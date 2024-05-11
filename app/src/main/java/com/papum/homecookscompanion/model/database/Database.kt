@@ -20,7 +20,7 @@ import java.util.concurrent.Executors
 		EntityProduct::class,
 		EntityShops::class,
    ],
-	version = 16,
+	version = 17,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -63,6 +63,7 @@ abstract class Database : RoomDatabase() {
 					val daoInventory			= INSTANCE?.daoInventory()
 					val daoList					= INSTANCE?.daoList()
 					val daoProductAndNutrients	= INSTANCE?.daoProductAndNutrients()
+					val daoShops				= INSTANCE?.daoShops()
 
 					val idPlant		= daoProductAndNutrients?.insertProductAndNutrients(
 							EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false),
@@ -103,6 +104,12 @@ abstract class Database : RoomDatabase() {
 					idPlant?.let { id ->
 						daoAlerts?.insertOne(EntityAlerts(id, 1F))
 					}
+
+
+					val idShop = daoShops?.insertOne(EntityShops(
+						0,"via del Lavoro 8","Eurospin", "Bologna", "Italy",
+						44.50305191918619, 11.361257401450482
+					))
 
 				}
 			}

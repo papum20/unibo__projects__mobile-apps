@@ -32,7 +32,7 @@ import org.osmdroid.views.MapView
  */
 class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
-	val args: FragmentEditFoodArgs by navArgs()
+	private val args: FragmentEditFoodArgs by navArgs()
 
 	private lateinit var navController: NavController
 

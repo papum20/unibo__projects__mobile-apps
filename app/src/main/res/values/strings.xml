@@ -71,6 +71,7 @@
 
     <string name="product_placeholder_alert">{}</string>
     <string name="product_placeholder_quantity">q.ty</string>
+    <string name="product_search_placeholder">Search a product</string>
     <string name="product_placeholder_text">some product</string>
     <string name="product_placeholder_type">(Type)</string>
     <string name="product_format_date">%02d/%02d/%04d</string>
@@ -95,7 +96,6 @@
     <string name="meals_date_btn_left_description">button previous day</string>
     <string name="meals_date_btn_right_description">button next day</string>
 
-    <string name="products_search_textInput_placeholder">Search a product</string>
     <string name="products_btn_addToList">+List</string>
     <string name="products_btn_addToInventory">+Inventory</string>
     <string name="products_btn_addToMeals">+Meals</string>

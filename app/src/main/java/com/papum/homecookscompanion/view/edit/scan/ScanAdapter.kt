@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
+import com.papum.homecookscompanion.model.database.EntityProduct
 
 
 class ScanAdapter(
@@ -19,7 +20,7 @@ class ScanAdapter(
 
 	interface IListenerOnClickReceiptEntry {
 		fun onClickRemove(position: Int)
-		fun onClickSelectProduct()
+		fun onClickSelectProduct(position: Int)
 	}
 
 
@@ -33,6 +34,7 @@ class ScanAdapter(
     override fun onBindViewHolder(holder: ScanViewHolder, position: Int) {
 
 		items?.get(position)?.let { item ->
+			Log.d("ADAPT", "${item.product}, $position")
 			holder.tvRecognized.text		= item.recognizedProduct
 			holder.tvRecognizedPrice.text	= item.recognizedPrice.toString()
 			holder.tvProduct.text			= item.product
@@ -41,7 +43,7 @@ class ScanAdapter(
 
 		/* UI listeners */
 		holder.btnSelectProduct.setOnClickListener { _ ->
-
+			buttonsListener.onClickSelectProduct(holder.adapterPosition)
 		}
 
 		holder.btnRemove.setOnClickListener { _ ->
@@ -65,6 +67,12 @@ class ScanAdapter(
 	fun updateItems(newItems: MutableList<ScanModel>) {
 		items = newItems
 		notifyDataSetChanged()
+		Log.d("RECEIPT_UPDATE", "items_n: $itemCount")
+	}
+
+	fun updateItem(position: Int, newItem: ScanModel) {
+		items?.set(position, newItem)
+		notifyItemChanged(position)
 		Log.d("RECEIPT_UPDATE", "items_n: $itemCount")
 	}
 

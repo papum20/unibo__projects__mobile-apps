@@ -50,9 +50,7 @@ class InventoryAdapter(
 		Log.d("INVENTORY_VIEW_HOLDER", "create at position ${position}")
 
 		holder.etAlert.setText( items?.get(position)?.let {
-				it.alert?.let { alert ->
-					alert.quantity.toString()
-				} ?: "(none)"
+				it.alert?.quantity?.toString() ?: "(none)"
 			}
 		)
 
@@ -87,44 +85,52 @@ class InventoryAdapter(
 			}
 		}
 
-		items?.get(position)?.let { item ->
-			// open product info and nutrients
-			holder.layoutInfo.setOnClickListener { _ ->
+		// open product info and nutrients
+		holder.layoutInfo.setOnClickListener { _ ->
+			items?.get(holder.adapterPosition)?.let { item ->
 				uiListener.onClickInfo(item.product)
 			}
+		}
 
-			/*
-			// update product quantity for alert
-			holder.etAlert.setOnEditorActionListener { v, actionId, event ->
-				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					val quantity = v.text.toString().toFloatOrNull() ?: 0.0f
-					uiListener.onSetAlert(item.product.id, item.alert, quantity)
-				}
-				true
+		/*
+		// update product quantity for alert
+		holder.etAlert.setOnEditorActionListener { v, actionId, event ->
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				val quantity = v.text.toString().toFloatOrNull() ?: 0.0f
+				uiListener.onSetAlert(item.product.id, item.alert, quantity)
 			}
-			*/
+			true
+		}
+		*/
 
-			// update product quantity for alert
-			holder.etAlert.doOnTextChanged { text, start, before, count ->
+		// update product quantity for alert
+		holder.etAlert.doOnTextChanged { text, start, before, count ->
+			items?.get(holder.adapterPosition)?.let { item ->
 				text.toString().toFloatOrNull()?.let { quantity ->
 					uiListener.onSetAlert(item.product.id, item.alert, quantity)
 				}
 			}
+		}
 
-			// update product quantity to inventory
-			holder.etQuantity.doOnTextChanged { text, start, before, count ->
+		// update product quantity to inventory
+		holder.etQuantity.doOnTextChanged { text, start, before, count ->
+			items?.get(holder.adapterPosition)?.let { item ->
 				text.toString().toFloatOrNull()?.let { quantity ->
 					uiListener.onSetQuantity(item.product.id, item.inventoryItem, quantity)
-					}
 				}
+			}
+		}
 
 
-			// add product to list
-			holder.btnAddList.setOnClickListener { _ ->
+		// add product to list
+		holder.btnAddList.setOnClickListener { _ ->
+			items?.get(holder.adapterPosition)?.let { item ->
 				uiListener.onClickAddToList(item.product)
 			}
-			// add product to meals
-			holder.btnAddMeals.setOnClickListener { _ ->
+		}
+		// add product to meals
+		holder.btnAddMeals.setOnClickListener { _ ->
+			items?.get(holder.adapterPosition)?.let { item ->
 				uiListener.onClickAddToMeals(item.product)
 			}
 		}

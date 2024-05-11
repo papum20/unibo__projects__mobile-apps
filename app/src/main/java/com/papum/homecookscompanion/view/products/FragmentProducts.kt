@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
@@ -29,19 +28,18 @@ import java.time.LocalDateTime
  */
 class FragmentProducts :
 	Fragment(R.layout.page_fragment_products),
-	ProductsAdapter.IListenerOnClickProduct,
+	ProductsAdapter.IListenerOnClickProductExpandable,
 	FragmentDialogAddToList.IListenerDialog,
 	FragmentDialogAddToInventory.IListenerDialog,
 	FragmentDialogAddToMeals.IListenerDialog
 {
 
-	// View Model
+
 	private val viewModel: ProductsViewModel by viewModels {
 		ProductsViewModelFactory(
 			Repository(requireActivity().application)
 		)
 	}
-
 	private lateinit var navController: NavController
 
 
@@ -67,7 +65,6 @@ class FragmentProducts :
 
 		// first fetch all
 		viewModel.getAllProducts().observe(viewLifecycleOwner) { products ->
-			Log.d("PRODUCTS_ALL", "products ids: ${products.map{ p -> "${p.id}.${p.name};" }}")
 			adapter.updateItems(products)
 		}
 
@@ -77,7 +74,6 @@ class FragmentProducts :
 		view.findViewById<EditText>(R.id.products_editText_search)
 			.doOnTextChanged { text, start, before, count ->
 				viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
-					Log.d("PRODUCTS_SEARCH", "products ids: ${products.map{ p -> "${p.id}.${p.name};" }}")
 					adapter.updateItems(products)
 				}
 			}

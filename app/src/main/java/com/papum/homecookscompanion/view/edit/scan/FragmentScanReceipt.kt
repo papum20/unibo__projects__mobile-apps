@@ -13,6 +13,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.mlkit.vision.common.InputImage
@@ -21,6 +23,8 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.view.products.ProductResultViewModel
+import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
 import java.io.IOException
 
 
@@ -31,17 +35,21 @@ import java.io.IOException
  */
 class FragmentScanReceipt
 	: Fragment(R.layout.fragment_scan_receipt),
-	ScanAdapter.`IListenerOnClickReceiptEntry`
+	ScanAdapter.IListenerOnClickReceiptEntry
 {
 
 	private val receiptItems = mutableListOf<ScanModel>()
+	private var selectedProductIndex: Int? = null
 
-	// View Model
 	private val viewModel: ScanViewModel by viewModels {
 		ScanViewModelFactory(
 			Repository(requireActivity().application)
 		)
 	}
+	private val viewModel_selectProduct: ProductResultViewModel by viewModels {
+		ProductResultViewModelFactory()
+	}
+	private lateinit var navController: NavController
 	private val adapter = ScanAdapter(receiptItems, this)
 
 	private val launcher: ActivityResultLauncher<String> =
@@ -65,6 +73,8 @@ class FragmentScanReceipt
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		navController = findNavController()
+
 		/* Recycler */
 		val recycler = view.findViewById<RecyclerView>(R.id.scan_recycler_view)
 		recycler.adapter = adapter
@@ -77,6 +87,15 @@ class FragmentScanReceipt
 
 		view.findViewById<Button>(R.id.scan_btn_confirm).setOnClickListener { _ ->
 			// TODO: 
+		}
+
+		viewModel_selectProduct.selectedProduct.observe(viewLifecycleOwner) { selectedProduct ->
+			selectedProductIndex?.let { position ->
+				adapter.updateItem(position, receiptItems[position].apply {
+					selectedProduct.name.let { product = it }
+				})
+				selectedProductIndex = null
+			}
 		}
 
     }
@@ -112,7 +131,7 @@ class FragmentScanReceipt
 					updateReceiptItems(lines)
 					adapter.updateItems(receiptItems)
 
-					Log.i(LOG_TAG_SCAN, lines.joinToString("\n") {
+					Log.d(LOG_TAG_SCAN, lines.joinToString("\n") {
 							it.joinToString("\t") {
 								//"ITEM: ${it.boundingBox}, ${it.boundingBox!!.centerY()}, ${it.text}"
 								"{${it.text}}"
@@ -197,7 +216,27 @@ class FragmentScanReceipt
 		return true
 	}
 
-	/** Update receiptItems.
+	/**
+	 * Extract float from a string recognized with REGEX_PRICE or REGEX_PRICE_ONLY.
+	 */
+	private fun regexPrice_toFloat(price: String): Float {
+		return price.replace(" ", "").replace(",", ".").toFloat()
+	}
+	/**
+	 * Extract float from a string recognized with REGEX_WEIGHT_KG.
+	 */
+	private fun regexWeight_toFloat(price: String): Float {
+		return price.replace(" ", "").replace(",", ".").toFloat()
+	}
+	/**
+	 * Extract float from a string recognized with REGEX_PIECES.
+	 */
+	private fun regexPieces_toFloat(price: String): Float {
+		return price.replace(" ", "").toFloat()
+	}
+
+	/**
+	 * Update receiptItems.
 	 * Extract products names and prices, with regex;
 	 * in case of repeated products/prices for a line, take the first one.
 	 * Also, save data found in rows for price/weight or price/pieces,
@@ -220,38 +259,41 @@ class FragmentScanReceipt
 
 				if(REGEX_PRICE_ONLY.matches(block.text)) {
 					if (price == null)
-					// if , was used, replace with . for convenience
-						price = block.text.replace(",", ".").toFloat()
-				} else if(!REGEX_TAXES_ONLY.matches(block.text) and REGEX_PRODUCT.matches(block.text)) {
+					// reformat to float - if , was used, replace with . for convenience
+						price = regexPrice_toFloat(block.text)
+				} else if(!REGEX_TAXES_ONLY.matches(block.text) && REGEX_PRODUCT.matches(block.text)) {
 					if (product == null)
-						product =block.text
+						product = block.text
 				}
 			}
 
 			// if row didn't contain a price, maybe it contains price/weight or price/pieces
-			if( (product != null) and (price == null) ) {
+			if( product != null && price == null ) {
 
 				// give priority to weight over pieces (as it's more precise)
-				REGEX_PRICE.find(product!!)?.value?.let { price_unit ->
+				REGEX_PRICE.find(product)?.value?.let { price_unit ->
 
-					REGEX_WEIGHT_KG.find(product)?.value?.let { weight_kg ->
+					REGEX_WEIGHT_KG.find(product!!)?.value?.let { weight_kg ->
 						/* In case, override last saved, as it was probably found too soon and
 						not matched to any product. */
 						last_pieces		= null
-						last_price_kg	= price_unit.toFloat()
+						last_price_kg	= regexPrice_toFloat(price_unit)
 						last_price_pieces = null
-						last_weight_kg	= weight_kg.toFloat()
+						last_weight_kg	= regexWeight_toFloat(weight_kg)
+						// if it was a weight/pieces, don't save as product
+						product = null
 					}
 						?: kotlin.run {
 							// don't search pieces inside price and weight (which would match)
 							REGEX_PIECES.find(
-								product.replace(REGEX_PRICE, "")
+								product!!.replace(REGEX_PRICE, "")
 									.replace(REGEX_WEIGHT_KG, "")
-							)?.value?.let { pieces ->
-								last_pieces		= pieces.toFloat()
+							)?.groupValues?.get(1)?.let { pieces ->
+								last_pieces		= regexPieces_toFloat(pieces)
 								last_price_kg	= null
-								last_price_pieces = price_unit.toFloat()
+								last_price_pieces = regexPrice_toFloat(price_unit)
 								last_weight_kg	= null
+								product = null
 							}
 						}
 				}
@@ -260,7 +302,7 @@ class FragmentScanReceipt
 
 			}
 			// else check if you can add the previously saved data to the current product
-			else if( (product != null) and (price != null) ) {
+			else if( product != null ) {
 				if(last_weight_kg != null) {
 					// TODO:
 				} else if(last_pieces != null) {
@@ -273,26 +315,30 @@ class FragmentScanReceipt
 				last_weight_kg	= null
 			}
 
-			// add default values if a field was not found
-			receiptItems.add(
-				ScanModel(
-					product ?: DFLT_ITEM,
-					price ?: DFLT_PRICE,
-					null,
-					price ?: DFLT_PRICE,
-					null,
-					null,
-					null,
-					null
-				))
+			if(product != null && price != null)
+				// add if it was not a weight/pieces row, and add default values if a field was not found
+				receiptItems.add(
+					ScanModel(
+						product ?: DFLT_ITEM,
+						price ?: DFLT_PRICE,
+						null,
+						price ?: DFLT_PRICE,
+						null,
+						null,
+						null,
+						null
+					))
 		}
 	}
 
 
 	/* ScanAdapter.IListenerOnClickSelectProduct */
 
-	override fun onClickSelectProduct() {
-		TODO("Not yet implemented")
+	override fun onClickSelectProduct(position: Int) {
+		selectedProductIndex = position
+		navController.navigate(
+			FragmentScanReceiptDirections.actionFragmentScanReceiptToFragmentProductsWithResult()
+		)
 	}
 
 	override fun onClickRemove(position: Int) {
@@ -304,13 +350,16 @@ class FragmentScanReceipt
 
 		private const val LOG_TAG_SCAN = "SCAN"
 
-		private val REGEX_PRODUCT		= Regex("^\\w+")
+
+		// anything (\n shouldn't happen)
+		private val REGEX_PRODUCT		= Regex("[^\\n]+")
 		// ?: is a non-capturing group; \\D is a non-digit
-		private val REGEX_PIECES		= Regex("\\d+ ?(?:\\D|$)", RegexOption.IGNORE_CASE)
-		private val REGEX_PRICE			= Regex("-?\\d+[.,] ?\\d{2}+")
-		private val REGEX_PRICE_ONLY	= Regex("^-?\\d+[.,] ?\\d{2}$")
-		private val REGEX_TAXES_ONLY	= Regex("^\\d+%")
-		private val REGEX_WEIGHT_KG		= Regex("\\d+[.,] ?\\d{3}")
+		private val REGEX_PIECES		= Regex("(\\d ?)+(?:\\D|$)", RegexOption.IGNORE_CASE)
+		// admit up to 1 space after each digit, for scanning errors
+		private val REGEX_PRICE			= Regex("-?(\\d ?)+[.,] ?(\\d ?){2}")
+		private val REGEX_PRICE_ONLY	= Regex("^-?(\\d ?)+[.,] ?(\\d ?){2}$")
+		private val REGEX_TAXES_ONLY	= Regex("^(\\d ?){0,3}%")
+		private val REGEX_WEIGHT_KG		= Regex("(\\d ?)+[.,] ?(\\d ?){3}")
 
 		private const val DFLT_ITEM		= "[Not found]"
 		private const val DFLT_PRICE	= 0.00F
