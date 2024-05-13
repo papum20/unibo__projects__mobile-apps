@@ -16,6 +16,8 @@ import com.papum.homecookscompanion.model.database.DaoProductAndList
 import com.papum.homecookscompanion.model.database.DaoProductAndMeals
 import com.papum.homecookscompanion.model.database.DaoProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.DaoProductAndNutrients
+import com.papum.homecookscompanion.model.database.DaoProductAndProductRecognized
+import com.papum.homecookscompanion.model.database.DaoProductRecognized
 import com.papum.homecookscompanion.model.database.DaoShops
 import com.papum.homecookscompanion.model.database.DaoShopsWithPurchases
 import com.papum.homecookscompanion.model.database.Database
@@ -31,6 +33,8 @@ import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
+import com.papum.homecookscompanion.model.database.EntityProductAndProductRecognized
+import com.papum.homecookscompanion.model.database.EntityProductRecognized
 import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
 import com.papum.homecookscompanion.model.database.EntityShopsWithPurchases
@@ -53,6 +57,8 @@ class Repository(app: Context) {
 	private var daoProductAndMeals					: DaoProductAndMeals
 	private var daoProductAndNutrients				: DaoProductAndNutrients
 	private var daoProductAndMealsWithNutrients		: DaoProductAndMealsWithNutrients
+	private var daoProductAndProductRecognized		: DaoProductAndProductRecognized
+	private var daoProductRecognized				: DaoProductRecognized
 	private var daoShops							: DaoShops
 	private var daoShopsWithPurchases				: DaoShopsWithPurchases
 
@@ -71,6 +77,8 @@ class Repository(app: Context) {
 		daoProductAndMeals					= db.daoProductAndMeals()
 		daoProductAndNutrients				= db.daoProductAndNutrients()
 		daoProductAndMealsWithNutrients		= db.daoProductAndMealsWithNutrients()
+		daoProductAndProductRecognized		= db.daoProductAndProductRecognized()
+		daoProductRecognized				= db.daoProductRecognized()
 		daoShops							= db.daoShops()
 		daoShopsWithPurchases				= db.daoShopsWithPurchases()
 	}
@@ -83,6 +91,10 @@ class Repository(app: Context) {
 
 	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
 		return daoProduct.getAllMatches_lowercase("%${substr.lowercase()}%")
+	}
+
+	fun getAllProductsRecognized_fromTextAndShop(recognizedTexts: List<String>, shopId: Long): LiveData<List<EntityProductAndProductRecognized>> {
+		return daoProductAndProductRecognized.getAll_fromTextAndShop(recognizedTexts, shopId)
 	}
 
 	fun getAllProductsWithInventory(): LiveData<List<EntityProductAndInventory>> {
@@ -149,6 +161,17 @@ class Repository(app: Context) {
 		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval_withNutrients(startOfDay, endOfDay)
 	}
 
+	fun getAllShops(): LiveData<List<EntityShops>> {
+		return daoShops.getAll()
+	}
+
+	/**
+	 * Match shops on a substring of brand name.
+ 	 */
+	fun getAllShops_fromSubstrBrand(brandSubstr: String): LiveData<List<EntityShops>> {
+		return daoShops.getAllMatches_onBrand(brandSubstr)
+	}
+
 	fun getAllShopsAndPurchases_fromProductId(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
 		return daoShopsWithPurchases.getAllFromProductId(productId.toString())
 	}
@@ -211,21 +234,27 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertPurchase(purchase: EntityPurchases) {
-		Database.databaseWriteExecutor.execute {
-			daoPurchases.insertOne(purchase)
-		}
-	}
-
 	fun insertProduct(product: EntityProduct) {
 		Database.databaseWriteExecutor.execute {
 			daoProduct.insertProduct(product)
 		}
 	}
 
+	fun insertProductRecognized(productRecognized: EntityProductRecognized) {
+		Database.databaseWriteExecutor.execute {
+			daoProductRecognized.insertOne(productRecognized)
+		}
+	}
+
 	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
 		Database.databaseWriteExecutor.execute {
 			daoProductAndNutrients.insertProductAndNutrients(product, nutrients)
+		}
+	}
+
+	fun insertPurchase(purchase: EntityPurchases) {
+		Database.databaseWriteExecutor.execute {
+			daoPurchases.insertOne(purchase)
 		}
 	}
 

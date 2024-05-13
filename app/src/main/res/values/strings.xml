@@ -79,6 +79,7 @@
     <string name="product_format_quantity">%5.2f</string>
 
     <string name="receipt_placeholder_price">\??,??</string>
+    <string name="receipt_placeholder_shop">Eurospin...</string>
 
     <string name="recognized_placeholder">(Recognized product)</string>
     <string name="recognized_placeholder_price">(Recognized price)</string>
@@ -106,6 +107,8 @@
     <string name="receipt_header_recognized_price">Recognized price</string>
     <string name="receipt_header_selected">Selected product /</string>
     <string name="receipt_header_selected_price">Selected price</string>
+    <string name="receipt_shop">Select the shop</string>
+    <string name="receipt_shop_info">It\'s required to recognize the receipt products properly.</string>
     <string name="receipt_info">Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first)</string>
 
     <string name="settings_header_notifications">Notifications</string>

@@ -18,6 +18,7 @@
     <dimen name="h2_fontSize">22sp</dimen>
     <dimen name="tv_fontSize">16sp</dimen>
     <dimen name="tv_padding">3dp</dimen>
+    <dimen name="tv_info_fontSize">12sp</dimen>
 
     <!-- more complex elements -->
     <dimen name="map_height">200dp</dimen>

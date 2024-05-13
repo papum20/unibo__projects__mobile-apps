@@ -6,13 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +28,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.model.database.EntityShops
 import com.papum.homecookscompanion.view.products.ProductResultViewModel
 import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
 import java.io.IOException
@@ -38,7 +44,6 @@ class FragmentScanReceipt
 	ScanAdapter.IListenerOnClickReceiptEntry
 {
 
-	private val receiptItems = mutableListOf<ScanModel>()
 	private var selectedProductIndex: Int? = null
 
 	private val viewModel: ScanViewModel by viewModels {
@@ -47,10 +52,10 @@ class FragmentScanReceipt
 		)
 	}
 	private val viewModel_selectProduct: ProductResultViewModel by viewModels {
-		ProductResultViewModelFactory()
+		ProductResultViewModelFactory(requireActivity())
 	}
 	private lateinit var navController: NavController
-	private val adapter = ScanAdapter(receiptItems, this)
+	private val adapter = ScanAdapter(mutableListOf(), this)
 
 	private val launcher: ActivityResultLauncher<String> =
 		registerForActivityResult(
@@ -75,6 +80,33 @@ class FragmentScanReceipt
 
 		navController = findNavController()
 
+		/* input suggestions */
+		// shop brand
+		val adapterShopsBrands = ArrayAdapter(
+			requireContext(),
+			android.R.layout.simple_dropdown_item_1line,
+			mutableListOf<EntityShops>()
+		)
+		view.findViewById<AutoCompleteTextView>(com.papum.homecookscompanion.R.id.scan_shop_brand_et).apply {
+			setAdapter(adapterShopsBrands)
+			threshold = AUTOCOMPLETE_SHOP_BRAND_THRESHOLD
+
+			doOnTextChanged { text, start, before, count ->
+				if(viewModel.selectedShop.value != null)
+					Log.d(LOG_TAG_SCAN, "Shop set to null.")
+				viewModel.typedShop.value		= text.toString()
+				viewModel.selectedShop.value	= null
+			}
+
+			onItemClickListener =
+				AdapterView.OnItemClickListener { parent, view, position, id ->
+					with(adapterShopsBrands) {
+						viewModel.selectedShop.value = adapterShopsBrands.getItem(position)
+						Log.i(LOG_TAG_SCAN, "Selected shop: ${adapterShopsBrands.getItem(position).toString()}")
+					}
+				}
+		}
+
 		/* Recycler */
 		val recycler = view.findViewById<RecyclerView>(R.id.scan_recycler_view)
 		recycler.adapter = adapter
@@ -89,12 +121,43 @@ class FragmentScanReceipt
 			// TODO: 
 		}
 
+		/* observers */
+
+		// typed shop brand
+		viewModel.getShops_matchingBrand().observe(viewLifecycleOwner) { shopsBrands ->
+			adapterShopsBrands.clear()
+			adapterShopsBrands.addAll(shopsBrands)
+			adapterShopsBrands.notifyDataSetChanged()
+		}
+
+		// fetched products associations
+		viewModel.getRecognizedProducts().observe(viewLifecycleOwner) { recognizedPerEachProduct ->
+			Log.d("RECOGNIZED", recognizedPerEachProduct.joinToString{it.product.id.toString()} )
+			viewModel.receiptItems.value?.let { items ->
+
+				recognizedPerEachProduct.forEach { recognizedPerProduct ->
+					recognizedPerProduct.recognized.forEach { recognized ->
+						// if scan item has not an association yet, search one in the data from db
+						items.find {
+								it.recognizedProduct == recognized.recognizedText
+							}?.let { item ->
+								item.product = recognizedPerProduct.product.toString()
+						}
+					}
+				}
+				adapter.updateItems(items)
+			}
+		}
+
+		// selected product association
 		viewModel_selectProduct.selectedProduct.observe(viewLifecycleOwner) { selectedProduct ->
 			selectedProductIndex?.let { position ->
-				adapter.updateItem(position, receiptItems[position].apply {
-					selectedProduct.name.let { product = it }
-				})
-				selectedProductIndex = null
+				viewModel.receiptItems.value?.get(position)?.let { oldItem ->
+					adapter.updateItem(position, oldItem.apply {
+						product = selectedProduct?.name ?: DFLT_ITEM
+					})
+					selectedProductIndex = null
+				}
 			}
 		}
 
@@ -129,7 +192,7 @@ class FragmentScanReceipt
 
 					val lines = groupBlocksInLines(recognizedLines)
 					updateReceiptItems(lines)
-					adapter.updateItems(receiptItems)
+					viewModel.receiptItems.value?.let { adapter.updateItems(it) }
 
 					Log.d(LOG_TAG_SCAN, lines.joinToString("\n") {
 							it.joinToString("\t") {
@@ -245,7 +308,7 @@ class FragmentScanReceipt
 	 */
 	private fun updateReceiptItems(lines: List<List<Line>>) {
 
-		receiptItems.clear()
+		val newReceiptItems = mutableListOf<ScanModel>()
 
 		var last_pieces: Float?		= null
 		var last_price_kg: Float?	= null
@@ -317,7 +380,7 @@ class FragmentScanReceipt
 
 			if(product != null && price != null)
 				// add if it was not a weight/pieces row, and add default values if a field was not found
-				receiptItems.add(
+				newReceiptItems.add(
 					ScanModel(
 						product ?: DFLT_ITEM,
 						price ?: DFLT_PRICE,
@@ -328,6 +391,9 @@ class FragmentScanReceipt
 						null,
 						null
 					))
+
+			viewModel.receiptItems.value = newReceiptItems
+
 		}
 	}
 
@@ -344,6 +410,7 @@ class FragmentScanReceipt
 	override fun onClickRemove(position: Int) {
 		adapter.deleteItem(position)
 	}
+
 
 
     companion object {
@@ -363,6 +430,8 @@ class FragmentScanReceipt
 
 		private const val DFLT_ITEM		= "[Not found]"
 		private const val DFLT_PRICE	= 0.00F
+
+		private val AUTOCOMPLETE_SHOP_BRAND_THRESHOLD = 2
 
 		/**
          * Use this factory method to create a new instance of

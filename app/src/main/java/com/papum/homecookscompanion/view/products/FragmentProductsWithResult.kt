@@ -1,14 +1,12 @@
 package com.papum.homecookscompanion.view.products
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -23,6 +21,9 @@ import com.papum.homecookscompanion.model.database.EntityProduct
  * A simple [Fragment] subclass.
  * Use the [FragmentProductsWithResult.newInstance] factory method to
  * create an instance of this fragment.
+ *
+ * Returns the result with its viewModel, instantiate it like
+ * viewModel_selectProduct = ViewModelProvider(requireActivity())[ProductResultViewModel::class.java]
  */
 class FragmentProductsWithResult :
 	Fragment(R.layout.page_fragment_products),
@@ -34,9 +35,9 @@ class FragmentProductsWithResult :
 			Repository(requireActivity().application)
 		)
 	}
-	private val viewModel_result: ProductResultViewModel by viewModels(
-		ownerProducer = { requireParentFragment() }
-	)
+	private val viewModel_result: ProductResultViewModel by viewModels {
+		ProductResultViewModelFactory(requireActivity())
+	}
 	private lateinit var navController: NavController
 
 
@@ -87,7 +88,7 @@ class FragmentProductsWithResult :
 	}
 
 	override fun onClickSelect(product: EntityProduct) {
-		viewModel_result.selectedProduct.value = product
+		viewModel_result.selectProduct(product)
 		navController.navigateUp()
 	}
 

@@ -2,13 +2,15 @@ package com.papum.homecookscompanion.model.database
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-/**
- * Table for products in shopping list.
- */
+
 @Entity(
-	tableName = "Shops"
+	tableName = "Shops",
+	indices = [
+		Index(value = ["address", "brand", "city", "state"], unique = true)
+	],
 )
 class EntityShops(
 	@PrimaryKey(autoGenerate = true)
@@ -20,4 +22,9 @@ class EntityShops(
 	val state: String,
 	val latitude: Double,
 	val longitude: Double
-)
+) {
+
+	override fun toString(): String {
+		return "$brand, $address, $city, $state"
+	}
+}

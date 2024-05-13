@@ -5,13 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import java.time.LocalDateTime
 
-/**
- * A product, either edible (food or recipe) or not;
- * a recipe is (probably) made of ingredients (other (edible) products).
- * It can be represented by its name,
- * obtained from the concatenation of the names in the parent hierarchy.
- * Brand can also be last name of hierarchy.
- */
+
 @Entity(
 	tableName = "Purchases",
 	foreignKeys = [

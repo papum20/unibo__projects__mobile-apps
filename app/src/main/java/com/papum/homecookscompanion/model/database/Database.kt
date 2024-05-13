@@ -18,9 +18,10 @@ import java.util.concurrent.Executors
 		EntityMeals::class,
 		EntityPurchases::class,
 		EntityProduct::class,
+		EntityProductRecognized::class,
 		EntityShops::class,
    ],
-	version = 17,
+	version = 18,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -40,6 +41,8 @@ abstract class Database : RoomDatabase() {
 	abstract fun daoProductAndMeals()				: DaoProductAndMeals
 	abstract fun daoProductAndNutrients()			: DaoProductAndNutrients
 	abstract fun daoProductAndMealsWithNutrients()	: DaoProductAndMealsWithNutrients
+	abstract fun daoProductAndProductRecognized()	: DaoProductAndProductRecognized
+	abstract fun daoProductRecognized()				: DaoProductRecognized
 	abstract fun daoShops()							: DaoShops
 	abstract fun daoShopsWithPurchases()			: DaoShopsWithPurchases
 
@@ -57,17 +60,22 @@ abstract class Database : RoomDatabase() {
 				super.onCreate(db)
 
 				/* What happens when the database gets called for the first time? */
-				databaseWriteExecutor.execute() {
+				databaseWriteExecutor.execute {
 					val daoAlerts				= INSTANCE?.daoAlerts()
 					val daoProduct				= INSTANCE?.daoProduct()
 					val daoInventory			= INSTANCE?.daoInventory()
 					val daoList					= INSTANCE?.daoList()
 					val daoProductAndNutrients	= INSTANCE?.daoProductAndNutrients()
+					val daoProductRecognized	= INSTANCE?.daoProductRecognized()
 					val daoShops				= INSTANCE?.daoShops()
 
 					val idPlant		= daoProductAndNutrients?.insertProductAndNutrients(
 							EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false),
 							EntityNutrients(0, null, null, null, null)
+						)
+					val idGarlic	= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "garlic", "plant",	isEdible=true, isRecipe=false),
+							EntityNutrients(0, 80F, 18F, 0.4F, 1F)
 						)
 					val idCereal	= daoProductAndNutrients?.insertProductAndNutrients(
 							EntityProduct(0, "cereal", "plant",	isEdible=true, isRecipe=false),
@@ -109,6 +117,11 @@ abstract class Database : RoomDatabase() {
 					val idShop = daoShops?.insertOne(EntityShops(
 						0,"via del Lavoro 8","Eurospin", "Bologna", "Italy",
 						44.50305191918619, 11.361257401450482
+					))
+
+
+					daoProductRecognized?.insertOne(EntityProductRecognized(
+						"AGLIO 200g", idShop!!, idGarlic!!
 					))
 
 				}

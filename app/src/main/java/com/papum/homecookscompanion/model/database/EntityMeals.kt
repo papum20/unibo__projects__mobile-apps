@@ -6,9 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
-/**
- * An (abstract) food product.
- */
+
 @Entity(
 	tableName = "Meals",
 	foreignKeys = [

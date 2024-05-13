@@ -25,4 +25,9 @@ data class EntityProduct(
 
 	var isEdible: Boolean,	// edible if it's a food or a recipe
 	var isRecipe: Boolean
-) : Parcelable
+) : Parcelable {
+
+	override fun toString(): String {
+		return "$name <- $parent ($id)"
+	}
+}

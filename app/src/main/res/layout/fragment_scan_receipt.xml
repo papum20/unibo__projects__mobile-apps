@@ -6,6 +6,46 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/scan_shop_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/receipt_shop"
+        android:textSize="@dimen/tv_fontSize"
+        app:layout_constraintBottom_toTopOf="@id/scan_shop_brand_et"
+        app:layout_constraintEnd_toStartOf="@id/scan_shop_brand_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/scan_shop_brand_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:maxWidth="240dp"
+        android:text="@string/receipt_shop_info"
+        app:layout_constraintBottom_toTopOf="@id/scan_shop_brand_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/scan_shop_brand"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <AutoCompleteTextView
+        android:id="@+id/scan_shop_brand_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/receipt_placeholder_shop"
+        android:inputType="text"
+        android:layout_marginHorizontal="15dp"
+        android:textSize="@dimen/et_fontSize"
+        app:layout_constraintBottom_toTopOf="@id/scan_header_recognized"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scan_shop_brand"
+        />
+
+
+    <TextView
         android:id="@+id/scan_header_recognized"
         android:layout_width="0dp"
         android:layout_height="@dimen/title_tv_height"
@@ -14,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@id/scan_header_recognized_price"
         app:layout_constraintEnd_toStartOf="@id/scan_header_selected"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scan_shop_brand_et"
         app:layout_constraintWidth_percent=".5" />
 
 
@@ -41,7 +81,7 @@
         app:layout_constraintBottom_toTopOf="@id/scan_header_selected_price"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/scan_header_recognized"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scan_shop_brand_et"
         app:layout_constraintWidth_percent=".5" />
 
     <TextView
@@ -61,7 +101,6 @@
         android:id="@+id/scan_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="@string/receipt_header_selected_price"
         app:layout_constraintBottom_toTopOf="@id/scan_btn_scan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +118,18 @@
         app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
         app:layout_constraintWidth_percent="0.5" />
 
+    <Button
+        android:id="@+id/scan_btn_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="@string/btn_confirm"
+        app:layout_constraintBottom_toTopOf="@+id/scan_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/scan_btn_scan"
+        app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
+        app:layout_constraintWidth_percent="0.5" />
+
     <TextView
         android:id="@+id/scan_info"
         android:layout_width="wrap_content"
@@ -91,15 +142,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scan_btn_scan" />
 
-    <Button
-        android:id="@+id/scan_btn_confirm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:text="@string/btn_confirm"
-        app:layout_constraintBottom_toBottomOf="@+id/scan_btn_scan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/scan_btn_scan"
-        app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
-        app:layout_constraintWidth_percent="0.5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
