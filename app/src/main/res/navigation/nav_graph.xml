@@ -10,4 +10,5 @@
     <include app:graph="@navigation/settings" />
     <include app:graph="@navigation/stats" />
     <include app:graph="@navigation/products" />
+    <include app:graph="@navigation/shops" />
 </navigation>

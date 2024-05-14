@@ -57,6 +57,10 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 map:
 *	shops waypoints, with prices and stuff
 
+stats:
+*	purchases
+*	shops
+
 recipes:
 *	create, manage...
 

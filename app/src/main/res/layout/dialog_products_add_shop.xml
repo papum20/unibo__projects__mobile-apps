@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialog_addShop_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_addShop_brand" />
+
+    <EditText
+        android:id="@+id/dialog_addShop_brand_et"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/dialog_addTo_placeholder_et"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dialog_addShop_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_addShop_address" />
+
+
+    <EditText
+        android:id="@+id/dialog_addShop_address_et"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/dialog_addTo_placeholder_et"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_city"
+        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_brand"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_brand" />
+
+    <TextView
+        android:id="@+id/dialog_addShop_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_addShop_city" />
+
+    <EditText
+        android:id="@+id/dialog_addShop_city_et"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/dialog_addTo_placeholder_et"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_state"
+        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_address"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_address" />
+
+    <TextView
+        android:id="@+id/dialog_addShop_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_addShop_state" />
+
+    <EditText
+        android:id="@+id/dialog_addShop_state_et"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/dialog_addTo_placeholder_et"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_latitude"
+        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_city"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_city" />
+
+    <EditText
+        android:id="@+id/dialog_addShop_latitude_et"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/dialog_addTo_placeholder_et"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_longitude"
+        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_state"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_state" />
+
+    <EditText
+        android:id="@+id/dialog_addShop_longitude_et"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/dialog_addTo_placeholder_et"
+        android:inputType="number|numberDecimal|numberSigned"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_latitude"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_latitude" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

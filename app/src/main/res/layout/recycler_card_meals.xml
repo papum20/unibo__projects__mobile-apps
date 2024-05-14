@@ -10,7 +10,7 @@ android:layout_height="wrap_content">
         android:layout_height="match_parent" >
 
         <ImageView
-            android:id="@+id/recycler_productExpandable_img_type"
+            android:id="@+id/recycler_card_meals_img_type"
             android:layout_width="@dimen/recycler_card_plan_edge_left"
             android:layout_height="@dimen/recycler_card_plan_edge_left"
             app:layout_constraintBottom_toBottomOf="parent"

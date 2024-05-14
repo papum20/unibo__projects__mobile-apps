@@ -64,11 +64,7 @@ class FragmentInventory :
 		recycler.layoutManager = LinearLayoutManager(context)
 
 		viewModel.getAllProductsInInventoryWithAlerts().observe(viewLifecycleOwner) { products ->
-			adapter.let {
-				Log.d("INVENTORY_ALL", "products: ${it.itemCount}")
-				Log.d("INVENTORY_ALL", "products ids: ${products.map{ p -> "${p.product.id}.${p.product.name}-${p.inventoryItem?.quantity}-${p.alert?.quantity};" }}")
-				it.updateItems(products.toMutableList())
-			}
+			adapter.updateItems(products.toMutableList())
 		}
 
 		/* UI listeners */

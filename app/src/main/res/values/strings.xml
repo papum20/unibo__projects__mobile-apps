@@ -52,6 +52,7 @@
     <string name="bottom_nav_item_text_stats">stats</string>
     <string name="bottom_nav_item_text_products">All products</string>
     <string name="nav_item_text_settings">settings</string>
+    <string name="nav_item_text_shops">saved shops</string>
 
     <string name="nav_label_scan">Scan a receipt</string>
 
@@ -69,30 +70,42 @@
     <string name="nutrients_placeholder_kcal">(kcal)</string>
     <string name="nutrients_placeholder_proteins">(proteins)</string>
 
-    <string name="product_placeholder_alert">{}</string>
-    <string name="product_placeholder_price_value">0000.00</string>
-    <string name="product_placeholder_quantity">q.ty</string>
-    <string name="product_placeholder_quantity_value">00000.00</string><string name="product_search_placeholder">Search a product</string>
-    <string name="product_placeholder_text">some product</string>
-    <string name="product_placeholder_type">(Type)</string>
     <string name="product_format_date">%02d/%02d/%04d</string>
     <string name="product_format_time">%02d:%02d</string>
     <string name="product_format_price">%4.2f</string>
     <string name="product_format_quantity">%5.2f</string>
+    <string name="product_placeholder_alert">{}</string>
+    <string name="product_placeholder_price_value">0000.00</string>
+    <string name="product_placeholder_quantity">q.ty</string>
+    <string name="product_placeholder_quantity_value">00000.00</string>
+    <string name="product_search_placeholder">Search a product</string>
+    <string name="product_placeholder_text">some product</string>
+    <string name="product_placeholder_type">(Type)</string>
 
     <string name="receipt_placeholder_shop">Eurospin...</string>
 
     <string name="recognized_placeholder">(Recognized product)</string>
     <string name="recognized_placeholder_price">(Recognized price)</string>
 
+    <string name="shop_format_latlng">Coordinates: [%f,%f]</string>
+    <string name="shop_placeholder_address">(Address missing)</string>
+    <string name="shop_placeholder_brand">(Brand missing)</string>
+    <string name="shop_placeholder_city">(City missing)</string>
+    <string name="shop_placeholder_state">(State missing)</string>
+
+
     <!-- fragments texts -->
+
+    <string name="dialog_addShop_address">Address:</string>
+    <string name="dialog_addShop_brand">Brand:</string>
+    <string name="dialog_addShop_city">City:</string>
+    <string name="dialog_addShop_state">State:</string>
+
     <string name="editFood_title">Create a food</string>
     <string name="editFood_btn_cancel">Cancel</string>
     <string name="editFood_btn_confirm">Create</string>
     <string name="editFood_btn_map">Search on map</string>
     <string name="editRecipe_title">Create a recipe</string>
-
-    <string name="inventory_btn_scan">Scan a receipt</string>
 
     <string name="nutrients_title">Nutrients</string>
 
@@ -116,7 +129,9 @@
     <string name="settings_header_notifications">Notifications</string>
     <string name="settings_geofence">get notified when you\'re in a shop</string>
 
+
     <!-- buttons -->
+    <string name="btn_add">Add</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_remove">Remove</string>
     <string name="btn_enable">Enable</string>
@@ -124,6 +139,9 @@
 
     <string name="btn_select_product">Select product</string>
     <string name="btn_select_image_receipt">Select a receipt image</string>
+
+    <string name="btn_scan_receipt">Scan a receipt</string>
+
 
     <!-- descriptions -->
     <string name="description_btn_select_product">Select a product</string>

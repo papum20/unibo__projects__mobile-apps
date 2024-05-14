@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shops"
+    app:startDestination="@id/fragmentShops">
+
+
+
+    <fragment
+        android:id="@+id/fragmentShops"
+        android:name="com.papum.homecookscompanion.view.shops.FragmentShops"
+        android:label="@string/nav_item_text_shops"
+        tools:layout="@layout/fragment_shops" />
+
+</navigation>

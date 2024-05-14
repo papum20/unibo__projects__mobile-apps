@@ -1,7 +1,6 @@
 package com.papum.homecookscompanion
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -33,15 +32,9 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.GeofencingRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import org.osmdroid.config.Configuration.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 import com.papum.homecookscompanion.view.services.ServiceNotificationStock
 import com.papum.homecookscompanion.view.services.WorkerStock
 

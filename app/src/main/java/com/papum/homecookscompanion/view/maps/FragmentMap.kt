@@ -1,18 +1,22 @@
 package com.papum.homecookscompanion.view.maps
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.papum.homecookscompanion.R
+import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.CopyrightOverlay
+import org.osmdroid.views.overlay.ItemizedIconOverlay
+import org.osmdroid.views.overlay.MapEventsOverlay
+import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.ScaleBarOverlay
 import org.osmdroid.views.overlay.compass.CompassOverlay
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
@@ -20,6 +24,8 @@ import org.osmdroid.views.overlay.gestures.OneFingerZoomOverlay
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+import java.util.ArrayList
+
 
 /**
  * Default map view activity.
@@ -34,10 +40,12 @@ class FragmentMap : Fragment() {
 
 	private lateinit var overlayCompass: CompassOverlay
 	private lateinit var overlayCopyright: CopyrightOverlay
-	private lateinit var overlayLocation: MyLocationNewOverlay
+	private lateinit var overlayLocationMy: MyLocationNewOverlay
+	private lateinit var overlayLocationPoints: ItemizedIconOverlay<OverlayItem>
 	private lateinit var overlayOneFingerZoom: OneFingerZoomOverlay
 	private lateinit var overlayRotationGesture: RotationGestureOverlay
 	private lateinit var overlayScaleBar: ScaleBarOverlay
+	private lateinit var receive: MapEventsReceiver
 
 
 
@@ -91,7 +99,7 @@ class FragmentMap : Fragment() {
 
 		//My Location
 		//note you have handle the permissions yourself, the overlay did not do it for you
-		overlayLocation = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView).apply {
+		overlayLocationMy = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView).apply {
 			enableMyLocation()
 		}
 
@@ -120,6 +128,92 @@ class FragmentMap : Fragment() {
 		overlayOneFingerZoom = OneFingerZoomOverlay()
 
 
+
+
+
+		/* Itemized Overlay */
+		/* Create a static ItemizedOverlay showing a some Markers on some cities. */
+		val items = listOf(
+			OverlayItem(
+				"Hannover", "SampleDescription",
+				GeoPoint(52.370816, 9.735936)
+			),
+			OverlayItem(
+				"Berlin", "SampleDescription",
+				GeoPoint(52.518333, 13.408333)
+			),
+			OverlayItem(
+				"Washington", "SampleDescription",
+				GeoPoint(38.895000, -77.036667)
+			),
+			OverlayItem(
+				"San Francisco", "SampleDescription",
+				GeoPoint(37.779300, -122.419200)
+			),
+			OverlayItem(
+				"Tolaga Bay", "SampleDescription",
+				GeoPoint(-38.371000, 178.298000)
+			)
+		)
+
+		/* OnTapListener for the Markers, shows a simple Toast. */
+		overlayLocationPoints = ItemizedIconOverlay(
+			requireContext(),
+			items,
+			object : ItemizedIconOverlay.OnItemGestureListener<OverlayItem?> {
+				override fun onItemSingleTapUp(index: Int, item: OverlayItem?): Boolean {
+					if(item != null) {
+					Toast.makeText(
+							this@FragmentMap.requireContext(),
+							"Item '${item.title}' (index=$index) got single tapped up",
+							Toast.LENGTH_LONG
+						).show()
+					}
+					return true // We 'handled' this event.
+				}
+
+				override fun onItemLongPress(
+					index: Int,
+					item: OverlayItem?
+				): Boolean {
+					if(item != null) {
+						Toast.makeText(
+							this@FragmentMap.requireContext(),
+							"Item '${item.title}' (index=$index) got long pressed",
+							Toast.LENGTH_LONG
+						).show()
+					}
+					return true
+				}
+			}
+		)
+
+
+		/* list of items currently displayed */
+		receive = object : MapEventsReceiver {
+			override fun singleTapConfirmedHelper(p: GeoPoint): Boolean {
+				return false
+			}
+
+			override fun longPressHelper(p: GeoPoint): Boolean {
+				val displayed: List<OverlayItem> = overlayLocationPoints.getDisplayedItems()
+				val buffer = StringBuilder()
+				var sep = ""
+				for (item in displayed) {
+					buffer.append(sep).append('\'').append(item.title).append('\'')
+					sep = ", "
+				}
+				Toast.makeText(
+					this@FragmentMap.requireContext(),
+					"Currently displayed: $buffer", Toast.LENGTH_LONG
+				).show()
+				return true
+			}
+		}
+
+
+
+
 		/*
 		//the rest of this is restoring the last map location the user looked at
 		requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).let { prefs ->
@@ -146,10 +240,12 @@ class FragmentMap : Fragment() {
 		mapView.overlays.addAll( listOf(
 			overlayCompass,
 			overlayCopyright,
-			overlayLocation,
+			overlayLocationMy,
+			overlayLocationPoints,
 			overlayOneFingerZoom,
 			overlayRotationGesture,
 			overlayScaleBar,
+			MapEventsOverlay(receive)
 		))
 	}
 

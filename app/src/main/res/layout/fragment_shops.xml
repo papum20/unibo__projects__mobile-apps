@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/inventory_recycler_view"
+        android:id="@+id/shops_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="00dp"
         android:layout_weight="1">
@@ -16,10 +16,10 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/inventory_recycler_btn_scan"
+        android:id="@+id/shops_recycler_btn_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="@string/btn_scan_receipt" />
+        android:text="@string/btn_add" />
 
 </LinearLayout>
