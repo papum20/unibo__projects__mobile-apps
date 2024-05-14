@@ -18,8 +18,8 @@
             app:popUpTo="@id/fragmentInventory" />
 
         <action
-            android:id="@+id/action_fragmentInventory_to_fragmentEditFoodFromInventory"
-            app:destination="@id/fragmentEditFoodFromInventory"
+            android:id="@+id/action_fragmentInventory_to_fragmentEditFood"
+            app:destination="@id/fragmentEditFood"
             app:popUpTo="@id/fragmentInventory" />
 
     </fragment>
@@ -34,7 +34,7 @@
             app:popUpTo="@id/fragmentScanReceipt" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentEditFoodFromInventory"
+        android:id="@+id/fragmentEditFood"
         android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
         android:label="FragmentEditFood"
         tools:layout="@layout/fragment_edit_food">
@@ -42,6 +42,10 @@
             android:name="foodId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_fragmentEditFood_to_fragmentMap"
+            app:destination="@id/fragmentMap"
+            app:popUpTo="@id/fragmentEditFood" />
     </fragment>
     <fragment
         android:id="@+id/fragmentProductsWithResult"
@@ -49,5 +53,13 @@
         android:label="FragmentProductsWithResult"
         tools:layout="@layout/fragment_products_with_result"
         />
+
+
+    <fragment
+        android:id="@+id/fragmentMap"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMap"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+
 
 </navigation>

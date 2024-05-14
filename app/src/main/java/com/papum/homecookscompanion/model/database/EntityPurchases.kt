@@ -33,6 +33,6 @@ class EntityPurchases(
 
 	var date: LocalDateTime,
 
-	var price: Float,
+	var price: Float?,
 )
 

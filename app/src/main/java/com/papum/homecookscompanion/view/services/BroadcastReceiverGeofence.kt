@@ -55,7 +55,6 @@ class BroadcastReceiverGeofence : BroadcastReceiver() {
 			Log.e(TAG_GEOFENCE, geofenceTransition.toString())
 		}
 
-		Toast.makeText(context, messageToDisplay, Toast.LENGTH_LONG).show()
 	}
 
 

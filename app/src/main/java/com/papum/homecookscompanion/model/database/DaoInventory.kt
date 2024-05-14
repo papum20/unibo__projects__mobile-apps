@@ -12,7 +12,15 @@ import androidx.room.Update
 interface DaoInventory {
 
 
+	/* query */
+
+	@Query("SELECT * FROM inventory WHERE idProduct = :id")
+	fun getOne_fromId(id: Long): EntityInventory?
+
 	/* insert */
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun insertMany(inventoryProducts: List<EntityInventory>)
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertOne(inventoryProduct: EntityInventory): Long

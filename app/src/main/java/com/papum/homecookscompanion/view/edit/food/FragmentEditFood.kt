@@ -78,7 +78,9 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 
 		if (parentFragmentManager.findFragmentByTag(FRAGMENT_TAG_MAP) == null) {
-			navController.navigate(R.id.action_fragmentEditFood_to_fragmentMap)
+			navController.navigate(
+				FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap()
+			)
 			/*
 			parentFragmentManager.beginTransaction()
 				.run {

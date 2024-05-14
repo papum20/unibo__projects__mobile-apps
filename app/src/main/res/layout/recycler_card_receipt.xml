@@ -26,7 +26,7 @@ android:layout_height="wrap_content">
             android:layout_height="0dp"
             android:text="@string/recognized_placeholder_price"
             app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_remove"
-            app:layout_constraintEnd_toStartOf="@+id/recycler_card_receipt_product_price"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_receipt_product_price_et"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_recognized"
             app:layout_constraintWidth_percent=".5" />
@@ -36,10 +36,56 @@ android:layout_height="wrap_content">
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/product_placeholder_text"
-            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_product_price"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_product_price_et"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_recognized"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/recycler_card_receipt_product_price_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            android:hint="@string/product_placeholder_price_value"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_product"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_receipt_product_price_tv"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_recognized_price"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_product" />
+
+        <TextView
+            android:id="@+id/recycler_card_receipt_product_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/measure_margin"
+            android:text="@string/measure_price"
+            android:textSize="@dimen/tv_fontSize"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_product"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_receipt_product_quantity_et"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_product_price_et"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_product" />
+
+        <EditText
+            android:id="@+id/recycler_card_receipt_product_quantity_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="number|numberDecimal"
+            android:hint="@string/product_placeholder_quantity_value"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_product"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_receipt_product_quantity_tv"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_product_price_tv"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_product" />
+
+        <TextView
+            android:id="@+id/recycler_card_receipt_product_quantity_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/measure_margin"
+            android:text="@string/measure_quantity"
+            android:textSize="@dimen/tv_fontSize"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_product_quantity_et"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_product" />
 
         <Button
             android:id="@+id/recycler_card_receipt_btn_remove"
@@ -51,17 +97,6 @@ android:layout_height="wrap_content">
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recycler_card_receipt_recognized_price" />
 
-        <EditText
-            android:id="@+id/recycler_card_receipt_product_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:inputType="number|numberDecimal"
-            android:text="@string/receipt_placeholder_price"
-            app:layout_constraintBottom_toTopOf="@id/recycler_card_receipt_btn_product"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/recycler_card_receipt_recognized_price"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_card_receipt_product" />
-
         <Button
             android:id="@+id/recycler_card_receipt_btn_product"
             android:layout_width="wrap_content"
@@ -72,7 +107,7 @@ android:layout_height="wrap_content">
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/recycler_card_receipt_btn_remove"
-            app:layout_constraintTop_toBottomOf="@id/recycler_card_receipt_product_price" />
+            app:layout_constraintTop_toBottomOf="@id/recycler_card_receipt_product_price_et" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -118,7 +117,16 @@ class FragmentScanReceipt
 		}
 
 		view.findViewById<Button>(R.id.scan_btn_confirm).setOnClickListener { _ ->
-			// TODO: 
+			if(viewModel.selectedShop.value == null) {
+				displayMissingShop()
+			} else if(viewModel.receiptItems.value == null) {
+				displayMissingReceipt()
+			} else {
+				viewModel.saveAllRecognizedTextAssociations()
+				viewModel.addAllAssociated_toInventoryAndPurchases()
+				displayReceiptAdded()
+				navController.navigateUp()
+			}
 		}
 
 		/* observers */
@@ -131,31 +139,18 @@ class FragmentScanReceipt
 		}
 
 		// fetched products associations
-		viewModel.getRecognizedProducts().observe(viewLifecycleOwner) { recognizedPerEachProduct ->
-			Log.d("RECOGNIZED", recognizedPerEachProduct.joinToString{it.product.id.toString()} )
-			viewModel.receiptItems.value?.let { items ->
-
-				recognizedPerEachProduct.forEach { recognizedPerProduct ->
-					recognizedPerProduct.recognized.forEach { recognized ->
-						// if scan item has not an association yet, search one in the data from db
-						items.find {
-								it.recognizedProduct == recognized.recognizedText
-							}?.let { item ->
-								item.product = recognizedPerProduct.product.toString()
-						}
-					}
-				}
-				adapter.updateItems(items)
-			}
+		viewModel.getRecognizedProducts().observe(viewLifecycleOwner) { products_withRecognizedAssociations ->
+			Log.d("RECOGNIZED", products_withRecognizedAssociations.joinToString{it.product.id.toString()} )
+			viewModel.setAllAssociations(products_withRecognizedAssociations)
+			viewModel.receiptItems.value?.let { adapter.updateItems(it) }
 		}
 
 		// selected product association
 		viewModel_selectProduct.selectedProduct.observe(viewLifecycleOwner) { selectedProduct ->
-			selectedProductIndex?.let { position ->
-				viewModel.receiptItems.value?.get(position)?.let { oldItem ->
-					adapter.updateItem(position, oldItem.apply {
-						product = selectedProduct?.name ?: DFLT_ITEM
-					})
+			if(selectedProductIndex != null && selectedProduct != null) {
+				viewModel.receiptItems.value?.get(selectedProductIndex!!)?.let { oldItem ->
+					viewModel.setAssociation(oldItem, selectedProduct)
+					adapter.updateItem(selectedProductIndex!!, oldItem)
 					selectedProductIndex = null
 				}
 			}
@@ -163,6 +158,35 @@ class FragmentScanReceipt
 
     }
 
+
+	/* Views */
+	private fun displayMissingReceipt() {
+		Toast.makeText(
+			requireContext(),
+			"Select a receipt picture.",
+			Toast.LENGTH_LONG
+		).show()
+		Log.i(LOG_TAG_SCAN, "Select a shop from the suggestions, in order to add this receipt.")
+	}
+	private fun displayMissingShop() {
+		Toast.makeText(
+			requireContext(),
+			"Select a shop from the suggestions, in order to add this receipt.",
+			Toast.LENGTH_LONG
+		).show()
+		Log.i(LOG_TAG_SCAN, "Select a shop from the suggestions, in order to add this receipt.")
+	}
+	private fun displayReceiptAdded() {
+		Toast.makeText(
+			requireContext(),
+			"Receipt successfully addedd!",
+			Toast.LENGTH_SHORT
+		).show()
+		Log.i(LOG_TAG_SCAN, "Receipt successfully added!")
+	}
+
+
+	/* Image processing */
 
 	/**
 	 * Parse the recognized text, coupling the i-th found product with the i-th found price.
@@ -431,7 +455,7 @@ class FragmentScanReceipt
 		private const val DFLT_ITEM		= "[Not found]"
 		private const val DFLT_PRICE	= 0.00F
 
-		private val AUTOCOMPLETE_SHOP_BRAND_THRESHOLD = 2
+		private val AUTOCOMPLETE_SHOP_BRAND_THRESHOLD = 1
 
 		/**
          * Use this factory method to create a new instance of

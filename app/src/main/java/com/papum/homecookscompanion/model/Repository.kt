@@ -207,6 +207,12 @@ class Repository(app: Context) {
 		}
 	}
 
+	fun insertManyInInventory(inventoryProducts: List<EntityInventory>) {
+		Database.databaseWriteExecutor.execute {
+			daoInventory.insertMany(inventoryProducts)
+		}
+	}
+
 	fun insertInList(listProduct: EntityList) {
 		Database.databaseWriteExecutor.execute {
 			daoList.insertOne(listProduct)
@@ -240,9 +246,9 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertProductRecognized(productRecognized: EntityProductRecognized) {
+	fun insertManyProductsRecognized(productsRecognized: List<EntityProductRecognized>) {
 		Database.databaseWriteExecutor.execute {
-			daoProductRecognized.insertOne(productRecognized)
+			daoProductRecognized.insertMany(productsRecognized)
 		}
 	}
 
@@ -255,6 +261,12 @@ class Repository(app: Context) {
 	fun insertPurchase(purchase: EntityPurchases) {
 		Database.databaseWriteExecutor.execute {
 			daoPurchases.insertOne(purchase)
+		}
+	}
+
+	fun insertManyPurchases(purchases: List<EntityPurchases>) {
+		Database.databaseWriteExecutor.execute {
+			daoPurchases.insertMany(purchases)
 		}
 	}
 
@@ -285,6 +297,27 @@ class Repository(app: Context) {
 	fun updateInventoryItem(inventoryItem: EntityInventory) {
 		Database.databaseWriteExecutor.execute {
 			daoInventory.updateOne(inventoryItem)
+		}
+	}
+
+	/**
+	 * Sum quantity if not null and already exists in inventory, otherwise add.
+	 */
+	fun updateInventoryQuantity_sumOrInsert(inventoryItem: EntityInventory) {
+		Database.databaseWriteExecutor.execute {
+			val fetchedItem = daoInventory.getOne_fromId(inventoryItem.idProduct)
+			if (fetchedItem == null) {
+				daoInventory.insertOne(inventoryItem)
+			} else if (fetchedItem.quantity == null) {
+				daoInventory.updateOne(inventoryItem)
+			} else if (inventoryItem.quantity != null) {
+				daoInventory.updateOne(
+					fetchedItem.apply {
+						quantity = quantity!! + inventoryItem.quantity!!
+					}
+				)
+			}
+
 		}
 	}
 

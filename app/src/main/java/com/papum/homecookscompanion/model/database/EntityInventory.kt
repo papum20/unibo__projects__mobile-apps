@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
 		Index("idProduct")
 	]
 )
-class EntityInventory(
+data class EntityInventory(
 	@PrimaryKey
 	var idProduct: Long,
 	

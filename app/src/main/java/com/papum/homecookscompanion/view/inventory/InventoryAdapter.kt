@@ -47,7 +47,6 @@ class InventoryAdapter(
     }
 
     override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
-		Log.d("INVENTORY_VIEW_HOLDER", "create at position ${position}")
 
 		holder.etAlert.setText( items?.get(position)?.let {
 				it.alert?.quantity?.toString() ?: "(none)"

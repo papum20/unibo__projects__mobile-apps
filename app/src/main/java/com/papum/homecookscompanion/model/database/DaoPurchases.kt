@@ -10,6 +10,9 @@ interface DaoPurchases
 	/* insert */
 
 	@Insert
+	fun insertMany(purchases: List<EntityPurchases>)
+
+	@Insert
 	fun insertOne(purchase: EntityPurchases)
 
 

@@ -70,15 +70,16 @@
     <string name="nutrients_placeholder_proteins">(proteins)</string>
 
     <string name="product_placeholder_alert">{}</string>
+    <string name="product_placeholder_price_value">0000.00</string>
     <string name="product_placeholder_quantity">q.ty</string>
-    <string name="product_search_placeholder">Search a product</string>
+    <string name="product_placeholder_quantity_value">00000.00</string><string name="product_search_placeholder">Search a product</string>
     <string name="product_placeholder_text">some product</string>
     <string name="product_placeholder_type">(Type)</string>
     <string name="product_format_date">%02d/%02d/%04d</string>
     <string name="product_format_time">%02d:%02d</string>
+    <string name="product_format_price">%4.2f</string>
     <string name="product_format_quantity">%5.2f</string>
 
-    <string name="receipt_placeholder_price">\??,??</string>
     <string name="receipt_placeholder_shop">Eurospin...</string>
 
     <string name="recognized_placeholder">(Recognized product)</string>
@@ -106,7 +107,7 @@
     <string name="receipt_header_recognized">Recognized product /</string>
     <string name="receipt_header_recognized_price">Recognized price</string>
     <string name="receipt_header_selected">Selected product /</string>
-    <string name="receipt_header_selected_price">Selected price</string>
+    <string name="receipt_header_selected_price">Selected price - quantity</string>
     <string name="receipt_shop">Select the shop</string>
     <string name="receipt_shop_info">It\'s required to recognize the receipt products properly.</string>
     <string name="receipt_info">Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first)</string>
@@ -127,9 +128,11 @@
     <string name="description_btn_select_product">Select a product</string>
     <string name="description_btn_expand">Open actions</string>
 
-    <!-- other texts -->
-    <string name="measure_text">g</string>
+    <!-- measures -->
+    <string name="measure_price">€</string>
+    <string name="measure_quantity">g</string>
 
+    <!-- other texts -->
 
 
 

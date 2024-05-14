@@ -16,9 +16,9 @@ import java.util.concurrent.Executors
 		EntityInventory::class,
 		EntityList::class,
 		EntityMeals::class,
-		EntityPurchases::class,
 		EntityProduct::class,
 		EntityProductRecognized::class,
+		EntityPurchases::class,
 		EntityShops::class,
    ],
 	version = 18,
@@ -120,8 +120,11 @@ abstract class Database : RoomDatabase() {
 					))
 
 
-					daoProductRecognized?.insertOne(EntityProductRecognized(
-						"AGLIO 200g", idShop!!, idGarlic!!
+					daoProductRecognized?.insertMany(
+						listOf(
+							EntityProductRecognized(
+							"AGLIO 200g", idShop!!, idGarlic!!
+							)
 					))
 
 				}

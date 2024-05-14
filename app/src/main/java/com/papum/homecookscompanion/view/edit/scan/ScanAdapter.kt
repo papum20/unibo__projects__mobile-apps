@@ -34,7 +34,6 @@ class ScanAdapter(
     override fun onBindViewHolder(holder: ScanViewHolder, position: Int) {
 
 		items?.get(position)?.let { item ->
-			Log.d("ADAPT", "${item.product}, $position")
 			holder.tvRecognized.text		= item.recognizedProduct
 			holder.tvRecognizedPrice.text	= item.recognizedPrice.toString()
 			holder.tvProduct.text			= item.product
@@ -56,6 +55,12 @@ class ScanAdapter(
 			}
 		}
 
+		holder.etQuantity.doOnTextChanged { text, start, before, count ->
+			items?.get(holder.adapterPosition)?.let { item ->
+				item.quantity = text.toString().toFloatOrNull()
+			}
+		}
+
     }
 
     override fun getItemCount(): Int {
@@ -67,13 +72,11 @@ class ScanAdapter(
 	fun updateItems(newItems: MutableList<ScanModel>) {
 		items = newItems
 		notifyDataSetChanged()
-		Log.d("RECEIPT_UPDATE", "items_n: $itemCount")
 	}
 
 	fun updateItem(position: Int, newItem: ScanModel) {
 		items?.set(position, newItem)
 		notifyItemChanged(position)
-		Log.d("RECEIPT_UPDATE", "items_n: $itemCount")
 	}
 
     fun addItem(newItem: ScanModel) {

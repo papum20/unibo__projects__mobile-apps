@@ -8,15 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityInventory
-import com.papum.homecookscompanion.model.database.EntityList
-import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProduct
-import com.papum.homecookscompanion.model.database.EntityProductAndInventory
-import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
-import com.papum.homecookscompanion.model.database.EntityProductAndList
-import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndProductRecognized
 import com.papum.homecookscompanion.model.database.EntityProductRecognized
+import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
 import java.time.LocalDateTime
 
@@ -34,16 +29,36 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	 */
 	fun getRecognizedProducts(): LiveData<List<EntityProductAndProductRecognized>> =
 		selectedShop.switchMap { shop ->
-			Log.d("SHOP", shop?.toString() ?: "null")
 			receiptItems.switchMap { items ->
-				Log.d("ITEMS", items.joinToString { it.recognizedProduct })
-				Log.d("ITEMS", items.joinToString { it.recognizedProduct.trim() })
 				repository.getAllProductsRecognized_fromTextAndShop(
 					items.map { it.recognizedProduct.trim() },
-					shop.id
+					shop?.id ?: ID_NULL
 				)
 			}
 		}
+
+	fun setAllAssociations(products_withRecognizedAssociations: List<EntityProductAndProductRecognized>) {
+
+		receiptItems.value?.let { items ->
+
+			products_withRecognizedAssociations.forEach { product_withRecognizedAssociations ->
+				product_withRecognizedAssociations.recognized.forEach { recognized ->
+					// if scan item has not an association yet, search one in the data from db
+					items.find {
+						it.recognizedProduct == recognized.recognizedText
+					}?.let { item ->
+						setAssociation(item, product_withRecognizedAssociations.product)
+					}
+				}
+			}
+
+		}
+	}
+
+	fun setAssociation(item: ScanModel, product: EntityProduct) {
+		item.product	= product.toString()
+		item.productId	= product.id
+	}
 
 
 	/* Query */
@@ -58,16 +73,66 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	/**
 	 * @throws IllegalArgumentException if no shop is selected
 	 */
-	fun addRecognizedTextAssociation(recognizedText: String, productId: Long) {
-		selectedShop.value?.let { shop ->
-			repository.insertProductRecognized(
-				EntityProductRecognized(recognizedText, shop.id, productId)
+	fun addAllAssociated_toInventoryAndPurchases() {
+		if(selectedShop.value == null)
+			throw IllegalArgumentException("No shop selected")
+
+		val dateCurrent = LocalDateTime.now()
+
+		receiptItems.value?.let { items ->
+			items.filter { it.productId != null }
+				.map { item ->
+					EntityInventory(
+						item.productId!!,
+						item.quantity
+					)
+				}
+				.forEach{ repository.updateInventoryQuantity_sumOrInsert(it) }
+			repository.insertManyPurchases(
+				items.filter { it.productId != null }
+					.map { item ->
+						EntityPurchases(
+							item.productId!!,
+							selectedShop.value!!.id,
+							dateCurrent,
+							item.price
+						)
+					}
 			)
+		}
+
+	}
+
+	private fun _saveAllRecognizedTextAssociations(items: List<ScanModel>, shopId: Long) {
+		repository.insertManyProductsRecognized(
+			items.filter { it.productId != null }
+				.map { item ->
+					EntityProductRecognized(item.recognizedProduct, shopId, item.productId!!)
+				}
+		)
+	}
+
+	/**
+	 * @throws IllegalArgumentException if no shop is selected
+	 */
+	 fun saveAllRecognizedTextAssociations() {
+		selectedShop.value?.let { shop ->
+			receiptItems.value?.let { items ->
+				_saveAllRecognizedTextAssociations(items, shop.id)
+			}
 		} ?: throw IllegalArgumentException("No shop selected")
 	}
 
 
+	companion object {
+
+		private const val ID_NULL = -1L
+
+	}
+
 }
+
+
 
 
 class ScanViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
