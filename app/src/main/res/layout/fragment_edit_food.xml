@@ -88,10 +88,6 @@
                     android:inputType="number|numberDecimal|numberSigned"
                     android:textSize="@dimen/et_fontSize" />
 
-				<FrameLayout
-					android:id="@+id/fragment_edit_food_container_map"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -99,16 +95,18 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/fragment_edit_food_btn_confirm"
-        android:layout_width="0dp"
+        android:id="@+id/fragment_edit_food_btn_map"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/editFood_btn_confirm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fragment_edit_food_btn_cancel"
+        android:text="@string/editFood_btn_map"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_edit_food_btn_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_nested_scroll_view"
+
         app:layout_constraintWidth_percent="0.4"
         android:layout_margin="8dp" />
+
 
     <Button
         android:id="@+id/fragment_edit_food_btn_cancel"
@@ -116,10 +114,24 @@
         android:layout_height="wrap_content"
         android:text="@string/editFood_btn_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fragment_edit_food_btn_confirm"
-        app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_nested_scroll_view"
+        app:layout_constraintEnd_toStartOf="@id/fragment_edit_food_btn_confirm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_btn_map"
+
         app:layout_constraintWidth_percent="0.4"
         android:layout_margin="8dp" />
+
+    <Button
+        android:id="@+id/fragment_edit_food_btn_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/editFood_btn_confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fragment_edit_food_btn_cancel"
+        app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_btn_map"
+        app:layout_constraintWidth_percent="0.4"
+        android:layout_margin="8dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

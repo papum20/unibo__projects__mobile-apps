@@ -54,39 +54,35 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 
 ## tasks
 
+map:
+*	shops waypoints, with prices and stuff
+
+recipes:
+*	create, manage...
+
+share
+
+zip
+
+
 all list:
 *	db: load only some
 
-all viewModel:
-*	```kotlin
-	if(modelClass.isAssignableFrom(ListViewModel::class.java)) {
-		//@Suppress("UNCHECKED_CAST")
-		return ListViewModel(repository) as T
-	}
-	```
-	
-products:
-*	order
-*	more orders
-*	filter
-*	search (on full name from hierarchy)
+ux:
+*	dialogs addTo:
+	*	error dialog if wrong parameters (e.g. missing quantity/or put default val)
+*	inventory:
+	*	error if add to meal more than you have
 
-all quantity (e.g. inventory, list):
-*	default: grams
-*	make more quantities (customizable)
-
-make table with full names from hierarchy  
-
-dialogs addTo:
-*	error dialog if wrong parameters (e.g. missing quantity/or put default val)
+services:
+*	on boot
 
 notification:
-*	 on click open app
-	*	possibly on inventory
+*	 on click on inventory
 *	settings: hour of day
 
 implementation :
-*	fragments args: remove and use oter (newinstance/constructor; budle; viewModel, context)
+*	fragments args: remove and use other (newinstance/constructor; budle; viewModel, context)
 *	bundle keys in R.strings
 *	use R strings formatters (e.g. list {} ...)
 *	repo singleton
@@ -104,18 +100,38 @@ implementation :
 		}
 	}
 	```
-*	use @Transaction in Dao for Repository.updateInventoryQuantity_sumOrInsert
 
-repo:
-*	queries dont use db's thread, why?
+info:
+*	repo:
+	*	queries dont use db's thread, why?
+*	all viewModel:
+	*	```kotlin
+		if(modelClass.isAssignableFrom(ListViewModel::class.java)) {
+			//@Suppress("UNCHECKED_CAST")
+			return ListViewModel(repository) as T
+		}
+		```
 
-inventory:
-*	error if add to meal more than you have
-
-OCR:
-*	fix
-*	use heights to correlate lines of product - price
 
 ## future
 
-*	map in edit food : nested fragment, not separate
+map in edit food : nested fragment, not separate (do it like in MainActivity, with another navHostFragment and navController)  
+
+products:
+*	order
+*	more orders
+*	filter
+*	search (on full name from hierarchy)
+
+all quantity (e.g. inventory, list):
+*	default: grams
+*	make more quantities (customizable)
+
+db:
+*	make table with full names from hierarchy 
+*	use @Transaction in Dao for Repository.updateInventoryQuantity_sumOrInsert
+
+map:
+*	max zoom,size
+*	center on user
+*	set shops radius and stuff

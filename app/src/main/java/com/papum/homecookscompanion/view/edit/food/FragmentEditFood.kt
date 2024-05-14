@@ -74,23 +74,6 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			)
 		}
 
-		/* osm map */
-
-
-		if (parentFragmentManager.findFragmentByTag(FRAGMENT_TAG_MAP) == null) {
-			navController.navigate(
-				FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap()
-			)
-			/*
-			parentFragmentManager.beginTransaction()
-				.run {
-					setReorderingAllowed(true)
-					replace(R.id.fragment_edit_food_container_map, FragmentMap::class.java, null, FRAGMENT_TAG_MAP)
-					addToBackStack("MyLabel")
-					commit()
-				}
-			 */
-		}
 
 		/* form fields */
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
@@ -143,6 +126,17 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		view.findViewById<Button>(R.id.fragment_edit_food_btn_cancel).setOnClickListener {
 			Log.i("PRODUCT_EDIT", "not added")
 			navController.navigateUp()
+		}
+
+		view.findViewById<Button>(R.id.fragment_edit_food_btn_map).setOnClickListener {
+
+			/* osm map */
+			if (parentFragmentManager.findFragmentByTag(FRAGMENT_TAG_MAP) == null) {
+
+				navController.navigate(
+					FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap()
+				)
+			}
 		}
 
     }

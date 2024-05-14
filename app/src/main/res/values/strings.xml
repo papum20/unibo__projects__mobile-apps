@@ -89,6 +89,7 @@
     <string name="editFood_title">Create a food</string>
     <string name="editFood_btn_cancel">Cancel</string>
     <string name="editFood_btn_confirm">Create</string>
+    <string name="editFood_btn_map">Search on map</string>
     <string name="editRecipe_title">Create a recipe</string>
 
     <string name="inventory_btn_scan">Scan a receipt</string>
