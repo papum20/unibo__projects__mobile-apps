@@ -57,9 +57,9 @@
 
     <fragment
         android:id="@+id/fragmentMap"
-        android:name="com.papum.homecookscompanion.view.maps.FragmentMap"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShops"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map_shops" />
 
 
 </navigation>

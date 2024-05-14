@@ -10,91 +10,106 @@
         android:id="@+id/dialog_addShop_brand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_addShop_brand" />
+        android:text="@string/dialog_addShop_brand"
+        app:layout_constraintBottom_toTopOf="@id/dialog_addShop_address"
+        app:layout_constraintEnd_toStartOf="@id/dialog_addShop_brand_et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent
+"
+        />
 
     <EditText
         android:id="@+id/dialog_addShop_brand_et"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberDecimal|numberSigned"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_address"
-        app:layout_constraintStart_toStartOf="parent"
+        android:hint="@string/shop_placeholder_brand"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_address_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialog_addShop_brand"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dialog_addShop_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_addShop_address" />
+        android:text="@string/dialog_addShop_address"
+        app:layout_constraintBottom_toTopOf="@id/dialog_addShop_city"
+        app:layout_constraintEnd_toStartOf="@id/dialog_addShop_address_et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_addShop_brand"
+        />
 
 
     <EditText
         android:id="@+id/dialog_addShop_address_et"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberDecimal|numberSigned"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_city"
-        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_brand"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_brand" />
+        android:hint="@string/shop_placeholder_address"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_city_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_addShop_address"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_brand_et" />
 
     <TextView
         android:id="@+id/dialog_addShop_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_addShop_city" />
+        android:text="@string/dialog_addShop_city"
+        app:layout_constraintBottom_toTopOf="@id/dialog_addShop_state"
+        app:layout_constraintEnd_toStartOf="@id/dialog_addShop_city_et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_addShop_address"
+        />
 
     <EditText
         android:id="@+id/dialog_addShop_city_et"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberDecimal|numberSigned"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_state"
-        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_address"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_address" />
+        android:hint="@string/shop_placeholder_city"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_state_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_addShop_city"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_address_et" />
 
     <TextView
         android:id="@+id/dialog_addShop_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dialog_addShop_state" />
+        android:text="@string/dialog_addShop_state"
+        app:layout_constraintBottom_toTopOf="@id/dialog_addShop_latlng"
+        app:layout_constraintEnd_toStartOf="@id/dialog_addShop_state_et"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_addShop_city"
+        />
 
     <EditText
         android:id="@+id/dialog_addShop_state_et"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberDecimal|numberSigned"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_latitude"
-        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_city"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_city" />
+        android:hint="@string/shop_placeholder_state"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_latlng"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_addShop_state"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_city_et" />
 
-    <EditText
-        android:id="@+id/dialog_addShop_latitude_et"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberDecimal|numberSigned"
-        app:layout_constraintBottom_toTopOf="@+id/dialog_addShop_longitude"
-        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_state"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_state" />
-
-    <EditText
-        android:id="@+id/dialog_addShop_longitude_et"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:hint="@string/dialog_addTo_placeholder_et"
-        android:inputType="number|numberDecimal|numberSigned"
+    <TextView
+        android:id="@+id/dialog_addShop_latlng"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="@string/shop_format_latlng"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/dialog_addShop_latitude"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_addShop_latitude" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_addShop_state"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

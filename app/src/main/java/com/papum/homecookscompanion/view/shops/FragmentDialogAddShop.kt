@@ -6,56 +6,73 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityShops
+import com.papum.homecookscompanion.view.products.FragmentDialogAddToInventory
 
-class FragmentDialogAddShop(
-	private val listener: IListenerDialog
-) : DialogFragment() {
+class FragmentDialogAddShop : DialogFragment() {
 
-
-	// Callbacks for dialog buttons
-	interface IListenerDialog {
-		fun onClickAddShop(dialog: DialogFragment, shop: EntityShops)
-		fun onClickAddShopCancel(dialog: DialogFragment)
+	private lateinit var navController: NavController
+	private val viewModel: ShopsViewModel by viewModels {
+		ShopsViewModelFactory(
+			Repository(requireActivity().application)
+		)
 	}
 
 
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-		return activity?.let {
+		val latitude	= requireArguments().getDouble(KEY_LATITUDE)
+		val longitude	= requireArguments().getDouble(KEY_LONGITUDE)
 
-			val builder = AlertDialog.Builder(it)
-
-			val inflater	= requireActivity().layoutInflater
-
-			val dialogView	= inflater.inflate(R.layout.dialog_products_add_to_inventory, null)
-			val tvName	= dialogView.findViewById<TextView>(R.id.dialog_products_addToInventory_tv)
+		navController = findNavController()
 
 
-			builder
-				.setView(dialogView)
-				.setPositiveButton("Add") { dialog, id ->
-					// add quantity of product to list
-					val quantity = dialogView.findViewById<EditText>(R.id.dialog_products_addToInventory_et)
-						.text.toString().toFloatOrNull()
-					if(quantity != null)
-						productId?.let { id ->
-							listener.onClickAddShop(this, id, quantity)
-						}
-				}
-				.setNegativeButton("Cancel") { dialog, id ->
-					// User cancelled the dialog
-					listener.onClickAddShopCancel(this)
-				}
+		val builder		= AlertDialog.Builder(requireActivity())
+		val inflater	= requireActivity().layoutInflater
+		val dialogView	= inflater.inflate(R.layout.dialog_products_add_shop, null)
 
-			// Create the AlertDialog object and return it.
-			builder.create()
-		} ?: throw IllegalStateException("Activity cannot be null")
+		val etAddress	= dialogView.findViewById<EditText>(R.id.dialog_addShop_address_et)
+		val etBrand		= dialogView.findViewById<EditText>(R.id.dialog_addShop_brand_et)
+		val etCity		= dialogView.findViewById<EditText>(R.id.dialog_addShop_city_et)
+		val etState		= dialogView.findViewById<EditText>(R.id.dialog_addShop_state_et)
+		dialogView.findViewById<TextView>(R.id.dialog_addShop_latlng)
+			.setText( requireContext().getString(R.string.shop_format_latlng, latitude, longitude) )
+
+		builder
+			.setView(dialogView)
+			.setPositiveButton(requireContext().getString(R.string.btn_add)) { dialog, id ->
+				viewModel.addShop(
+					EntityShops(
+						0,
+						etAddress.text.toString(),
+						etBrand.text.toString(),
+						etCity.text.toString(),
+						etState.text.toString(),
+						latitude,
+						longitude
+					)
+				)
+				Toast.makeText(requireContext(),
+					"Shop ${etBrand.text} added!", Toast.LENGTH_SHORT)
+					.show()
+				Log.d(TAG, "Shop ${etBrand.text} added!")
+
+				navController.navigateUp()
+			}
+			.setNegativeButton(requireContext().getString(R.string.btn_cancel)) { dialog, id ->
+				// User cancelled the dialog
+			}
+
+		// Create the AlertDialog object and return it.
+		return builder.create()
 
 	}
 
@@ -64,18 +81,25 @@ class FragmentDialogAddShop(
 
 	companion object {
 
-		private const val KEY_PRODUCT: String = "product"
+		private const val TAG: String = "DIALOG_ADD_SHOP"
+
+		private const val KEY_LATITUDE: String	= "latitude"
+		private const val KEY_LONGITUDE: String	= "longitude"
+
+		const val DIALOG_TAG: String = "dialog_add_shop"
+
 
 		/**
 		 * Use this factory method to create a new instance of
 		 * this fragment using the provided parameters.
 		 */
 		@JvmStatic
-		fun newInstance(listener: IListenerDialog, product: EntityProduct) =
-			FragmentDialogAddShop(listener).apply {
+		fun newInstance(latitude: Double, longitude: Double) =
+			FragmentDialogAddShop().apply {
 				arguments = Bundle().apply {
 					//putParcelable("product", product)
-					putLong(KEY_PRODUCT, product.id)
+					putDouble(KEY_LATITUDE,		latitude)
+					putDouble(KEY_LONGITUDE,	longitude)
 				}
 			}
 	}

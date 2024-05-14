@@ -1,11 +1,16 @@
 package com.papum.homecookscompanion.view.shops
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +23,8 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.model.database.EntityShops
+import com.papum.homecookscompanion.view.edit.food.FragmentEditFood
 import com.papum.homecookscompanion.view.products.FragmentDialogAddToList
 import com.papum.homecookscompanion.view.products.FragmentDialogAddToMeals
 import java.time.LocalDateTime
@@ -53,6 +60,9 @@ class FragmentShops :
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		/* permissions */
+		requestPermissionsIfNecessary(PERMISSIONS_MAPS)
+
 		navController = findNavController()
 
 		/* recycler */
@@ -67,12 +77,9 @@ class FragmentShops :
 		/* UI listeners */
 
 		view.findViewById<Button>(R.id.shops_recycler_btn_add).setOnClickListener {
-			// TODO:
-			/*
 			navController.navigate(
-				FragmentInventoryDirections.actionFragmentInventoryToFragmentScanReceipt()
+				FragmentShopsDirections.actionFragmentShopsToFragmentMapSelectPoint()
 			)
-			 */
 
 			/*
 			context?.let { context ->
@@ -98,13 +105,44 @@ class FragmentShops :
 	}
 
 
+	/* Permissions */
+
+	private val requestMultiplePermissionsLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestMultiplePermissions()
+	) { permissions ->
+		permissions.entries.forEach {
+			Log.d(TAG, "Permission requested result: ${it.key}: ${it.value}")
+		}
+	}
+
+	private fun requestPermissionsIfNecessary(permissions: Array<String>) {
+		val permissionsToRequest = ArrayList<String>()
+		permissions.forEach { permission ->
+			if ( ContextCompat.checkSelfPermission(requireContext(), permission)
+				!= PackageManager.PERMISSION_GRANTED) {
+				permissionsToRequest.add(permission)
+			}
+		}
+		if (permissionsToRequest.size > 0) {
+			requestMultiplePermissionsLauncher.launch(permissionsToRequest.toTypedArray())
+		}
+	}
+
+
+
 
 	companion object {
 
 		private const val TAG = "INVENTORY"
 
+		private val PERMISSIONS_MAPS = arrayOf(
+			Manifest.permission.ACCESS_COARSE_LOCATION,
+			Manifest.permission.ACCESS_FINE_LOCATION
+		)
+
         @JvmStatic
         fun newInstance() =
             FragmentShops()
     }
+
 }

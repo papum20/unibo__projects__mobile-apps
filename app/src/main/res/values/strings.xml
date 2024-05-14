@@ -100,6 +100,7 @@
     <string name="dialog_addShop_brand">Brand:</string>
     <string name="dialog_addShop_city">City:</string>
     <string name="dialog_addShop_state">State:</string>
+    <string name="dialog_addShop_map_tip">Long press on a point to add a shop there</string>
 
     <string name="editFood_title">Create a food</string>
     <string name="editFood_btn_cancel">Cancel</string>

@@ -139,3 +139,6 @@ map:
 *	max zoom,size
 *	center on user
 *	set shops radius and stuff
+*	map add shops:
+	*	also display already added shops
+	*	find a way to get shops automatically from some data like osm or google maps

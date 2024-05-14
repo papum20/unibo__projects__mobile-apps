@@ -19,10 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.view.maps.FragmentMap
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
 
 
 /**
@@ -35,14 +31,6 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 	private val args: FragmentEditFoodArgs by navArgs()
 
 	private lateinit var navController: NavController
-
-	private val requestMultiplePermissionsLauncher = registerForActivityResult(
-		ActivityResultContracts.RequestMultiplePermissions()
-	) { permissions ->
-			permissions.entries.forEach {
-				Log.d(TAG, "Permission requested result: ${it.key}: ${it.value}")
-			}
-		}
 
 
 	override fun onCreateView(
@@ -131,12 +119,9 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		view.findViewById<Button>(R.id.fragment_edit_food_btn_map).setOnClickListener {
 
 			/* osm map */
-			if (parentFragmentManager.findFragmentByTag(FRAGMENT_TAG_MAP) == null) {
-
-				navController.navigate(
-					FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap()
-				)
-			}
+			navController.navigate(
+				FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap()
+			)
 		}
 
     }
@@ -144,24 +129,22 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 	override fun onResume() {
 		super.onResume()
-		//this will refresh the osmdroid configuration on resuming.
-		//if you make changes to the configuration, use
-		//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		//Configuration.getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this));
-
-		//map.onResume() //needed for compass, my location overlays, v6.0.0 and up
 	}
 
 	override fun onPause() {
 		super.onPause()
-		//this will refresh the osmdroid configuration on resuming.
-		//if you make changes to the configuration, use
-		//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		//Configuration.getInstance().save(this, prefs);
-
-		//map.onPause()  //needed for compass, my location overlays, v6.0.0 and up
 	}
 
+
+	/* Permissions */
+
+	private val requestMultiplePermissionsLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestMultiplePermissions()
+	) { permissions ->
+		permissions.entries.forEach {
+			Log.d(TAG, "Permission requested result: ${it.key}: ${it.value}")
+		}
+	}
 
 	private fun requestPermissionsIfNecessary(permissions: Array<String>) {
 		val permissionsToRequest = ArrayList<String>()

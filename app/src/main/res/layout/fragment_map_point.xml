@@ -5,7 +5,7 @@
     android:layout_height="match_parent" >
 
     <org.osmdroid.views.MapView
-        android:id="@+id/fragment_map_mapview"
+        android:id="@+id/fragment_map_point_mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
          />

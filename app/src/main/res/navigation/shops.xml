@@ -11,6 +11,28 @@
         android:id="@+id/fragmentShops"
         android:name="com.papum.homecookscompanion.view.shops.FragmentShops"
         android:label="@string/nav_item_text_shops"
-        tools:layout="@layout/fragment_shops" />
+        tools:layout="@layout/fragment_shops" >
+        <action
+            android:id="@+id/action_fragmentShops_to_fragmentMapSelectPoint"
+            app:destination="@id/fragmentMapSelectPoint"
+            app:popUpTo="@id/fragmentShops"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentMapSelectPoint"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMapSelectPoint"
+        android:label="FragmentMapSelectPoint"
+        tools:layout="@layout/fragment_map_shops"
+        >
+        <action
+            android:id="@+id/action_fragmentMapSelectPoint_to_fragmentDialogAddShop"
+            app:destination="@id/fragmentDialogAddShop"
+            app:popUpTo="@id/fragmentShops"
+            />
+    </fragment>
+    <dialog
+        android:id="@+id/fragmentDialogAddShop"
+        android:name="com.papum.homecookscompanion.view.shops.FragmentDialogAddShop"
+        android:label="FragmentDialogAddShop" />
 
 </navigation>

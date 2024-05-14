@@ -24,16 +24,15 @@ import org.osmdroid.views.overlay.gestures.OneFingerZoomOverlay
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import java.util.ArrayList
 
 
 /**
- * Default map view activity.
+ * Map view fragment to display shops.
  *
  * @author Marc Kurtz
  * @author Manuel Stahl
  */
-class FragmentMap : Fragment() {
+class FragmentMapShops : Fragment() {
 
 
 	private lateinit var mapView: MapView
@@ -60,14 +59,14 @@ class FragmentMap : Fragment() {
 		savedInstanceState: Bundle?
 	): View? {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_map, container, false)
+		return inflater.inflate(R.layout.fragment_map_shops, container, false)
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
 		/* setup mapView and mapController, and initial values */
-		mapView = view.findViewById<MapView>(R.id.fragment_map_mapview).apply {
+		mapView = view.findViewById<MapView>(R.id.fragment_map_shops_mapview).apply {
 			setTileSource(TileSourceFactory.MAPNIK)
 
 			//needed for pinch zooms
@@ -164,7 +163,7 @@ class FragmentMap : Fragment() {
 				override fun onItemSingleTapUp(index: Int, item: OverlayItem?): Boolean {
 					if(item != null) {
 					Toast.makeText(
-							this@FragmentMap.requireContext(),
+							this@FragmentMapShops.requireContext(),
 							"Item '${item.title}' (index=$index) got single tapped up",
 							Toast.LENGTH_LONG
 						).show()
@@ -178,7 +177,7 @@ class FragmentMap : Fragment() {
 				): Boolean {
 					if(item != null) {
 						Toast.makeText(
-							this@FragmentMap.requireContext(),
+							this@FragmentMapShops.requireContext(),
 							"Item '${item.title}' (index=$index) got long pressed",
 							Toast.LENGTH_LONG
 						).show()
@@ -204,7 +203,7 @@ class FragmentMap : Fragment() {
 					sep = ", "
 				}
 				Toast.makeText(
-					this@FragmentMap.requireContext(),
+					this@FragmentMapShops.requireContext(),
 					"Currently displayed: $buffer", Toast.LENGTH_LONG
 				).show()
 				return true
@@ -306,8 +305,8 @@ class FragmentMap : Fragment() {
 
 		private const val START_ZOOM = 5.0
 
-		fun newInstance(): FragmentMap {
-			return FragmentMap()
+		fun newInstance(): FragmentMapShops {
+			return FragmentMapShops()
 		}
 	}
 }
