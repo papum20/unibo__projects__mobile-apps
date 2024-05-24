@@ -119,12 +119,14 @@ class FragmentInventory :
 
 	override fun onSetQuantity(id: Long, inventoryItem: EntityInventory?, quantity: Float) {
 		val _inventoryItem = inventoryItem ?: viewModel.addToInventory(id, quantity)
-		viewModel.updateInventory(_inventoryItem, quantity)
+		val newInventoryItem = viewModel.updateInventory(_inventoryItem, quantity)
+		adapter.updateItemInInventory(newInventoryItem)
 	}
 
 	override fun onSetAlert(id: Long, alert: EntityAlerts?, quantity: Float) {
 		val _alert = alert ?: viewModel.addAlert(id, quantity)
-		viewModel.updateAlert(_alert, quantity)
+		val newAlert = viewModel.updateAlert(_alert, quantity)
+		adapter.updateItemAlert(newAlert)
 	}
 
 	/* FragmentDialogAddTo*.IListenerDialog */
@@ -146,7 +148,7 @@ class FragmentInventory :
 				viewModel.addToMealsFromInventory(_inventoryItem, date, quantity)
 				adapter.updateItemInInventory(_inventoryItem)
 
-			} ?: Log.e(TAG, "Tried to add to a meal a product not in inventory.")
+			} ?: Log.e(TAG, "Tried to add to a meal a productt in inventory.")
 		}
 	}
 

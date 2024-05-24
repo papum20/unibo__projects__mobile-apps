@@ -55,20 +55,20 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
 	/* Update */
 
-	fun updateInventory(inventoryItem: EntityInventory, newQuantity: Float) {
-		repository.updateInventoryItem(
-			inventoryItem.apply {
-				this.quantity = newQuantity
-			}
-		)
+	fun updateInventory(inventoryItem: EntityInventory, newQuantity: Float): EntityInventory {
+		val newInventoryItem = inventoryItem.apply {
+			this.quantity = newQuantity
+		}
+		repository.updateInventoryItem(newInventoryItem)
+		return newInventoryItem
 	}
 	
-	fun updateAlert(alert: EntityAlerts, newQuantity: Float) {
-		repository.updateAlert(
-			alert.apply {
-				this.quantity = newQuantity
-			}
-		)
+	fun updateAlert(alert: EntityAlerts, newQuantity: Float): EntityAlerts {
+		val newAlert = alert.apply {
+			this.quantity = newQuantity
+		}
+		repository.updateAlert(newAlert)
+		return newAlert
 	}
 
 

@@ -21,6 +21,11 @@
     <dimen name="tv_padding">3dp</dimen>
     <dimen name="tv_info_fontSize">12sp</dimen>
 
+    <!-- dimensions -->
+    <dimen name="et_height">50dp</dimen>
+
+    <dimen name="quantity_width">90dp</dimen>
+
     <!-- more complex elements -->
     <dimen name="map_height">200dp</dimen>
 

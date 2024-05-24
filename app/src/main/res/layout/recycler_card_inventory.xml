@@ -35,7 +35,7 @@ android:layout_height="wrap_content">
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_text"
-                app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_img_type"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_img_type"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -63,8 +63,9 @@ android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/recycler_card_inventory_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/quantity_width"
+                android:layout_height="@dimen/et_height"
+                android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|numberSigned"
                 android:text="@string/product_format_quantity"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -105,10 +106,12 @@ android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/recycler_card_inventory_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/quantity_width"
+                android:layout_height="@dimen/et_height"
+                android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|numberSigned"
-                android:text="@string/product_format_price" />
+                android:text="@string/product_format_quantity"
+                />
 
             <Button
                 android:id="@+id/recycler_card_inventory_btn_addList"

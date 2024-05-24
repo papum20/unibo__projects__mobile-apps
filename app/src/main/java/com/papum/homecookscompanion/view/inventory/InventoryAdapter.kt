@@ -1,11 +1,16 @@
 package com.papum.homecookscompanion.view.inventory
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
@@ -51,11 +56,15 @@ class InventoryAdapter(
 				it.alert?.quantity?.toString() ?: "(none)"
 			}
 		)
+		// associate item with EditText
+		holder.etAlert.tag = items?.get(position)
 
 		holder.etQuantity.setText(items?.get(position)?.inventoryItem?.let { item ->
-			item.quantity.toString()
-		}?: "0.00"
+				item.quantity.toString()
+			}?: "0.00"
 		)
+		// associate item with EditText
+		holder.etQuantity.tag = items?.get(position)
 
 		holder.tvName.text = items?.get(position)?.let {
 			it.product.parent?.let { p ->
@@ -102,23 +111,40 @@ class InventoryAdapter(
 		*/
 
 		// update product quantity for alert
-		holder.etAlert.doOnTextChanged { text, start, before, count ->
-			items?.get(holder.adapterPosition)?.let { item ->
-				text.toString().toFloatOrNull()?.let { quantity ->
-					uiListener.onSetAlert(item.product.id, item.alert, quantity)
+		holder.etAlert.setOnEditorActionListener { v, actionId, event ->
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				val item = v.tag as? EntityProductAndInventoryWithAlerts
+				item?.let {
+					(v as EditText).text.toString().toFloatOrNull()?.let { quantity ->
+						uiListener.onSetAlert(item.product.id, item.alert, quantity)
+					}
+					// hide keyboard
+					val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+					imm.hideSoftInputFromWindow(v.windowToken, 0)
 				}
+				true
+			} else {
+				false
 			}
 		}
 
-		// update product quantity to inventory
-		holder.etQuantity.doOnTextChanged { text, start, before, count ->
-			items?.get(holder.adapterPosition)?.let { item ->
-				text.toString().toFloatOrNull()?.let { quantity ->
-					uiListener.onSetQuantity(item.product.id, item.inventoryItem, quantity)
+		// update product quantity for inventory
+		holder.etQuantity.setOnEditorActionListener { v, actionId, event ->
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				val item = v.tag as? EntityProductAndInventoryWithAlerts
+				item?.let {
+					(v as EditText).text.toString().toFloatOrNull()?.let { quantity ->
+						uiListener.onSetQuantity(item.product.id, item.inventoryItem, quantity)
+					}
+					// hide keyboard
+					val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+					imm.hideSoftInputFromWindow(v.windowToken, 0)
 				}
+				true
+			} else {
+				false
 			}
 		}
-
 
 		// add product to list
 		holder.btnAddList.setOnClickListener { _ ->
@@ -145,7 +171,7 @@ class InventoryAdapter(
 		layoutExpanded = null
 		items = newItems
 		notifyDataSetChanged()
-		Log.d("INVENTORY_UPDATE", "products: $itemCount")
+		Log.d(TAG, "new products: $itemCount")
 	}
 
 	fun updateItemInInventory(newInventoryItem: EntityInventory) {
@@ -153,11 +179,13 @@ class InventoryAdapter(
 			items?.indexOf(foundItem)?.let { position ->
 				layoutExpanded?.visibility = View.GONE
 				layoutExpanded = null
-				items?.set( position,
-					foundItem.apply { inventoryItem = newInventoryItem }
-				)
-				notifyItemChanged(position)
-				Log.d("TAG", "Updated item at position $position; products: $itemCount")
+				if (position != -1) {
+					items?.set(position,
+						foundItem.apply { inventoryItem = newInventoryItem }
+					)
+					notifyItemChanged(position)
+					Log.d(TAG, "Updated item at position $position; products: $itemCount")
+				}
 			}
 		}
 	}
@@ -167,11 +195,13 @@ class InventoryAdapter(
 			items?.indexOf(foundItem)?.let { position ->
 				layoutExpanded?.visibility = View.GONE
 				layoutExpanded = null
-				items?.set( position,
-					foundItem.apply { alert = newAlert }
-				)
-				notifyItemChanged(position)
-				Log.d("TAG", "Updated item at position $position; products: $itemCount")
+				if (position != -1) {
+					items?.set(position,
+						foundItem.apply { alert = newAlert }
+					)
+					notifyItemChanged(position)
+					Log.d(TAG, "Updated item at position $position; products: $itemCount")
+				}
 			}
 		}
 	}

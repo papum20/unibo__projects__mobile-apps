@@ -207,15 +207,19 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertManyInInventory(inventoryProducts: List<EntityInventory>) {
+	fun insertInList(listProduct: EntityList): EntityList {
+		var newId: Long = listProduct.idProduct
 		Database.databaseWriteExecutor.execute {
-			daoInventory.insertMany(inventoryProducts)
+			newId = daoList.insertOne(listProduct)
+		}
+		return listProduct.apply {
+			idProduct = newId
 		}
 	}
 
-	fun insertInList(listProduct: EntityList) {
+	fun insertManyInInventory(inventoryProducts: List<EntityInventory>) {
 		Database.databaseWriteExecutor.execute {
-			daoList.insertOne(listProduct)
+			daoInventory.insertMany(inventoryProducts)
 		}
 	}
 
@@ -284,6 +288,11 @@ class Repository(app: Context) {
 		}
 	}
 
+	fun deleteFromList(listItem: EntityList) {
+		Database.databaseWriteExecutor.execute {
+			daoList.deleteOne(listItem)
+		}
+	}
 	fun deleteProducts(products: List<EntityProduct>) {
 		Database.databaseWriteExecutor.execute {
 			products.forEach {
@@ -297,6 +306,11 @@ class Repository(app: Context) {
 	fun updateInventoryItem(inventoryItem: EntityInventory) {
 		Database.databaseWriteExecutor.execute {
 			daoInventory.updateOne(inventoryItem)
+		}
+	}
+	fun updateListItem(listItem: EntityList) {
+		Database.databaseWriteExecutor.execute {
+			daoList.updateOne(listItem)
 		}
 	}
 
@@ -314,6 +328,26 @@ class Repository(app: Context) {
 				daoInventory.updateOne(
 					fetchedItem.apply {
 						quantity = quantity!! + inventoryItem.quantity!!
+					}
+				)
+			}
+
+		}
+	}
+	/**
+	 * Sum quantity if not null and already exists in inventory, otherwise add.
+	 */
+	fun updateListQuantity_sumOrInsert(listItem: EntityList) {
+		Database.databaseWriteExecutor.execute {
+			val fetchedItem = daoList.getOne_fromId(listItem.idProduct)
+			if (fetchedItem == null) {
+				daoList.insertOne(listItem)
+			} else if (fetchedItem.quantity == null) {
+				daoList.updateOne(listItem)
+			} else if (listItem.quantity != null) {
+				daoList.updateOne(
+					fetchedItem.apply {
+						quantity = quantity!! + listItem.quantity!!
 					}
 				)
 			}

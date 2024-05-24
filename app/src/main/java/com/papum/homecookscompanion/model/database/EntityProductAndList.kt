@@ -13,7 +13,7 @@ class EntityProductAndList (
 		parentColumn = "id",
 		entityColumn = "idProduct"
 	)
-    val listItem: EntityList
+    var listItem: EntityList
  
 )
 

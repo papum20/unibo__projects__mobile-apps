@@ -132,7 +132,7 @@ class FragmentMapShops : Fragment() {
 
 		/* Itemized Overlay */
 		/* Create a static ItemizedOverlay showing a some Markers on some cities. */
-		val items = listOf(
+		val items = mutableListOf(
 			OverlayItem(
 				"Hannover", "SampleDescription",
 				GeoPoint(52.370816, 9.735936)

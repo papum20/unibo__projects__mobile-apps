@@ -49,7 +49,7 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 	}
 
 	fun addToList(id: Long, quantity: Float) {
-		repository.insertInList(EntityList(id, quantity))
+		repository.updateListQuantity_sumOrInsert(EntityList(id, quantity))
 	}
 
 	fun addToMeals(id: Long, date: LocalDateTime, quantity: Float) {
