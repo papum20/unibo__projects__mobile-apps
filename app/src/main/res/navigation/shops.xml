@@ -20,9 +20,9 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentMapSelectPoint"
-        android:name="com.papum.homecookscompanion.view.maps.FragmentMapSelectPoint"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsSelectPoint"
         android:label="FragmentMapSelectPoint"
-        tools:layout="@layout/fragment_map_shops"
+        tools:layout="@layout/fragment_map_point"
         >
         <action
             android:id="@+id/action_fragmentMapSelectPoint_to_fragmentDialogAddShop"

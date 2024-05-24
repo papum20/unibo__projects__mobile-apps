@@ -22,7 +22,7 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 1.	lista della spesa;
 	*	[V]	list
 	*	[V] add
-	*	remove
+	*	[V] remove
 2.	ricette: si può creare e salvare una ricetta;
 3.	pianificazione dei pasti:
 	*	[V]	si possono assegnare i cibi/ricette che si consumano a una giornata.

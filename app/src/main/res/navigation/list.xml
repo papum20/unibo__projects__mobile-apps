@@ -40,7 +40,7 @@
         android:id="@+id/fragmentMap"
         android:name="com.papum.homecookscompanion.view.maps.FragmentMapShops"
         android:label="FragmentMapShops"
-        tools:layout="@layout/fragment_map_shops"
+        tools:layout="@layout/fragment_map_point"
         />
 
 </navigation>
