@@ -29,6 +29,11 @@ import com.papum.homecookscompanion.model.Repository
 class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 	private val args: FragmentEditFoodArgs by navArgs()
+	private val viewModel: EditFoodViewModel by viewModels {
+		EditFoodViewModelFactory(
+			Repository(requireActivity().application)
+		)
+	}
 
 	private lateinit var navController: NavController
 
@@ -51,17 +56,7 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		requestPermissionsIfNecessary(PERMISSIONS_MAPS)
 
 		/* args */
-
-		val foodId: String? = args.foodId
-
-		val navController = findNavController()
-
-		val viewModel: EditFoodViewModel by viewModels {
-			EditFoodViewModelFactory(
-				Repository(requireActivity().application)
-			)
-		}
-
+		val foodId: Long = args.foodId
 
 		/* form fields */
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
@@ -73,7 +68,7 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 
 		/* if it's editing a food (and not creating), setup */
-		if(foodId != null) {
+		if(foodId != ID_FOOD_NULL) {
 			Log.d("PRODUCT_EDIT", "product to edit has id $foodId")
 			viewModel.getProduct_fromId(foodId.toLong()).observe(viewLifecycleOwner) { food ->
 				Log.d("PRODUCT_EDIT", "product to edit fetched, it's ${food.product.name}")
@@ -120,7 +115,7 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 			/* osm map */
 			navController.navigate(
-				FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap()
+				FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap(foodId)
 			)
 		}
 
@@ -169,6 +164,8 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			Manifest.permission.ACCESS_COARSE_LOCATION,
 			Manifest.permission.ACCESS_FINE_LOCATION
 		)
+
+		val ID_FOOD_NULL = -1L
 
 		/**
 		 * Use this factory method to create a new instance of

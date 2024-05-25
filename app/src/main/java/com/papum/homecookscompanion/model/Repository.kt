@@ -173,7 +173,7 @@ class Repository(app: Context) {
 	}
 
 	fun getAllShopsAndPurchases_fromProductId(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
-		return daoShopsWithPurchases.getAllFromProductId(productId.toString())
+		return daoShopsWithPurchases.getAllFromProductId(productId)
 	}
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {

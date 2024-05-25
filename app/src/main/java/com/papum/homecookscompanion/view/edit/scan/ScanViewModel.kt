@@ -92,6 +92,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 				items.filter { it.productId != null }
 					.map { item ->
 						EntityPurchases(
+							0,
 							item.productId!!,
 							selectedShop.value!!.id,
 							dateCurrent,

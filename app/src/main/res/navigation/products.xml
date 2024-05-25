@@ -45,8 +45,8 @@
         tools:layout="@layout/fragment_edit_food" >
         <argument
             android:name="foodId"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="long"
+            />
         <action
             android:id="@+id/action_fragmentEditFood_to_fragmentMap"
             app:destination="@id/fragmentMap"
@@ -56,9 +56,15 @@
 
     <fragment
         android:id="@+id/fragmentMap"
-        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShops"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsForProduct"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map_point" />
+        tools:layout="@layout/fragment_map_select_point"
+        >
+        <argument
+            android:name="foodId"
+            app:argType="long"
+            />
+    </fragment>
 
     <dialog
         android:id="@+id/fragmentDialogAddToList"

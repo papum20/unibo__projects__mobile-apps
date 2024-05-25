@@ -1,7 +1,6 @@
 package com.papum.homecookscompanion.view.maps
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.papum.homecookscompanion.R
@@ -22,7 +21,7 @@ import org.osmdroid.views.overlay.OverlayItem
  * @author Manuel Stahl
  */
 class FragmentMapShopsSelectPoint :
-	FragmentMap(R.layout.fragment_map_point, R.id.fragment_map_point_mapview)
+	FragmentMap(R.layout.fragment_map_select_point, R.id.fragment_map_point_mapview)
 {
 
 	private val viewModel: MapShopsSelectPointViewModel by viewModels {

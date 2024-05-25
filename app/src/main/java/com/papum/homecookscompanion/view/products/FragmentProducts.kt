@@ -18,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.view.edit.food.FragmentEditFood
 import java.time.LocalDateTime
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentProducts.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class FragmentProducts :
 	Fragment(R.layout.page_fragment_products),
 	ProductsAdapter.IListenerOnClickProductExpandable,
@@ -82,7 +79,8 @@ class FragmentProducts :
 		view.findViewById<Button>(R.id.products_btn_editFood)
 			.setOnClickListener {
 				navController.navigate(
-					FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(null)
+					FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(
+						FragmentEditFood.ID_FOOD_NULL)
 				)
 			}
 
@@ -101,7 +99,7 @@ class FragmentProducts :
 
 	override fun onClickInfo(product: EntityProduct) {
 		navController.navigate(
-			FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(product.id.toString())
+			FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(product.id)
 		)
 	}
 

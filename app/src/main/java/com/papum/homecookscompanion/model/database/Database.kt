@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.time.LocalDateTime
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -21,7 +22,7 @@ import java.util.concurrent.Executors
 		EntityPurchases::class,
 		EntityShops::class,
    ],
-	version = 18,
+	version = 26,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -65,6 +66,7 @@ abstract class Database : RoomDatabase() {
 					val daoProduct				= INSTANCE?.daoProduct()
 					val daoInventory			= INSTANCE?.daoInventory()
 					val daoList					= INSTANCE?.daoList()
+					val daoPurchases			= INSTANCE?.daoPurchases()
 					val daoProductAndNutrients	= INSTANCE?.daoProductAndNutrients()
 					val daoProductRecognized	= INSTANCE?.daoProductRecognized()
 					val daoShops				= INSTANCE?.daoShops()
@@ -114,18 +116,42 @@ abstract class Database : RoomDatabase() {
 					}
 
 
-					val idShop = daoShops?.insertOne(EntityShops(
+					val idEurospin = daoShops?.insertOne(EntityShops(
 						0,"via del Lavoro 8","Eurospin", "Bologna", "Italy",
 						44.50305191918619, 11.361257401450482
+					))
+
+					val idLidl = daoShops?.insertOne(EntityShops(
+						0,"via Libia","Lidl", "Bologna", "Italy",
+						44.498491483993696, 11.366060902788908
+					))
+
+
+					val idConad = daoShops?.insertOne(EntityShops(
+						0,"via Emilia","Conad", "Bologna", "Italy",
+						44.484654040945024, 11.373957326156463
 					))
 
 
 					daoProductRecognized?.insertMany(
 						listOf(
 							EntityProductRecognized(
-							"AGLIO 200g", idShop!!, idGarlic!!
+							"AGLIO 200g", idEurospin!!, idGarlic!!
 							)
 					))
+
+					if(idBread != null && idEurospin != null && idLidl != null && idConad != null) {
+						daoPurchases?.insertMany(
+							listOf(
+								EntityPurchases(0, idBread, idEurospin, LocalDateTime.now(), 2F),
+								EntityPurchases(0, idBread, idEurospin, LocalDateTime.now(), 1.5F),
+								EntityPurchases(0, idBread, idLidl, LocalDateTime.now(), 2F),
+								EntityPurchases(0, idBread, idEurospin, LocalDateTime.now(), 3F),
+								EntityPurchases(0, idBread, idLidl, LocalDateTime.now(), 2.3F),
+								EntityPurchases(0, idBread, idConad, LocalDateTime.now(), 2.1F),
+							)
+						)
+					}
 
 				}
 			}

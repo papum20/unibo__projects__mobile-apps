@@ -3,6 +3,7 @@ package com.papum.homecookscompanion.model.database
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
 
@@ -21,12 +22,14 @@ import java.time.LocalDateTime
 		)
 	],
 	indices = [
-		Index(value = ["idProduct", "date"], unique = true),
+		Index(value = ["idProduct"]),
 		Index(value = ["idShop"])
-  	],
-	primaryKeys = ["idProduct", "date"]
+  	]
 )
 class EntityPurchases(
+
+	@PrimaryKey(autoGenerate = true)
+	val id: Long,
 
 	var idProduct: Long,
 	var idShop: Long,

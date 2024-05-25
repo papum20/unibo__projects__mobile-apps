@@ -41,10 +41,10 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 7.	[V]	notifiche: si possono impostare notifiche per quando le scorte di un determinato oggetto scendono sotto una certa soglia (per es. se rimangono meno di 0,5kg di farina).
 	*	nota: serve un primo avvio dell'app per farle partire; inoltre, serve di nuovo se si fa un arresto forzato
 
-8.	ricerca prezzo migliore per un prodotto, in base ai precedenti acquisti dell'utente: l'utente può visualizzare il negozio (tra quelli in un certo raggio dalla sua posizione) che offre al miglior prezzo un dato prodotto.
+8.	[V] ricerca prezzo migliore per un prodotto, in base ai precedenti acquisti dell'utente: l'utente può visualizzare il negozio (tra quelli in un certo raggio dalla sua posizione) che offre al miglior prezzo un dato prodotto.
 	*	old version: 8.	ricerca prezzo migliore per un prodotto, in base alle esperienze degli altri utenti: ogni utente, alla registrazione di un acquisto, invia a un'API esterna il prezzo pagato per il prodotto, e può visualizzare il negozio (tra quelli in un certo raggio dalla sua posizione) che offre al miglior prezzo un dato prodotto (soprattutto per quelli nella sua lista della spesa);
 9.	suggerimento dei prodotti più convenienti in un negozio: l'utente, quando si trova in un negozio, può visualizzare quali prodotti, tra quelli nella lista della spesa, gli convenga comprare lì, e quali meglio se da un'altra parte.
-10.	prodotti
+10.	[V] prodotti
 *	[V]	list
 *	[V]	search
 

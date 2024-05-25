@@ -12,11 +12,12 @@ interface DaoShopsWithPurchases {
 
 	@Query("""
         SELECT *
-        FROM Shops
-        INNER JOIN Purchases ON Shops.id = Purchases.idShop
+        FROM Purchases
+        LEFT JOIN Shops ON Shops.id = Purchases.idShop
 		WHERE idProduct = :productId
+		GROUP BY idShop
     """)
 	@Transaction
-	fun getAllFromProductId(productId: String): LiveData<List<EntityShopsWithPurchases>>
+	fun getAllFromProductId(productId: Long): LiveData<List<EntityShopsWithPurchases>>
 
 }

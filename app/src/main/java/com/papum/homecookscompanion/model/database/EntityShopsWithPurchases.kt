@@ -13,7 +13,7 @@ class EntityShopsWithPurchases (
 		parentColumn = "id",
 		entityColumn = "idShop"
 	)
-    val purchase: EntityPurchases
+    val purchases: List<EntityPurchases>
  
 )
 
