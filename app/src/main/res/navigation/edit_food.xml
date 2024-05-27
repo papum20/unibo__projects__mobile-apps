@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_food"
+    app:startDestination="@id/fragmentEditFood">
+
+
+    <fragment
+        android:id="@+id/fragmentEditFood"
+        android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
+        android:label="@string/nav_label_editFood"
+        tools:layout="@layout/fragment_edit_food" >
+        <argument
+            android:name="foodId"
+            app:argType="long"
+            />
+        <action
+            android:id="@+id/action_fragmentEditFood_to_fragmentMap"
+            app:destination="@id/fragmentMap"
+            app:popUpTo="@id/fragmentEditFood" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentMap"
+        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsForProduct"
+        android:label="@string/nav_label_mapShopsProduct"
+        tools:layout="@layout/fragment_map_select_point"
+        >
+        <argument
+            android:name="foodId"
+            app:argType="long"
+            />
+    </fragment>
+
+
+
+</navigation>

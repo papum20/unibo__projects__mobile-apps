@@ -5,30 +5,30 @@
         android:id="@+id/meals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/bottom_nav_item_text_meals" />
+        android:title="@string/bottom_nav_label_meals" />
     <item
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/bottom_nav_item_text_list" />
+        android:title="@string/bottom_nav_label_list" />
 
     <item
         android:id="@+id/inventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/bottom_nav_item_text_inventory" />
+        android:title="@string/bottom_nav_label_inventory" />
 
 
     <item
         android:id="@+id/products"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/bottom_nav_item_text_products" />
+        android:title="@string/bottom_nav_label_products" />
 
     <item
         android:id="@+id/stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/bottom_nav_item_text_stats" />
+        android:title="@string/bottom_nav_label_stats" />
 
 </menu>

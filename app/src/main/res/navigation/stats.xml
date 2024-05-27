@@ -10,7 +10,7 @@
     <fragment
         android:id="@+id/fragmentStats"
         android:name="com.papum.homecookscompanion.view.stats.FragmentStats"
-        android:label="@string/bottom_nav_item_text_stats"
+        android:label="@string/bottom_nav_label_stats"
         tools:layout="@layout/page_fragment_stats" />
 
 </navigation>

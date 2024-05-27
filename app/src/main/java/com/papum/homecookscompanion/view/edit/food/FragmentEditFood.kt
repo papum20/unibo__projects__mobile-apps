@@ -17,6 +17,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.Visibility
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 
@@ -111,12 +112,20 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			navController.navigateUp()
 		}
 
-		view.findViewById<Button>(R.id.fragment_edit_food_btn_map).setOnClickListener {
+		if(foodId != ID_FOOD_NULL) {
+			view.findViewById<Button>(R.id.fragment_edit_food_btn_map).setOnClickListener {
 
-			/* osm map */
-			navController.navigate(
-				FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap(foodId)
-			)
+				/* osm map */
+				navController.navigate(
+					FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap(foodId)
+				)
+			}
+		} else {
+			// if creating a new food, can't search on map
+			view.findViewById<Button>(R.id.fragment_edit_food_btn_map).let { btnMap ->
+				btnMap.visibility	= View.INVISIBLE
+				btnMap.isClickable	= false
+			}
 		}
 
     }

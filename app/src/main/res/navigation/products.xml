@@ -9,13 +9,9 @@
     <fragment
         android:id="@+id/fragmentProducts"
         android:name="com.papum.homecookscompanion.view.products.FragmentProducts"
-        android:label="@string/bottom_nav_item_text_products"
+        android:label="@string/bottom_nav_label_products"
         tools:layout="@layout/page_fragment_products" >
 
-        <action
-            android:id="@+id/action_fragmentProducts_to_fragmentEditFood"
-            app:destination="@id/fragmentEditFood"
-            app:popUpTo="@id/fragmentProducts" />
         <action
             android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToList"
             app:destination="@id/fragmentDialogAddToList"
@@ -34,36 +30,28 @@
             android:id="@+id/action_fragmentProducts_to_fragmentEditRecipe"
             app:destination="@id/fragmentEditRecipe"
             app:popUpTo="@id/fragmentProducts" />
-
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/fragmentEditFood"
-        android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
-        android:label="@string/editFood_title"
-        tools:layout="@layout/fragment_edit_food" >
-        <argument
-            android:name="foodId"
-            app:argType="long"
-            />
         <action
-            android:id="@+id/action_fragmentEditFood_to_fragmentMap"
-            app:destination="@id/fragmentMap"
-            app:popUpTo="@id/fragmentEditFood" />
+            android:id="@+id/action_fragmentProducts_to_edit_food"
+            app:destination="@id/edit_food"
+            app:popUpTo="@id/fragmentProducts"
+            >
+            <argument
+                android:name="foodId"
+                app:argType="long"
+                />
+        </action>
+        <action
+            android:id="@+id/action_fragmentProducts_to_edit_recipe"
+            app:destination="@id/edit_recipe"
+            app:popUpTo="@id/fragmentProducts"
+            >
+            <argument
+                android:name="recipeId"
+                app:argType="long"
+                />
+        </action>
 
-    </fragment>
 
-    <fragment
-        android:id="@+id/fragmentMap"
-        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsForProduct"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map_select_point"
-        >
-        <argument
-            android:name="foodId"
-            app:argType="long"
-            />
     </fragment>
 
     <dialog
@@ -103,10 +91,8 @@
         android:id="@+id/fragmentDialogPickerTime"
         android:name="com.papum.homecookscompanion.view.dialogs.FragmentDialogPickerTime"
         android:label="FragmentDialogPickerTime" />
-    <fragment
-        android:id="@+id/fragmentEditRecipe"
-        android:name="com.papum.homecookscompanion.view.edit.recipe.FragmentEditRecipe"
-        android:label="fragment_edit_recipe_title"
-        tools:layout="@layout/fragment_edit_recipe" />
+
+    <include app:graph="@navigation/edit_food" />
+    <include app:graph="@navigation/edit_recipe" />
 
 </navigation>

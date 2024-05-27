@@ -10,42 +10,20 @@
     <fragment
         android:id="@+id/fragmentList"
         android:name="com.papum.homecookscompanion.view.list.FragmentList"
-        android:label="@string/bottom_nav_item_text_list"
+        android:label="@string/bottom_nav_label_list"
         tools:layout="@layout/page_fragment_list" >
         <action
-            android:id="@+id/action_fragmentList_to_fragmentEditFood"
-            app:destination="@id/fragmentEditFood"
+            android:id="@+id/action_fragmentList_to_edit_food"
+            app:destination="@id/edit_food"
             app:popUpTo="@id/fragmentList"
-            />
+            >
+            <argument
+                android:name="foodId"
+                app:argType="long"
+                />
+        </action>
     </fragment>
 
-    <fragment
-        android:id="@+id/fragmentEditFood"
-        android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
-        android:label="FragmentEditFood"
-        tools:layout="@layout/fragment_edit_food"
-        >
-        <argument
-            android:name="foodId"
-            app:argType="long"
-            />
-        <action
-            android:id="@+id/action_fragmentEditFood_to_fragmentMap"
-            app:destination="@id/fragmentMap"
-            app:popUpTo="@id/fragmentEditFood"
-            />
-    </fragment>
-
-    <fragment
-        android:id="@+id/fragmentMap"
-        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsForProduct"
-        android:label="FragmentMapShops"
-        tools:layout="@layout/fragment_map_select_point"
-        >
-        <argument
-            android:name="foodId"
-            app:argType="long"
-            />
-    </fragment>
+    <include app:graph="@navigation/edit_food" />
 
 </navigation>

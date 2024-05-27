@@ -64,7 +64,7 @@ class FragmentList :
 
 	override fun onClickInfo(product: EntityProduct) {
 		navController.navigate(
-			FragmentListDirections.actionFragmentListToFragmentEditFood(product.id)
+			FragmentListDirections.actionFragmentListToEditFood(product.id)
 		)
 	}
 

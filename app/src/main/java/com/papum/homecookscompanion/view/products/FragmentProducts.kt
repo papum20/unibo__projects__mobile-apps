@@ -79,7 +79,7 @@ class FragmentProducts :
 		view.findViewById<Button>(R.id.products_btn_editFood)
 			.setOnClickListener {
 				navController.navigate(
-					FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(
+					FragmentProductsDirections.actionFragmentProductsToEditFood(
 						FragmentEditFood.ID_FOOD_NULL)
 				)
 			}
@@ -99,7 +99,7 @@ class FragmentProducts :
 
 	override fun onClickInfo(product: EntityProduct) {
 		navController.navigate(
-			FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(product.id)
+			FragmentProductsDirections.actionFragmentProductsToEditFood(product.id)
 		)
 	}
 

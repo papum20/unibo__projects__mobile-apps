@@ -10,61 +10,37 @@
     <fragment
         android:id="@+id/fragmentInventory"
         android:name="com.papum.homecookscompanion.view.inventory.FragmentInventory"
-        android:label="@string/bottom_nav_item_text_inventory"
+        android:label="@string/bottom_nav_label_inventory"
         tools:layout="@layout/page_fragment_inventory" >
         <action
             android:id="@+id/action_fragmentInventory_to_fragmentScanReceipt"
             app:destination="@id/fragmentScanReceipt"
             app:popUpTo="@id/fragmentInventory" />
-
         <action
-            android:id="@+id/action_fragmentInventory_to_fragmentEditFood"
-            app:destination="@id/fragmentEditFood"
-            app:popUpTo="@id/fragmentInventory" />
-
+            android:id="@+id/action_fragmentInventory_to_edit_food"
+            app:destination="@id/edit_food"
+            app:popUpTo="@id/fragmentInventory"
+            >
+            <argument
+                android:name="foodId"
+                app:argType="long"
+                />
+        </action>
     </fragment>
+
     <fragment
         android:id="@+id/fragmentScanReceipt"
         android:name="com.papum.homecookscompanion.view.edit.scan.FragmentScanReceipt"
         android:label="@string/nav_label_scan"
         tools:layout="@layout/fragment_scan_receipt" >
         <action
-            android:id="@+id/action_fragmentScanReceipt_to_fragmentProductsWithResult"
-            app:destination="@id/fragmentProductsWithResult"
+            android:id="@+id/action_fragmentScanReceipt_to_productsWithResult"
+            app:destination="@id/products_with_result"
             app:popUpTo="@id/fragmentScanReceipt" />
     </fragment>
-    <fragment
-        android:id="@+id/fragmentEditFood"
-        android:name="com.papum.homecookscompanion.view.edit.food.FragmentEditFood"
-        android:label="FragmentEditFood"
-        tools:layout="@layout/fragment_edit_food">
-        <argument
-            android:name="foodId"
-            app:argType="long"
-            />
-        <action
-            android:id="@+id/action_fragmentEditFood_to_fragmentMap"
-            app:destination="@id/fragmentMap"
-            app:popUpTo="@id/fragmentEditFood" />
-    </fragment>
-    <fragment
-        android:id="@+id/fragmentProductsWithResult"
-        android:name="com.papum.homecookscompanion.view.products.FragmentProductsWithResult"
-        android:label="FragmentProductsWithResult"
-        tools:layout="@layout/fragment_products_with_result"
-        />
 
 
-    <fragment
-        android:id="@+id/fragmentMap"
-        android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsForProduct"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map_select_point" >
-        <argument
-            android:name="foodId"
-            app:argType="long"
-            />
-    </fragment>
-
+    <include app:graph="@navigation/edit_food" />
+    <include app:graph="@navigation/products_with_result" />
 
 </navigation>

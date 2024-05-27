@@ -113,7 +113,7 @@ class FragmentInventory :
 
 	override fun onClickInfo(product: EntityProduct) {
 		navController.navigate(
-			FragmentInventoryDirections.actionFragmentInventoryToFragmentEditFood(product.id)
+			FragmentInventoryDirections.actionFragmentInventoryToEditFood(product.id)
 		)
 	}
 

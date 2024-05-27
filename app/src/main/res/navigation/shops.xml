@@ -10,7 +10,7 @@
     <fragment
         android:id="@+id/fragmentShops"
         android:name="com.papum.homecookscompanion.view.shops.FragmentShops"
-        android:label="@string/nav_item_text_shops"
+        android:label="@string/nav_label_shops"
         tools:layout="@layout/fragment_shops" >
         <action
             android:id="@+id/action_fragmentShops_to_fragmentMapSelectPoint"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/fragmentMapSelectPoint"
         android:name="com.papum.homecookscompanion.view.maps.FragmentMapShopsSelectPoint"
-        android:label="FragmentMapSelectPoint"
+        android:label="@string/nav_label_mapShops"
         tools:layout="@layout/fragment_map_select_point"
         >
         <action

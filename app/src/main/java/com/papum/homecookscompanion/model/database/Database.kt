@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 		EntityPurchases::class,
 		EntityShops::class,
    ],
-	version = 26,
+	version = 27,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)

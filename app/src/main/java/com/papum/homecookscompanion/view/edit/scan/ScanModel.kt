@@ -1,5 +1,7 @@
 package com.papum.homecookscompanion.view.edit.scan
 
+import androidx.room.ColumnInfo
+
 data class ScanModel(
 	val recognizedProduct:	String,
 	val recognizedPrice:	Float,

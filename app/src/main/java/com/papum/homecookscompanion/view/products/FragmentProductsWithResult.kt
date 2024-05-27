@@ -83,7 +83,7 @@ class FragmentProductsWithResult :
 
 	override fun onClickInfo(product: EntityProduct) {
 		navController.navigate(
-			FragmentProductsDirections.actionFragmentProductsToFragmentEditFood(product.id)
+			FragmentProductsDirections.actionFragmentProductsToEditFood(product.id)
 		)
 	}
 

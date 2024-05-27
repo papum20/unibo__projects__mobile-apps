@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_recipe"
+    app:startDestination="@id/fragmentEditRecipe">
+
+
+    <fragment
+        android:id="@+id/fragmentEditRecipe"
+        android:name="com.papum.homecookscompanion.view.edit.recipe.FragmentEditRecipe"
+        android:label="@string/nav_label_editRecipe"
+        tools:layout="@layout/fragment_edit_recipe" >
+        <argument
+            android:name="recipeId"
+            app:argType="long"
+            />
+    </fragment>
+
+</navigation>

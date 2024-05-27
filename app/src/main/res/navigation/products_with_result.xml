@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/products_with_result"
+    app:startDestination="@id/fragmentProductsWithResult">
+
+
+    <fragment
+        android:id="@+id/fragmentProductsWithResult"
+        android:name="com.papum.homecookscompanion.view.products.FragmentProductsWithResult"
+        android:label="FragmentProductsWithResult"
+        tools:layout="@layout/fragment_products_with_result"
+        />
+
+</navigation>

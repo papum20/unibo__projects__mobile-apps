@@ -1,5 +1,6 @@
 package com.papum.homecookscompanion.model.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -24,6 +25,7 @@ import androidx.room.PrimaryKey
 data class EntityInventory(
 	@PrimaryKey
 	var idProduct: Long,
-	
-	var quantity: Float?
+
+	@ColumnInfo(name = "quantity", defaultValue = "0")
+	var quantity: Float
 )

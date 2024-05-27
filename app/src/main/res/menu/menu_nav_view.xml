@@ -5,12 +5,12 @@
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/nav_item_text_settings" />
+        android:title="@string/nav_label_settings" />
 
     <item
         android:id="@+id/shops"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/nav_item_text_shops" />
+        android:title="@string/nav_label_shops" />
 
 </menu>

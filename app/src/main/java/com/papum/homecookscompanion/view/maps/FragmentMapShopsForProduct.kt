@@ -26,7 +26,7 @@ class FragmentMapShopsForProduct :
 	FragmentMap(R.layout.fragment_map_shops_product, R.id.fragment_map_product_mapview)
 {
 
-	private val args: FragmentEditFoodArgs by navArgs()
+	private val args: FragmentMapShopsForProductArgs by navArgs()
 	private val viewModel: MapShopsForProductViewModel by viewModels {
 		MapShopsForProductViewModelFactory(
 			Repository(requireActivity().application)
@@ -183,7 +183,7 @@ class FragmentMapShopsForProduct :
 
 		private const val TAG = "MAP_SHOPS"
 
-		private const val NULL_PRICE = 99999.99f
+		private const val NULL_PRICE = 00000.00f
 
 		fun newInstance(): FragmentMapShopsForProduct {
 			return FragmentMapShopsForProduct()
