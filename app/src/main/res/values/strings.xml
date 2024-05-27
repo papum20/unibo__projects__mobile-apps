@@ -74,8 +74,7 @@
     <string name="editFood_btn_confirm">Create</string>
     <string name="editFood_btn_map">Search on map</string>
     <string name="editRecipe_title">Create a recipe</string>
-
-    <string name="nutrients_title">Nutrients</string>
+    <string name="editRecipe_ingredients">Ingredients:</string>
 
     <string name="map_product_info_product">Compare the prices for "%s":</string>
     <string name="map_product_radius">Selected radius: %1$5.2fkm</string>
@@ -86,6 +85,13 @@
 
     <string name="meals_date_btn_left_description">button previous day</string>
     <string name="meals_date_btn_right_description">button next day</string>
+
+    <string name="nutrients_title">Nutrients</string>
+    <string name="nutrients_quantity">For</string>
+    <string name="nutrients_kcal">Kcal: </string>
+    <string name="nutrients_carbohydrates">Carbohydrates: </string>
+    <string name="nutrients_fats">Fats: </string>
+    <string name="nutrients_proteins">Proteins: </string>
 
     <string name="products_btn_addToList">+List</string>
     <string name="products_btn_addToInventory">+Inventory</string>
@@ -101,16 +107,21 @@
     <string name="receipt_shop_info">It\'s required to recognize the receipt products properly.</string>
     <string name="receipt_info">Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first)</string>
 
+    <string name="recipe_weight">Total weight: </string>
+
     <string name="settings_header_notifications">Notifications</string>
     <string name="settings_geofence">get notified when you\'re in a shop</string>
 
 
     <!-- buttons -->
     <string name="btn_add">Add</string>
-    <string name="btn_confirm">Confirm</string>
-    <string name="btn_remove">Remove</string>
-    <string name="btn_enable">Enable</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_create">Create</string>
+    <string name="btn_enable">Enable</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_save">Save</string>
 
     <string name="btn_select_product">Select product</string>
     <string name="btn_select_image_receipt">Select a receipt image</string>
@@ -121,10 +132,11 @@
     <!-- descriptions -->
     <string name="description_btn_select_product">Select a product</string>
     <string name="description_btn_expand">Open actions</string>
+    <string name="description_btn_remove">Remove item</string>
 
     <!-- measures -->
-    <string name="measure_price">€</string>
-    <string name="measure_quantity">g</string>
+    <string name="product_measure_price">€</string>
+    <string name="product_placeholder_measure_quantity">g</string>
 
     <!-- other texts -->
 

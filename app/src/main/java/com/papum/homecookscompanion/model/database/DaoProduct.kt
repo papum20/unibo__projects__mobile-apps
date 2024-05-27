@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface DaoProduct {
@@ -40,6 +41,12 @@ interface DaoProduct {
 	/* delete */
 
 	@Delete
-	fun delete(user: EntityProduct)
+	fun delete(product: EntityProduct)
+
+	/* update */
+
+	@Update
+	fun updateOne(product: EntityProduct)
+
 
 }

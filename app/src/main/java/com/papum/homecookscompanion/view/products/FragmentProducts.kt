@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.utils.Const
 import com.papum.homecookscompanion.view.edit.food.FragmentEditFood
 import java.time.LocalDateTime
 
@@ -80,15 +81,16 @@ class FragmentProducts :
 			.setOnClickListener {
 				navController.navigate(
 					FragmentProductsDirections.actionFragmentProductsToEditFood(
-						FragmentEditFood.ID_FOOD_NULL)
-				)
+						Const.ID_PRODUCT_NULL
+				))
 			}
 
 		view.findViewById<Button>(R.id.products_btn_editRecipe)
 			.setOnClickListener {
 				navController.navigate(
-					FragmentProductsDirections.actionFragmentProductsToFragmentEditRecipe()
-				)
+					FragmentProductsDirections.actionFragmentProductsToEditRecipe(
+						Const.ID_PRODUCT_NULL
+				))
 			}
 
 
@@ -98,9 +100,14 @@ class FragmentProducts :
 	/* IListenerOnClickProduct */
 
 	override fun onClickInfo(product: EntityProduct) {
-		navController.navigate(
-			FragmentProductsDirections.actionFragmentProductsToEditFood(product.id)
-		)
+		if(product.isRecipe)
+			navController.navigate(
+				FragmentProductsDirections.actionFragmentProductsToEditRecipe(product.id)
+			)
+		else
+			navController.navigate(
+				FragmentProductsDirections.actionFragmentProductsToEditFood(product.id)
+			)
 	}
 
 	override fun onClickAddToInventory(product: EntityProduct) {

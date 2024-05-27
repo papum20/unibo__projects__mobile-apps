@@ -148,6 +148,7 @@ class FragmentScanReceipt
 					viewModel.setAssociation(oldItem, selectedProduct)
 					adapter.updateItem(selectedProductIndex!!, oldItem)
 					selectedProductIndex = null
+					viewModel_selectProduct.reset()
 				}
 			}
 		}

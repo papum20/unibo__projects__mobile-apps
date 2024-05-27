@@ -28,6 +28,10 @@ import androidx.room.Index
 	primaryKeys = ["idRecipe", "idIngredient"]
 )
 class EntityIngredientOf(
+
 	var idRecipe: Long,
-	var idIngredient: Long
+	val idIngredient: Long,
+
+	var quantityMax: Float,
+	var quantityMin: Float
 )

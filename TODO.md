@@ -23,7 +23,8 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 	*	[V]	list
 	*	[V] add
 	*	[V] remove
-2.	ricette: si può creare e salvare una ricetta;
+2.	[V]	ricette: si può creare e salvare una ricetta;
+	*	IMPORTANT: add nutrients of recipe at each update, so easier to fetch nutrients
 3.	pianificazione dei pasti:
 	*	[V]	si possono assegnare i cibi/ricette che si consumano a una giornata.
 	*	(remove)
@@ -116,6 +117,9 @@ info:
 		}
 		```
 
+view:
+*	buttons, cards, edit texts... too smal hard to click, sometimes misaligned (would be better to make bigger)
+
 
 ## future
 
@@ -142,3 +146,10 @@ map:
 *	map add shops:
 	*	also display already added shops
 	*	find a way to get shops automatically from some data like osm or google maps
+
+view:
+*	edit recipe: scroll horizontally, with page for ingredients and page like edit food
+	*	https://medium.com/@artemsi93/navigation-for-nested-child-fragment-9da4318377ba
+
+sructure:
+*	editRecipe: structure view-viewModel got messed up, viewModel gives methods to init but view must remember to init its fields (if someone else reads the code he won't understand)

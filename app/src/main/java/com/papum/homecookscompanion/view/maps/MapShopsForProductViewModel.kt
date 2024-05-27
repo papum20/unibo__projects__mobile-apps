@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
-import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShopsWithPurchases
 import org.osmdroid.util.GeoPoint
 import kotlin.math.roundToInt

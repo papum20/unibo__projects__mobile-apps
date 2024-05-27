@@ -13,13 +13,13 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 
 	/* query */
 
-	fun getProduct_fromId(id: Long): LiveData<EntityProductAndNutrients> {
-		return repository.getProductWithNutrients_fromId(id)
-	}
+	fun getProduct_fromId(id: Long): LiveData<EntityProductAndNutrients> =
+		repository.getProductWithNutrients_fromId(id)
 
 	/* insert */
 
 	/**
+	 * Save food and its nutrients.
 	 * A parent as "" is interpreted as null.
 	 */
 	fun createFoodWithNutrients(

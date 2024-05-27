@@ -1,17 +1,12 @@
 package com.papum.homecookscompanion.view.edit.scan
 
-import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
-import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
@@ -19,7 +14,6 @@ import com.papum.homecookscompanion.model.database.EntityProductAndProductRecogn
 import com.papum.homecookscompanion.model.database.EntityProductRecognized
 import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
-import java.io.IOException
 import java.time.LocalDateTime
 
 class ScanViewModel(val repository: Repository) : ViewModel() {
@@ -28,7 +22,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	// typed part, to search for suggestions
 	val typedShop = MutableLiveData("")
 
-	var receiptItems = MutableLiveData<MutableList<ScanModel>>()
+	val receiptItems = MutableLiveData<MutableList<ScanModel>>()
 
 
 	/**

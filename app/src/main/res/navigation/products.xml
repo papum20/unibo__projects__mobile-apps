@@ -16,20 +16,15 @@
             android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToList"
             app:destination="@id/fragmentDialogAddToList"
             app:popUpTo="@id/fragmentProducts" />
-
         <action
             android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToInventory"
             app:destination="@id/fragmentDialogAddToInventory"
             app:popUpTo="@id/fragmentProducts" />
-
         <action
             android:id="@+id/action_fragmentProducts_to_fragmentDialogAddToMeals"
             app:destination="@id/fragmentDialogAddToMeals"
             app:popUpTo="@id/fragmentProducts" />
-        <action
-            android:id="@+id/action_fragmentProducts_to_fragmentEditRecipe"
-            app:destination="@id/fragmentEditRecipe"
-            app:popUpTo="@id/fragmentProducts" />
+
         <action
             android:id="@+id/action_fragmentProducts_to_edit_food"
             app:destination="@id/edit_food"

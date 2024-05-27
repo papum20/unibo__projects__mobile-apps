@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recycler_card_editRecipe_layout_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/recycler_card_padding_h">
+
+        <ImageView
+            android:id="@+id/recycler_card_editRecipe_img_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_editRecipe_type"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_agenda"
+            />
+
+        <TextView
+            android:id="@+id/recycler_card_editRecipe_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="5dp"
+            android:text="@string/product_placeholder_type"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_editRecipe_text"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_editRecipe_img_type"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/recycler_card_editRecipe_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/product_placeholder_text"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_editRecipe_quantity"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_editRecipe_type"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <TextView
+            android:id="@+id/recycler_card_editRecipe_measure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_placeholder_measure_quantity"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_editRecipe_quantity"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_editRecipe_btn_remove"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_editRecipe_text"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <EditText
+            android:id="@+id/recycler_card_editRecipe_quantity"
+            android:layout_width="@dimen/quantity_width"
+            android:layout_height="@dimen/et_height"
+            android:imeOptions="actionDone"
+            android:inputType="number|numberDecimal|numberSigned"
+            android:text="@string/product_format_quantity"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_editRecipe_btn_remove"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_editRecipe_text"
+            app:layout_constraintTop_toTopOf="@id/recycler_card_editRecipe_measure"
+            />
+
+
+        <Button
+            android:id="@+id/recycler_card_editRecipe_btn_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/description_btn_remove"
+            android:text="@string/btn_remove"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_editRecipe_quantity"
+            app:layout_constraintTop_toTopOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

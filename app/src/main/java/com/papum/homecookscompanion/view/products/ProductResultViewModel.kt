@@ -7,14 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.database.EntityProduct
 
-class ProductResultViewModel() : ViewModel() {
+class ProductResultViewModel : ViewModel() {
 
 	private var _selectedProduct = MutableLiveData<EntityProduct?>()
 	val selectedProduct: LiveData<EntityProduct?>
 		get() = _selectedProduct
 
 
-	fun askSelectProduct() {
+
+	/**
+	 * Set the selected product to null.
+	 * Call this right after reading its value, so the observer isn't
+	 * called again on every view reconstruction.
+	 */
+	fun reset() {
 		_selectedProduct.value = null
 	}
 

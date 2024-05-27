@@ -14,10 +14,19 @@ interface DaoProductAndNutrients {
 	@Query("""
         SELECT *
         FROM Product
-        INNER JOIN List ON Product.id = List.idProduct
+        INNER JOIN Nutrients ON Product.id = Nutrients.idProduct
     """)
 	@Transaction
-	fun getAll(): LiveData<List<EntityProductAndList>>
+	fun getAll(): LiveData<List<EntityProductAndNutrients>>
+
+	@Query("""
+        SELECT *
+        FROM Product
+        INNER JOIN Nutrients ON Product.id = Nutrients.idProduct
+		WHERE Product.id IN (:ids)
+    """)
+	@Transaction
+	fun getAllFromId(ids: List<Long>): LiveData<List<EntityProductAndNutrients>>
 
 	@Query(
 		"""
@@ -41,7 +50,7 @@ interface DaoProductAndNutrients {
 	@Transaction
 	@Insert
 	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients): Long {
-		val productId	= _insertProduct(product)
+		val productId		= _insertProduct(product)
 		nutrients.idProduct	= productId
 		_insertNutrients(nutrients)
 		return productId

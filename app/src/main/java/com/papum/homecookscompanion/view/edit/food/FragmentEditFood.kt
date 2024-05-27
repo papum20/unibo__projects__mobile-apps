@@ -17,9 +17,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.transition.Visibility
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.utils.Const
 
 
 /**
@@ -62,17 +62,17 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		/* form fields */
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
 		val etParent		= view.findViewById<EditText>( R.id.fragment_edit_food_parent)
-		val etKcal			= view.findViewById<EditText>( R.id.fragment_edit_food_kcal)
-		val etCarbohydrates	= view.findViewById<EditText>( R.id.fragment_edit_food_carbohydrates)
-		val etFats			= view.findViewById<EditText>( R.id.fragment_edit_food_fats)
-		val etProteins		= view.findViewById<EditText>( R.id.fragment_edit_food_proteins)
+		val etKcal			= view.findViewById<EditText>( R.id.nutrients_edit_kcal)
+		val etCarbohydrates	= view.findViewById<EditText>( R.id.nutrients_edit_carbohydrates)
+		val etFats			= view.findViewById<EditText>( R.id.nutrients_edit_fats)
+		val etProteins		= view.findViewById<EditText>( R.id.nutrients_edit_proteins)
 
 
 		/* if it's editing a food (and not creating), setup */
-		if(foodId != ID_FOOD_NULL) {
-			Log.d("PRODUCT_EDIT", "product to edit has id $foodId")
-			viewModel.getProduct_fromId(foodId.toLong()).observe(viewLifecycleOwner) { food ->
-				Log.d("PRODUCT_EDIT", "product to edit fetched, it's ${food.product.name}")
+		if(foodId != Const.ID_PRODUCT_NULL) {
+			Log.d(TAG, "product to edit has id $foodId")
+			viewModel.getProduct_fromId(foodId).observe(viewLifecycleOwner) { food ->
+				Log.d(TAG, "product to edit fetched, it's ${food.product.name}")
 				etName.setText(				food.product.name)
 				etParent.setText(			food.product.parent)
 				etKcal.setText(				food.nutrients.kcal?.toString()				?: "")
@@ -84,7 +84,7 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 		/* UI listeners */
 
-		view.findViewById<Button>(R.id.fragment_edit_food_btn_confirm).setOnClickListener {
+		view.findViewById<Button>(R.id.fragment_edit_food_btn_save).setOnClickListener {
 			val name			: String	= etName.text.toString()
 			val parent			: String	= etParent.text.toString()
 			val kcal			: Float?	= etKcal.text.toString().toFloatOrNull()
@@ -101,29 +101,28 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 				viewModel.createFoodWithNutrients(
 					name, parent, kcal, carbohydrates, fats, proteins
 				)
-				Log.i("PRODUCT_EDIT", "added $name $parent")
+				Log.i(TAG, "added $name $parent")
 				Toast.makeText(activity, "Added: $name !", Toast.LENGTH_SHORT).show()
 				navController.navigateUp()
 			}
 		}
 
 		view.findViewById<Button>(R.id.fragment_edit_food_btn_cancel).setOnClickListener {
-			Log.i("PRODUCT_EDIT", "not added")
+			Log.i(TAG, "not added")
 			navController.navigateUp()
 		}
 
-		if(foodId != ID_FOOD_NULL) {
+		// map
+		if(foodId != Const.ID_PRODUCT_NULL) {
 			view.findViewById<Button>(R.id.fragment_edit_food_btn_map).setOnClickListener {
-
-				/* osm map */
 				navController.navigate(
 					FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap(foodId)
 				)
 			}
 		} else {
-			// if creating a new food, can't search on map
+			// if creating a new food, don't show map for shops
 			view.findViewById<Button>(R.id.fragment_edit_food_btn_map).let { btnMap ->
-				btnMap.visibility	= View.INVISIBLE
+				btnMap.visibility	= View.GONE
 				btnMap.isClickable	= false
 			}
 		}
@@ -174,7 +173,6 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			Manifest.permission.ACCESS_FINE_LOCATION
 		)
 
-		val ID_FOOD_NULL = -1L
 
 		/**
 		 * Use this factory method to create a new instance of

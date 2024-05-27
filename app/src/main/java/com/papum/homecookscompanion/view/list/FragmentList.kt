@@ -45,13 +45,13 @@ class FragmentList :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+		super.onViewCreated(view, savedInstanceState)
 
 		navController = findNavController()
 
         val recycler = view.findViewById<RecyclerView>(R.id.list_recycler_view)
         recycler.adapter = adapter
-        recycler.layoutManager = LinearLayoutManager(context)
+		recycler.layoutManager = LinearLayoutManager(context)
 
 		viewModel.getAllProductsInList().observe(viewLifecycleOwner) { products ->
 			adapter.updateItems(products.toMutableList())

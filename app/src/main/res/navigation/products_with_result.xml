@@ -11,6 +11,19 @@
         android:name="com.papum.homecookscompanion.view.products.FragmentProductsWithResult"
         android:label="FragmentProductsWithResult"
         tools:layout="@layout/fragment_products_with_result"
-        />
+        >
+        <action
+            android:id="@+id/action_fragmentProductsWithResult_to_edit_food"
+            app:destination="@id/edit_food"
+            app:popUpTo="@id/fragmentProductsWithResult"
+            >
+            <argument
+                android:name="foodId"
+                app:argType="long"
+                />
+        </action>
+    </fragment>
+
+    <include app:graph="@navigation/edit_food" />
 
 </navigation>

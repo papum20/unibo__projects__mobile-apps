@@ -22,8 +22,8 @@ import com.papum.homecookscompanion.view.inventory.InventoryAdapter
 
 
 class ListAdapter(
-	var items: MutableList<EntityProductAndList>?,
-	private val uiListener: ListAdapter.IListenerListItem
+	var items: MutableList<EntityProductAndList>,
+	private val uiListener: IListenerListItem
 ) : Adapter<ListViewHolder>() {
 
 	private var layoutExpanded: LinearLayout? = null	// item's layout currently expanded (max 1 is expanded at a time)
@@ -51,20 +51,20 @@ class ListAdapter(
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
 
-		holder.etQuantity.setText(items?.get(position)?.listItem?.let { item ->
+		holder.etQuantity.setText(items.getOrNull(position)?.listItem?.let { item ->
 				item.quantity.toString()
 			}?: "0.00"
 		)
 		// associate item with EditText
-		holder.etQuantity.tag = items?.get(position)
+		holder.etQuantity.tag = items.get(position)
 
-		holder.tvName.text = items?.get(position)?.let {
+		holder.tvName.text = items.getOrNull(position)?.let {
 			it.product.parent?.let { p ->
 				"${it.product.name}, $p"
 			} ?: it.product.name
 		} ?: "[wrong entry]"
 
-		holder.tvType.text = items?.get(position)?.let {
+		holder.tvType.text = items.getOrNull(position)?.let {
 			if(!it.product.isEdible)		"(NonEdible)"
 			else if(it.product.isRecipe)	"(Recipe)"
 			else							"(Food)"
@@ -87,7 +87,7 @@ class ListAdapter(
 
 		// open product info and nutrients
 		holder.layoutInfo.setOnClickListener { _ ->
-			items?.get(holder.adapterPosition)?.let { item ->
+			items.getOrNull(holder.adapterPosition)?.let { item ->
 				uiListener.onClickInfo(item.product)
 			}
 		}
@@ -113,7 +113,7 @@ class ListAdapter(
 
 		// remove product from list
 		holder.btnRemove.setOnClickListener { _ ->
-			items?.get(holder.adapterPosition)?.let { item ->
+			items.getOrNull(holder.adapterPosition)?.let { item ->
 				uiListener.onClickRemove(item.listItem)
 			}
 		}
@@ -121,7 +121,7 @@ class ListAdapter(
 	}
 
     override fun getItemCount(): Int {
-        return items?.size ?: 0
+        return items.size
     }
 
 	@SuppressLint("NotifyDataSetChanged")	// all fetched products change
@@ -134,27 +134,23 @@ class ListAdapter(
 	}
 
     fun deleteItem(productId: Long) {
-		items?.let {
-			it.find { item -> item.product.id == productId }?.let { foundItem ->
-				items?.indexOf(foundItem)?.let { position ->
-					if(position != -1) {
-						it.removeAt(position)
-						notifyItemRemoved(position)
-					}
+		items.find { item -> item.product.id == productId }?.let { foundItem ->
+			items.indexOf(foundItem).let { position ->
+				if(position != -1) {
+					items.removeAt(position)
+					notifyItemRemoved(position)
 				}
 			}
 		}
 	}
 
 	fun updateItemInList(newListItem: EntityList) {
-		items?.find { item -> item.product.id == newListItem.idProduct }?.let { foundItem ->
-			items?.indexOf(foundItem)?.let { position ->
+		items.find { item -> item.product.id == newListItem.idProduct }?.let { foundItem ->
+			items.indexOf(foundItem).let { position ->
 				layoutExpanded?.visibility = View.GONE
 				layoutExpanded = null
 				if(position != -1) {
-					items?.set(position,
-						foundItem.apply { listItem = newListItem }
-					)
+					items[position] = foundItem.apply { listItem = newListItem }
 					notifyItemChanged(position)
 					Log.d(TAG, "Updated item at position $position; products: $itemCount")
 				}

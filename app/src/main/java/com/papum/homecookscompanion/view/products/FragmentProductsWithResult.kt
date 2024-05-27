@@ -1,11 +1,13 @@
 package com.papum.homecookscompanion.view.products
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -17,14 +19,7 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentProductsWithResult.newInstance] factory method to
- * create an instance of this fragment.
- *
- * Returns the result with its viewModel, instantiate it like
- * viewModel_selectProduct = ViewModelProvider(requireActivity())[ProductResultViewModel::class.java]
- */
+
 class FragmentProductsWithResult :
 	Fragment(R.layout.page_fragment_products),
 	ProductsWithResultAdapter.IListenerOnClickProduct
@@ -82,14 +77,28 @@ class FragmentProductsWithResult :
 	/* IListenerOnClickProduct */
 
 	override fun onClickInfo(product: EntityProduct) {
-		navController.navigate(
-			FragmentProductsDirections.actionFragmentProductsToEditFood(product.id)
-		)
+		if(product.isRecipe)
+			Toast.makeText(
+				requireContext(), "You can't open a recipe from here", Toast.LENGTH_LONG
+			).show()
+		else
+			navController.navigate(
+				FragmentProductsWithResultDirections.actionFragmentProductsWithResultToEditFood(product.id)
+			)
 	}
 
 	override fun onClickSelect(product: EntityProduct) {
+		Log.d(TAG, "selected $product")
 		viewModel_result.selectProduct(product)
 		navController.navigateUp()
+	}
+
+
+
+	companion object {
+
+		private const val TAG = "SELECT"
+
 	}
 
 

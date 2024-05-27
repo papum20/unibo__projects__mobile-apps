@@ -15,6 +15,25 @@
             android:name="recipeId"
             app:argType="long"
             />
+        <action
+            android:id="@+id/action_fragmentEditRecipe_to_productsWithResult"
+            app:destination="@id/products_with_result"
+            app:popUpTo="@navigation/edit_recipe"
+             />
+
+        <action
+            android:id="@+id/action_fragmentEditRecipe_to_edit_food"
+            app:destination="@id/edit_food"
+            app:popUpTo="@navigation/edit_recipe"
+             >
+            <argument
+                android:name="foodId"
+                app:argType="long"
+                />
+        </action>
     </fragment>
+
+    <include app:graph="@navigation/edit_food" />
+    <include app:graph="@navigation/products_with_result" />
 
 </navigation>

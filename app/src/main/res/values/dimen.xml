@@ -14,13 +14,17 @@
 
     <dimen name="btn_fontSize">14sp</dimen>
     <dimen name="et_fontSize">16sp</dimen>
-    <dimen name="h2_margin">10dp</dimen>
     <dimen name="h2_fontSize">22sp</dimen>
-    <dimen name="measure_margin">4dp</dimen>
     <dimen name="tv_fontSize">16sp</dimen>
+    <dimen name="tv_info_fontSize">12sp</dimen>
+
+    <!-- margins, paddings -->
+
+    <dimen name="btn_margin">8dp</dimen>
+    <dimen name="h2_margin">10dp</dimen>
+    <dimen name="measure_margin">4dp</dimen>
     <dimen name="tv_margin">4dp</dimen>
     <dimen name="tv_padding">3dp</dimen>
-    <dimen name="tv_info_fontSize">12sp</dimen>
 
     <!-- dimensions -->
     <dimen name="et_height">50dp</dimen>

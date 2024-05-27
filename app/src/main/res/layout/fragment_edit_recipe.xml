@@ -1,102 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <EditText
-        android:id="@+id/fragment_edit_food_name"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/height_edit_et"
-        android:layout_weight="0"
-        android:ems="10"
-        android:hint="@string/editFood_placeholder_name"
-        android:inputType="text"
-        android:textSize="@dimen/et_fontSize" />
-
-    <EditText
-        android:id="@+id/fragment_edit_food_parent"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/fragment_edit_recipe_nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_edit_et"
-        android:layout_weight="0"
-        android:ems="10"
-        android:hint="@string/editFood_placeholder_parent"
-        android:inputType="text"
-        android:textSize="@dimen/et_fontSize" />
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_btn_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/fragment_edit_recipe_name"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_edit_et"
+                android:ems="10"
+                android:hint="@string/editFood_placeholder_name"
+                android:inputType="text"
+                android:textSize="@dimen/et_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <EditText
+                android:id="@+id/fragment_edit_recipe_parent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_edit_et"
+                android:ems="10"
+                android:hint="@string/editFood_placeholder_parent"
+                android:inputType="text"
+                android:textSize="@dimen/et_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_ingredients_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_name"
+                />
+
+            <TextView
+                android:id="@+id/fragment_edit_recipe_ingredients_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/tv_padding"
+                android:text="@string/editRecipe_ingredients"
+                android:textSize="@dimen/tv_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/edit_recipe_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_parent"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/edit_recipe_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_btn_add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_ingredients_text"
+                />
+
+            <Button
+                android:id="@+id/fragment_edit_recipe_btn_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/btn_margin"
+                android:text="@string/btn_add"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_weight_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_recipe_recycler_view"
+                />
+
+            <TextView
+                android:id="@+id/fragment_edit_recipe_weight_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/tv_padding"
+                android:text="@string/recipe_weight"
+                android:textSize="@dimen/et_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_nutrients"
+                app:layout_constraintEnd_toStartOf="@id/fragment_edit_recipe_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_btn_add"
+                />
+            <TextView
+                android:id="@+id/fragment_edit_recipe_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/tv_padding"
+                android:text="@string/product_format_quantity"
+                android:textSize="@dimen/et_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_recipe_nutrients"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fragment_edit_recipe_weight_text"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_btn_add"
+                />
+
+            <include layout="@layout/nutrients"
+                android:id="@+id/fragment_edit_recipe_nutrients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_weight_text"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/fragment_edit_recipe_btn_cancel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="30dp"
-        android:layout_weight="0"
-        android:orientation="vertical">
+        android:text="@string/btn_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fragment_edit_recipe_btn_save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_edit_recipe_nested_scroll_view"
+        app:layout_constraintWidth_percent="0.4" />
 
-        <TextView
-            android:id="@+id/fragment_edit_food_nutrients_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/nutrients_title"
-            android:textAlignment="center"
-            android:textSize="@dimen/h2_fontSize"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/fragment_edit_recipe_btn_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fragment_edit_recipe_btn_cancel"
+        app:layout_constraintTop_toBottomOf="@id/fragment_edit_recipe_nested_scroll_view"
+        app:layout_constraintWidth_percent="0.4" />
 
-        <EditText
-            android:id="@+id/fragment_edit_food_kcal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_edit_et"
-            android:ems="10"
-            android:hint="@string/nutrients_placeholder_kcal"
-            android:inputType="number|numberSigned"
-            android:textSize="@dimen/et_fontSize" />
-
-        <EditText
-            android:id="@+id/fragment_edit_food_carbohydrates"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_edit_et"
-            android:ems="10"
-            android:hint="@string/nutrients_placeholder_carbohydrates"
-            android:inputType="number|numberSigned"
-            android:textSize="@dimen/et_fontSize" />
-
-        <EditText
-            android:id="@+id/fragment_edit_food_fats"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_edit_et"
-            android:ems="10"
-            android:hint="@string/nutrients_placeholder_fats"
-            android:inputType="number|numberSigned"
-            android:textSize="@dimen/et_fontSize" />
-
-        <EditText
-            android:id="@+id/fragment_edit_food_proteins"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_edit_et"
-            android:ems="10"
-            android:hint="@string/nutrients_placeholder_proteins"
-            android:inputType="number|numberSigned"
-            android:textSize="@dimen/et_fontSize" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/fragment_edit_food_btn_confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/editFood_btn_confirm" />
-
-        <Button
-            android:id="@+id/fragment_edit_food_btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/editFood_btn_cancel" />
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

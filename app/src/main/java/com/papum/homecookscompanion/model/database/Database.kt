@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 		EntityPurchases::class,
 		EntityShops::class,
    ],
-	version = 27,
+	version = 28,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -30,12 +30,13 @@ abstract class Database : RoomDatabase() {
 
 	abstract fun daoAlerts()    	    			: DaoAlerts
 	abstract fun daoNutrients()    	    			: DaoNutrients
-	abstract fun daoIngredient()					: DaoIngredientOf
+	abstract fun daoIngredientOf()					: DaoIngredientOf
 	abstract fun daoInventory()						: DaoInventory
 	abstract fun daoList()							: DaoList
 	abstract fun daoMeals()							: DaoMeals
 	abstract fun daoPurchases()						: DaoPurchases
 	abstract fun daoProduct()						: DaoProduct
+	abstract fun daoProductAndIngredientOf()			: DaoProductAndIngredientOf
 	abstract fun daoProductAndInventory()			: DaoProductAndInventory
 	abstract fun daoProductAndInventoryWithAlerts()	: DaoProductAndInventoryWithAlerts
 	abstract fun daoProductAndList()				: DaoProductAndList
