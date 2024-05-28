@@ -31,7 +31,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	fun getRecognizedProducts(): LiveData<List<EntityProductAndProductRecognized>> =
 		selectedShop.switchMap { shop ->
 			receiptItems.switchMap { items ->
-				repository.getAllProductsRecognized_fromTextAndShop(
+				repository.getMatchingProductsRecognized(
 					items.map { it.recognizedProduct.trim() },
 					shop?.id ?: ID_NULL
 				)
@@ -66,7 +66,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 
 	fun getShops_matchingBrand(): LiveData<List<EntityShops>> =
 		typedShop.switchMap { shopSubstr ->
-			repository.getAllShops_fromSubstrBrand(shopSubstr)
+			repository.getMatchingShops(shopSubstr)
 		}
 
 	/* Insert */

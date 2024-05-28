@@ -8,9 +8,6 @@ import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProduct
-import com.papum.homecookscompanion.model.database.EntityProductAndInventory
-import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
-import com.papum.homecookscompanion.model.database.EntityProductAndList
 import java.time.LocalDateTime
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
@@ -22,20 +19,8 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 		return repository.getAllProducts()
 	}
 
-	fun getAllProducts_fromSubstr(substr: String): LiveData<List<EntityProduct>> {
-		return repository.getAllProducts_fromSubstr_caseInsensitive(substr)
-	}
-
 	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
-		return repository.getProduct_fromId(id)
-	}
-
-	fun getProductsWithInventory_fromId(id: Long): LiveData<List<EntityProductAndInventory>> {
-		return repository.getAllProductsWithInventory_fromId(id)
-	}
-
-	fun getProductsWithList_fromId(id: Long): LiveData<List<EntityProductAndList>> {
-		return repository.getAllProductsWithList_fromId(id)
+		return repository.getProduct(id)
 	}
 
 	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {

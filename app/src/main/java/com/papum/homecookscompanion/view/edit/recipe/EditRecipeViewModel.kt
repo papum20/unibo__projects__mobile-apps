@@ -12,6 +12,7 @@ import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndIngredientOf
 import com.papum.homecookscompanion.utils.Const
+import com.papum.homecookscompanion.utils.UtilProducts
 
 class EditRecipeViewModel(
 	private val repository: Repository,
@@ -32,10 +33,10 @@ class EditRecipeViewModel(
 
 	// ingredients.value can be used with !!, as it's private and managed internally, and never null
 	fun fetchIngredients(): LiveData<List<EntityProductAndIngredientOf>> =
-		repository.getAllProductsAsIngredients_fromRecipeId(recipeId)
+		repository.getAllIngredients_fromRecipeId(recipeId)
 
 	fun getRecipe_fromId(id: Long): LiveData<EntityProduct> =
-		repository.getProduct_fromId(id)
+		repository.getProduct(id)
 
 	/**
 	 * Get the recipe's nutrients, as sum of ingredient's.
@@ -44,40 +45,16 @@ class EditRecipeViewModel(
 		displayWeight.switchMap { weightDisplay ->
 
 			ingredients.switchMap { ingredients ->
-				repository.getAllNutrients_fromId(
+				repository.getNutrients(
 					ingredients.map { it.product.id }
-				).switchMap { nutrientsList ->
-					getRecipeWeight()
-						.switchMap { weightRecipe ->
-						MutableLiveData(
-							EntityNutrients(recipeId, 0F, 0F, 0F, 0F).apply {
-								for(i in 0..<ingredients.size) {
-									val nutrients = nutrientsList.find { it.idProduct == ingredients[i].product.id }
-									if(nutrients == null) {
-										Log.e(TAG, "No nutrients for product ${ingredients[i].product.id}")
-										continue
-									}
-
-									nutrients.kcal?.let {
-										kcal = kcal!! + it / Const.MEASURE_QUANTITY * ingredients[i].ingredientItem.quantityMin
-									}
-									nutrients.carbohydrates?.let {
-										carbohydrates = carbohydrates!! + it / Const.MEASURE_QUANTITY * ingredients[i].ingredientItem.quantityMin
-									}
-									nutrients.fats?.let {
-										fats = fats!! + it / Const.MEASURE_QUANTITY * ingredients[i].ingredientItem.quantityMin
-									}
-									nutrients.proteins?.let {
-										proteins = proteins!! + it / Const.MEASURE_QUANTITY * ingredients[i].ingredientItem.quantityMin
-									}
-								}
-								kcal			= (kcal!!			/ weightRecipe * weightDisplay).toFloat()
-								carbohydrates	= (carbohydrates!!	/ weightRecipe * weightDisplay).toFloat()
-								fats			= (fats!!			/ weightRecipe * weightDisplay).toFloat()
-								proteins		= (proteins!!		/ weightRecipe * weightDisplay).toFloat()
-							}
+				)
+					.switchMap { nutrientsList ->
+					MutableLiveData(
+						UtilProducts.getRecipeNutrients(
+							recipeId, ingredients.map { it.ingredientItem }, nutrientsList
 						)
-		} } } }
+					)
+		} } }
 
 	fun getRecipeWeight(): LiveData<Double> =
 		ingredients.switchMap { ingredients ->

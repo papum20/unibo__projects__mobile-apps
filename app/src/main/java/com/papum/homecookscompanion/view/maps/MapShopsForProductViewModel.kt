@@ -21,14 +21,14 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
 	/* Query */
 
 	fun getProductFromId(productId: Long): LiveData<EntityProduct> =
-		repository.getProduct_fromId(productId)
+		repository.getProduct(productId)
 
 	/**
 	 * @return a (liveData of a) list of shops, with the purchase, for the given product,
 	 * with the lowest price (for that shop), all filtered in the selected radius
 	 */
 	fun getShopsForProduct_inRadius(productId: Long): LiveData<List<EntityShopsWithPurchases>> =
-		repository.getAllShopsAndPurchases_fromProductId(productId)
+		repository.getPurchases_fromProduct(productId)
 			.switchMap { shopsWithPurchases ->
 				Log.d("VIEWMODEL", "shopswithpurchases switchmap ${shopsRadius.value}")
 				getShopsRadius().switchMap { radius ->

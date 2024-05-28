@@ -1,7 +1,6 @@
 package com.papum.homecookscompanion.model
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.papum.homecookscompanion.model.database.DaoAlerts
@@ -32,7 +31,6 @@ import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndIngredientOf
-import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
@@ -43,7 +41,7 @@ import com.papum.homecookscompanion.model.database.EntityProductRecognized
 import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
 import com.papum.homecookscompanion.model.database.EntityShopsWithPurchases
-import com.papum.homecookscompanion.view.edit.recipe.EditRecipeViewModel
+import com.papum.homecookscompanion.utils.UtilProducts
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
@@ -95,7 +93,7 @@ class Repository(app: Context) {
 
 	/* Get */
 
-	fun getAllNutrients_fromId(ids: List<Long>): LiveData<List<EntityNutrients>> {
+	fun getNutrients(ids: List<Long>): LiveData<List<EntityNutrients>> {
 		return daoNutrients.getAllFromId(ids)
 	}
 
@@ -107,26 +105,19 @@ class Repository(app: Context) {
 		return daoProduct.getAllMatches_lowercase("%${substr.lowercase()}%")
 	}
 
-	fun getAllProductsAsIngredients_fromRecipeId(recipeId: Long): LiveData<List<EntityProductAndIngredientOf>> {
+	fun getAllIngredients_fromRecipeId(recipeId: Long): LiveData<List<EntityProductAndIngredientOf>> {
 		return daoProductAndIngredientOf.getAllFromRecipeId(recipeId)
 	}
 
-	fun getAllProductsRecognized_fromTextAndShop(recognizedTexts: List<String>, shopId: Long): LiveData<List<EntityProductAndProductRecognized>> {
+	fun getMatchingProductsRecognized(recognizedTexts: List<String>, shopId: Long): LiveData<List<EntityProductAndProductRecognized>> {
 		return daoProductAndProductRecognized.getAll_fromTextAndShop(recognizedTexts, shopId)
 	}
 
-	fun getAllProductsWithInventory(): LiveData<List<EntityProductAndInventory>> {
-		return daoProductAndInventory.getAll()
-	}
-
-	fun getAllProductsWithInventory_fromId(id: Long): LiveData<List<EntityProductAndInventory>> {
-		return daoProductAndInventory.getAllFromId(id.toString())
-	}
 
 	/**
 	 * Get all products either in inventory or alerts (not necessarily in both).
 	 */
-	fun getAllProductsWithInventoryAndAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
+	fun getAllInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
 
 		val products = MutableLiveData<List<EntityProductAndInventoryWithAlerts>>()
 		Database.databaseWriteExecutor.execute {
@@ -143,26 +134,22 @@ class Repository(app: Context) {
 	}
 
 
-	fun getAllProductsWithInventoryAndAlerts_lowStocks(): List<EntityProductAndInventoryWithAlerts> {
+	fun getInventory_lowStock(): List<EntityProductAndInventoryWithAlerts> {
 		return daoProductAndInventoryWithAlerts.getAllLowStocks()
 	}
 
-	fun getAllProductsWithList(): LiveData<List<EntityProductAndList>> {
+	fun getAllList(): LiveData<List<EntityProductAndList>> {
 		return daoProductAndList.getAll()
 	}
 
-	fun getAllProductsWithList_fromId(id: Long): LiveData<List<EntityProductAndList>> {
-		return daoProductAndList.getAllFromId(id.toString())
-	}
-
-	fun getAllProductsWithMeals(): LiveData<List<EntityProductAndMeals>> {
+	fun getAllMeals(): LiveData<List<EntityProductAndMeals>> {
 			return daoProductAndMeals.getAll()
 	}
 
 	/**
 	 * `month` from 1.
 	 */
-	fun getAllProductsWithMeals_fromDate(date: LocalDateTime): LiveData<List<EntityProductAndMeals>> {
+	fun getMeals(date: LocalDateTime): LiveData<List<EntityProductAndMeals>> {
 		// set localDateTime to time=0 -> convert to instant (nanosecs from epoch) -> convert to millisecs
 		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
 		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
@@ -190,19 +177,19 @@ class Repository(app: Context) {
 	/**
 	 * Match shops on a substring of brand name.
  	 */
-	fun getAllShops_fromSubstrBrand(brandSubstr: String): LiveData<List<EntityShops>> {
+	fun getMatchingShops(brandSubstr: String): LiveData<List<EntityShops>> {
 		return daoShops.getAllMatches_onBrand(brandSubstr)
 	}
 
-	fun getAllShopsAndPurchases_fromProductId(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
+	fun getPurchases_fromProduct(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
 		return daoShopsWithPurchases.getAllFromProductId(productId)
 	}
 
-	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
+	fun getProduct(id: Long): LiveData<EntityProduct> {
 		return daoProduct.getOneFromId(id.toString())
 	}
 
-	fun getProductWithNutrients_fromId(id: Long): LiveData<EntityProductAndNutrients> {
+	fun getProductWithNutrients(id: Long): LiveData<EntityProductAndNutrients> {
 		return daoProductAndNutrients.getOneFromId(id.toString())
 	}
 
@@ -244,12 +231,7 @@ class Repository(app: Context) {
 			idProduct = newId
 		}
 	}
-
-	fun insertManyInInventory(inventoryProducts: List<EntityInventory>) {
-		Database.databaseWriteExecutor.execute {
-			daoInventory.insertMany(inventoryProducts)
-		}
-	}
+	
 
 	fun insertInMeals(mealsProduct: EntityMeals) {
 		Database.databaseWriteExecutor.execute {
@@ -305,11 +287,20 @@ class Repository(app: Context) {
 
 	/**
 	 * Insert recipe in Products, and ingredients in IngredientOf.
+	 * ALso insert nutrients.
 	 * Also replace recipe if already present.
 	 */
-	fun insertRecipeAndIngredients(recipe: EntityProduct, ingredientsList: List<EntityIngredientOf>) {
+	fun insertRecipeAndIngredients(recipe: EntityProduct, ingredients: List<EntityIngredientOf>) {
 		Database.databaseWriteExecutor.execute {
-			daoProductAndIngredientOf.insertRecipeAndIngredients(recipe, ingredientsList)
+			daoProductAndIngredientOf.insertRecipeAndIngredients(recipe, ingredients)
+
+			val nutrientsList = daoNutrients.getAllFromId_value(
+				ingredients.map { it.idIngredient }
+			)
+
+			daoNutrients.insertOne(
+				UtilProducts.getRecipeNutrients(recipe.id, ingredients, nutrientsList)
+			)
 		}
 	}
 

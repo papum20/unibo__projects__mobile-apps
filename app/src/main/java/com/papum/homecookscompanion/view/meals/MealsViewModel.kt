@@ -15,14 +15,14 @@ class MealsViewModel(private val repository: Repository) : ViewModel() {
 
 
 	fun getAllProducts(): LiveData<List<EntityProductAndMeals>> {
-		return repository.getAllProductsWithMeals()
+		return repository.getAllMeals()
 	}
 
 	/**
 	 * `month` from 1.
 	 */
 	fun getAllProducts_fromDate(date: LocalDateTime): LiveData<List<EntityProductAndMeals>> {
-		return repository.getAllProductsWithMeals_fromDate(date)
+		return repository.getMeals(date)
 	}
 
 	/**

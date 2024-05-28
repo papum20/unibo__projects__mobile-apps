@@ -20,9 +20,6 @@ interface DaoInventory {
 	/* insert */
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun insertMany(inventoryProducts: List<EntityInventory>)
-
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertOne(inventoryProduct: EntityInventory): Long
 
 	/* delete */

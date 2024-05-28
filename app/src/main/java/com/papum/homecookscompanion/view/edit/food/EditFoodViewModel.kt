@@ -14,7 +14,7 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 	/* query */
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProductAndNutrients> =
-		repository.getProductWithNutrients_fromId(id)
+		repository.getProductWithNutrients(id)
 
 	/* insert */
 

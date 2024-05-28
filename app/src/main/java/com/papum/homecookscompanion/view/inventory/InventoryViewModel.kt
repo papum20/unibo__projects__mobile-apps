@@ -8,18 +8,14 @@ import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
-import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import java.time.LocalDateTime
 
 class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
-	fun getAllProductsInInventory(): LiveData<List<EntityProductAndInventory>> {
-		return repository.getAllProductsWithInventory()
-	}
 
 	fun getAllProductsInInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
-		return repository.getAllProductsWithInventoryAndAlerts()
+		return repository.getAllInventoryWithAlerts()
 	}
 
 	/*

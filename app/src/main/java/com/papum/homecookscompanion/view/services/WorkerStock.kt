@@ -9,7 +9,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.Constraints
-import androidx.work.Data
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -17,7 +16,6 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.model.Repository
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
@@ -35,7 +33,7 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 
 		val repository = Repository(applicationContext)
 
-		val products_lowStock = repository.getAllProductsWithInventoryAndAlerts_lowStocks()
+		val products_lowStock = repository.getInventory_lowStock()
 		val names = products_lowStock.subList(0, PRODUCTS_NAMES_IN_NOTIFICATION_COUNT)
 			.map { product -> product.product.name }
 			.joinToString(",",
