@@ -67,7 +67,9 @@ android:layout_height="wrap_content">
                 android:layout_height="@dimen/et_height"
                 android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|numberSigned"
+                android:layout_margin="@dimen/et_margin"
                 android:text="@string/product_format_quantity"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_expand"
                 app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
@@ -110,7 +112,9 @@ android:layout_height="wrap_content">
                 android:layout_height="@dimen/et_height"
                 android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|numberSigned"
+                android:layout_margin="@dimen/et_margin"
                 android:text="@string/product_format_quantity"
+                android:textAlignment="center"
                 />
 
             <Button

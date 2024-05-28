@@ -1,5 +1,7 @@
 package com.papum.homecookscompanion.view.edit.recipe
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -22,13 +25,12 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.utils.Const
 import com.papum.homecookscompanion.view.products.ProductResultViewModel
 import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
+import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentEditRecipe.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentEditRecipe :
 	Fragment(R.layout.fragment_edit_recipe),
 	EditRecipeAdapter.IListenerEditRecipeItem
@@ -97,6 +99,77 @@ class FragmentEditRecipe :
 			)
 		}
 
+		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_cancel).setOnClickListener {
+			Log.i(TAG, "not added")
+			navController.navigateUp()
+		}
+
+		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_share).setOnClickListener {
+			Log.i(TAG, "sharing")
+	/*		val sendIntent: Intent = Intent().apply {
+				action = Intent.ACTION_SEND
+				putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+				type = "text/plain"
+			}
+
+			val shareIntent = Intent.createChooser(sendIntent, "Title")
+			startActivity(shareIntent)
+	*/
+		/*	val jsonData = JSONObject()
+			jsonData.put("name", "test")
+			// Add data to jsonData...
+
+			val sendIntent: Intent = Intent().apply {
+				action = Intent.ACTION_SEND
+				putExtra(Intent.EXTRA_TEXT, jsonData.toString())
+				type = "application/json"
+			}
+
+			val shareIntent = Intent.createChooser(sendIntent, null)
+			startActivity(shareIntent)
+
+		*/
+
+			val cachePath = File(requireContext().cacheDir, "my_temp_files")
+			cachePath.mkdirs()
+
+			val tempFile = File(cachePath, "my_temp_file.txt")
+			val fileOutputStream = FileOutputStream(tempFile)
+			val outputWriter = OutputStreamWriter(fileOutputStream)
+			outputWriter.write("This is my text to send.")
+			outputWriter.close()
+
+			val fileUri = FileProvider.getUriForFile(
+				requireContext(),
+				"${requireContext().packageName}.provider",
+				tempFile
+			)
+
+			// Set up an Intent to send back to apps that request a file
+			val resultIntent: Intent = Intent().apply {
+				action = Intent.ACTION_SEND
+				putExtra(Intent.EXTRA_STREAM, fileUri)
+				type = "text/plain"
+			}
+			// Grant temporary read permission to the content URI
+			resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+			val shareIntent = Intent.createChooser(resultIntent, null)
+			startActivity(shareIntent)
+			/*
+			val sendIntent: Intent = Intent().apply {
+				action = Intent.ACTION_SEND
+				putExtra(Intent.EXTRA_STREAM, fileUri)
+				type = "text/plain"
+			}
+
+			val shareIntent = Intent.createChooser(sendIntent, null)
+			startActivity(shareIntent)
+*/
+			// Delete the temporary file
+			tempFile.delete()
+		}
+
 		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_save).setOnClickListener {
 			val name			: String	= tvName.text.toString()
 			val parent			: String	= tvParent.text.toString()
@@ -114,11 +187,6 @@ class FragmentEditRecipe :
 				Toast.makeText(activity, "Added: $name !", Toast.LENGTH_SHORT).show()
 				navController.navigateUp()
 			}
-		}
-
-		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_cancel).setOnClickListener {
-			Log.i(TAG, "not added")
-			navController.navigateUp()
 		}
 
 		/* observers */

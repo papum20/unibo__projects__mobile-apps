@@ -83,7 +83,6 @@ class EditRecipeViewModel(
 			recipe?.apply {
 				this.name = name
 				this.parent = newParent
-				repository.updateProduct(this)
 				Log.d(TAG, "fetched id is $id")
 			} ?: EntityProduct(
 				id = 0,

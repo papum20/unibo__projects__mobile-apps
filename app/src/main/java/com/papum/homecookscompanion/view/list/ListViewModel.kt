@@ -14,11 +14,11 @@ class ListViewModel(private val repository: Repository) : ViewModel() {
 	}
 
 	fun addToList(id: Long, quantity: Float): EntityList {
-		return repository.insertInList(EntityList(id, quantity))
+		return repository.addListItem(EntityList(id, quantity))
 	}
 
 	fun removeProductFromList(listItem: EntityList) {
-		repository.deleteFromList(listItem)
+		repository.deleteListItem(listItem)
 	}
 
 	/**

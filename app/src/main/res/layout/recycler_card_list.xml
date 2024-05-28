@@ -64,19 +64,19 @@ android:layout_height="wrap_content">
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
             <EditText
                 android:id="@+id/recycler_card_list_quantity"
                 android:layout_width="@dimen/quantity_width"
                 android:layout_height="@dimen/et_height"
                 android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|numberSigned"
+                android:layout_margin="@dimen/et_margin"
                 android:text="@string/product_format_quantity"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_list_btn_expand"
                 app:layout_constraintStart_toEndOf="@id/recycler_card_list_text"
-                app:layout_constraintTop_toTopOf="@id/recycler_card_list_measure"
-                />
+                app:layout_constraintTop_toTopOf="@id/recycler_card_list_measure" />
 
 
             <Button

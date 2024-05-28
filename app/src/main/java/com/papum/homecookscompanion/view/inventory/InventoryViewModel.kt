@@ -31,15 +31,15 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 	/* Insert */
 
 	fun addAlert(id: Long, quantity: Float): EntityAlerts {
-		return repository.insertAlert(EntityAlerts(id, quantity))
+		return repository.addAlert(EntityAlerts(id, quantity))
 	}
 
 	fun addToInventory(id: Long, quantity: Float): EntityInventory {
-		return repository.insertInInventory(EntityInventory(id, quantity))
+		return repository.addInventoryItem(EntityInventory(id, quantity))
 	}
 
 	fun addToList(id: Long, quantity: Float) {
-		repository.insertInList(EntityList(id, quantity))
+		repository.addListItem(EntityList(id, quantity))
 	}
 
 	fun addToMealsFromInventory(inventoryItem: EntityInventory, date: LocalDateTime, quantity: Float) {

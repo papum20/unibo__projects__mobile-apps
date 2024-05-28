@@ -30,15 +30,15 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 	/* Insert */
 
 	fun addToInventory(id: Long, quantity: Float) {
-		repository.updateInventoryQuantity_sumOrInsert(EntityInventory(id, quantity))
+		repository.addInventoryItemQuantity(EntityInventory(id, quantity))
 	}
 
 	fun addToList(id: Long, quantity: Float) {
-		repository.updateListQuantity_sumOrInsert(EntityList(id, quantity))
+		repository.addListItemQuantity(EntityList(id, quantity))
 	}
 
 	fun addToMeals(id: Long, date: LocalDateTime, quantity: Float) {
-		repository.insertInMeals(EntityMeals(0, id, date, quantity))
+		repository.addMeal(EntityMeals(0, id, date, quantity))
 	}
 
 

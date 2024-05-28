@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Homecook\'s companion</string>
+    <string name="package_name">com.papum.homecookscompanion</string>
     <string name="activity_main_label">Homecook\'s companion</string>
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
@@ -122,6 +123,7 @@
     <string name="btn_next">Next</string>
     <string name="btn_remove">Remove</string>
     <string name="btn_save">Save</string>
+    <string name="btn_share">Share</string>
 
     <string name="btn_select_product">Select product</string>
     <string name="btn_select_image_receipt">Select a receipt image</string>

@@ -21,6 +21,7 @@
     <!-- margins, paddings -->
 
     <dimen name="btn_margin">8dp</dimen>
+    <dimen name="et_margin">5dp</dimen>
     <dimen name="h2_margin">10dp</dimen>
     <dimen name="measure_margin">4dp</dimen>
     <dimen name="tv_margin">4dp</dimen>

@@ -166,10 +166,6 @@ class Repository(app: Context) {
 		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval_withNutrients(startOfDay, endOfDay)
 	}
 
-	fun getAllProductsWithNutrients_fromId(ids: List<Long>): LiveData<List<EntityProductAndNutrients>> {
-		return daoProductAndNutrients.getAllFromId(ids)
-	}
-
 	fun getAllShops(): LiveData<List<EntityShops>> {
 		return daoShops.getAll()
 	}
@@ -202,7 +198,7 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertAlert(alert: EntityAlerts): EntityAlerts {
+	fun addAlert(alert: EntityAlerts): EntityAlerts {
 		var newId: Long = alert.idProduct
 		Database.databaseWriteExecutor.execute {
 			newId = daoAlerts.insertOne(alert)
@@ -212,7 +208,7 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertInInventory(inventoryProduct: EntityInventory): EntityInventory {
+	fun addInventoryItem(inventoryProduct: EntityInventory): EntityInventory {
 		var newId: Long = inventoryProduct.idProduct
 		Database.databaseWriteExecutor.execute {
 			newId = daoInventory.insertOne(inventoryProduct)
@@ -222,7 +218,7 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertInList(listProduct: EntityList): EntityList {
+	fun addListItem(listProduct: EntityList): EntityList {
 		var newId: Long = listProduct.idProduct
 		Database.databaseWriteExecutor.execute {
 			newId = daoList.insertOne(listProduct)
@@ -233,7 +229,7 @@ class Repository(app: Context) {
 	}
 	
 
-	fun insertInMeals(mealsProduct: EntityMeals) {
+	fun addMeal(mealsProduct: EntityMeals) {
 		Database.databaseWriteExecutor.execute {
 			daoMeals.insertOne(mealsProduct)
 		}
@@ -292,14 +288,16 @@ class Repository(app: Context) {
 	 */
 	fun insertRecipeAndIngredients(recipe: EntityProduct, ingredients: List<EntityIngredientOf>) {
 		Database.databaseWriteExecutor.execute {
-			daoProductAndIngredientOf.insertRecipeAndIngredients(recipe, ingredients)
+			// first delete old ingredients, then insert new ones (if id=0 doesn't do anything)
+			daoIngredientOf.deleteMatchingRecipe(recipe.id)
+			val newId = daoProductAndIngredientOf.insertRecipeAndIngredients(recipe, ingredients)
 
 			val nutrientsList = daoNutrients.getAllFromId_value(
 				ingredients.map { it.idIngredient }
 			)
 
 			daoNutrients.insertOne(
-				UtilProducts.getRecipeNutrients(recipe.id, ingredients, nutrientsList)
+				UtilProducts.getRecipeNutrients(newId, ingredients, nutrientsList)
 			)
 		}
 	}
@@ -312,13 +310,13 @@ class Repository(app: Context) {
 
 	/* Delete */
 
-	fun deleteAlert_fromId(id: Long) {
+	fun deleteAlert(id: Long) {
 		Database.databaseWriteExecutor.execute {
 			daoAlerts.deleteOne_withId(id.toString())
 		}
 	}
 
-	fun deleteFromList(listItem: EntityList) {
+	fun deleteListItem(listItem: EntityList) {
 		Database.databaseWriteExecutor.execute {
 			daoList.deleteOne(listItem)
 		}
@@ -354,7 +352,7 @@ class Repository(app: Context) {
 	/**
 	 * Sum quantity if not null and already exists in inventory, otherwise add.
 	 */
-	fun updateInventoryQuantity_sumOrInsert(inventoryItem: EntityInventory) {
+	fun addInventoryItemQuantity(inventoryItem: EntityInventory) {
 		Database.databaseWriteExecutor.execute {
 			val fetchedItem = daoInventory.getOne_fromId(inventoryItem.idProduct)
 			if (fetchedItem == null) {
@@ -372,7 +370,7 @@ class Repository(app: Context) {
 	/**
 	 * Sum quantity if not null and already exists in inventory, otherwise add.
 	 */
-	fun updateListQuantity_sumOrInsert(listItem: EntityList) {
+	fun addListItemQuantity(listItem: EntityList) {
 		Database.databaseWriteExecutor.execute {
 			val fetchedItem = daoList.getOne_fromId(listItem.idProduct)
 			if (fetchedItem == null) {

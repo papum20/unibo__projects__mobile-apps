@@ -90,7 +90,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 				}
 				.forEach{
 					Log.d(TAG, "Adding to inventory: ${it.idProduct}, ${it.quantity}")
-					repository.updateInventoryQuantity_sumOrInsert(it)
+					repository.addInventoryItemQuantity(it)
 				}
 				repository.insertManyPurchases(
 					items.map { item ->

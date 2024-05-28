@@ -19,15 +19,6 @@ interface DaoProductAndNutrients {
 	@Transaction
 	fun getAll(): LiveData<List<EntityProductAndNutrients>>
 
-	@Query("""
-        SELECT *
-        FROM Product
-        INNER JOIN Nutrients ON Product.id = Nutrients.idProduct
-		WHERE Product.id IN (:ids)
-    """)
-	@Transaction
-	fun getAllFromId(ids: List<Long>): LiveData<List<EntityProductAndNutrients>>
-
 	@Query(
 		"""
         SELECT *

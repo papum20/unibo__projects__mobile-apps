@@ -24,7 +24,6 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 	*	[V] add
 	*	[V] remove
 2.	[V]	ricette: si può creare e salvare una ricetta;
-	*	IMPORTANT: add nutrients of recipe at each update, so easier to fetch nutrients
 3.	pianificazione dei pasti:
 	*	[V]	si possono assegnare i cibi/ricette che si consumano a una giornata.
 	*	(remove)
@@ -153,3 +152,8 @@ view:
 
 sructure:
 *	editRecipe: structure view-viewModel got messed up, viewModel gives methods to init but view must remember to init its fields (if someone else reads the code he won't understand)
+
+
+## notes (report)
+
+*	[V] editRecipe: add nutrients of recipe at each update, so easier to fetch nutrients
