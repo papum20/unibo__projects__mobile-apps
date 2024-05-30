@@ -127,6 +127,9 @@ class EditRecipeViewModel(
 	fun getIngredients(): List<EntityProductAndIngredientOf> =
 		ingredients.value!!
 
+	fun getRecipe(): EntityProduct? =
+		recipe
+
 	fun addIngredient(product: EntityProduct): EntityProductAndIngredientOf {
 
 		val newIngredient = EntityProductAndIngredientOf(

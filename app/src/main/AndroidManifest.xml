@@ -88,8 +88,8 @@
         </activity>
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.papum.homecookscompanion.provider"
+            android:name="com.papum.homecookscompanion.MyFileProvider"
+            android:authorities="com.papum.homecookscompanion.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

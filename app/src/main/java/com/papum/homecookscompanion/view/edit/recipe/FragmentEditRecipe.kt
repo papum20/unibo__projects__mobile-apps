@@ -1,17 +1,19 @@
 package com.papum.homecookscompanion.view.edit.recipe
 
-import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -23,12 +25,11 @@ import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.utils.Const
+import com.papum.homecookscompanion.utils.files.FileFormatterRecipe
+import com.papum.homecookscompanion.view.edit.scan.FragmentScanReceipt
 import com.papum.homecookscompanion.view.products.ProductResultViewModel
 import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
-import org.json.JSONObject
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
 
 
 class FragmentEditRecipe :
@@ -105,69 +106,7 @@ class FragmentEditRecipe :
 		}
 
 		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_share).setOnClickListener {
-			Log.i(TAG, "sharing")
-	/*		val sendIntent: Intent = Intent().apply {
-				action = Intent.ACTION_SEND
-				putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
-				type = "text/plain"
-			}
-
-			val shareIntent = Intent.createChooser(sendIntent, "Title")
-			startActivity(shareIntent)
-	*/
-		/*	val jsonData = JSONObject()
-			jsonData.put("name", "test")
-			// Add data to jsonData...
-
-			val sendIntent: Intent = Intent().apply {
-				action = Intent.ACTION_SEND
-				putExtra(Intent.EXTRA_TEXT, jsonData.toString())
-				type = "application/json"
-			}
-
-			val shareIntent = Intent.createChooser(sendIntent, null)
-			startActivity(shareIntent)
-
-		*/
-
-			val cachePath = File(requireContext().cacheDir, "my_temp_files")
-			cachePath.mkdirs()
-
-			val tempFile = File(cachePath, "my_temp_file.txt")
-			val fileOutputStream = FileOutputStream(tempFile)
-			val outputWriter = OutputStreamWriter(fileOutputStream)
-			outputWriter.write("This is my text to send.")
-			outputWriter.close()
-
-			val fileUri = FileProvider.getUriForFile(
-				requireContext(),
-				"${requireContext().packageName}.provider",
-				tempFile
-			)
-
-			// Set up an Intent to send back to apps that request a file
-			val resultIntent: Intent = Intent().apply {
-				action = Intent.ACTION_SEND
-				putExtra(Intent.EXTRA_STREAM, fileUri)
-				type = "text/plain"
-			}
-			// Grant temporary read permission to the content URI
-			resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-			val shareIntent = Intent.createChooser(resultIntent, null)
-			startActivity(shareIntent)
-			/*
-			val sendIntent: Intent = Intent().apply {
-				action = Intent.ACTION_SEND
-				putExtra(Intent.EXTRA_STREAM, fileUri)
-				type = "text/plain"
-			}
-
-			val shareIntent = Intent.createChooser(sendIntent, null)
-			startActivity(shareIntent)
-*/
-			// Delete the temporary file
-			tempFile.delete()
+			shareFile()
 		}
 
 		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_save).setOnClickListener {
@@ -225,6 +164,55 @@ class FragmentEditRecipe :
 			}
 		}
 
+	}
+
+
+	private fun shareFile() {
+
+		if(viewModel.getRecipe() == null) {
+			toastErrorMissingRecipe()
+			return
+		}
+
+		val filesPath = File(requireContext().cacheDir, getString(R.string.path_cache))
+		filesPath.mkdirs()
+
+		val tempFile = File(filesPath, "my_temp_file.txt")
+		tempFile.createNewFile()
+		val uri = FileProvider.getUriForFile(
+			requireContext(),
+			getString(R.string.file_provider_authority),
+			tempFile
+		)
+		Log.d(TAG, "sharing file with uri $uri")
+
+		FileFormatterRecipe.writeRecipe(
+			viewModel.getRecipe()!!, viewModel.getIngredients(), tempFile)
+
+		// Set up an Intent to send back to apps that request a file
+		val resultIntent: Intent = Intent().apply {
+			action = Intent.ACTION_SEND
+			putExtra(Intent.EXTRA_STREAM, uri)
+			type = FileFormatterRecipe.MIME_TYPE
+		}
+		// Grant temporary read permission to the content URI
+		resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+		val shareIntent = Intent.createChooser(resultIntent, getString(R.string.intent_share_recipe))
+		startActivity(shareIntent)
+	}
+
+
+	/* display */
+
+	fun toastErrorMissingRecipe() {
+		Log.e(TAG, "viewModel.recipe is null")
+		Toast.makeText(activity, "INTERNAL ERROR, try to restart the app", Toast.LENGTH_LONG)
+			.show()
+	}
+
+	fun toastErrorMissingIngredients() {
+		Toast.makeText(activity, "ERROR: Missing ingredients", Toast.LENGTH_LONG).show()
 	}
 
 

@@ -6,6 +6,11 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- paths (copied from provider_paths.xml) -->
+    <string name="file_provider_authority">com.papum.homecookscompanion.fileprovider</string>
+    <string name="path_files">files</string>
+    <string name="path_cache">cache</string>
+
     <!-- services -->
     <string name="channel_name">Homecook\'s companion</string>
     <string name="channel_description">All notifications from Homecook\'s companion.</string>
@@ -112,6 +117,8 @@
 
     <string name="settings_header_notifications">Notifications</string>
     <string name="settings_geofence">get notified when you\'re in a shop</string>
+
+    <string name="intent_share_recipe">Share this recipe\'s file with…</string>
 
 
     <!-- buttons -->
