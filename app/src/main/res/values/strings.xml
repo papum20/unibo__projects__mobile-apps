@@ -8,6 +8,7 @@
 
     <!-- paths (copied from provider_paths.xml) -->
     <string name="file_provider_authority">com.papum.homecookscompanion.fileprovider</string>
+    <string name="path_external_files">external_path</string>
     <string name="path_files">files</string>
     <string name="path_cache">cache</string>
 
@@ -127,6 +128,7 @@
     <string name="btn_confirm">Confirm</string>
     <string name="btn_create">Create</string>
     <string name="btn_enable">Enable</string>
+    <string name="btn_import">Import</string>
     <string name="btn_next">Next</string>
     <string name="btn_remove">Remove</string>
     <string name="btn_save">Save</string>

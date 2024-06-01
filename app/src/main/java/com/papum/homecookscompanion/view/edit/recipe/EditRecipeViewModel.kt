@@ -11,6 +11,7 @@ import com.papum.homecookscompanion.model.database.EntityIngredientOf
 import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndIngredientOf
+import com.papum.homecookscompanion.model.database.EntityRecipeWithIngredients
 import com.papum.homecookscompanion.utils.Const
 import com.papum.homecookscompanion.utils.UtilProducts
 
@@ -64,6 +65,10 @@ class EditRecipeViewModel(
 		}
 
 	/* insert */
+
+	fun importRecipe(recipe: EntityRecipeWithIngredients) {
+
+	}
 
 	/**
 	 * Save recipe, as product with its ingredients.

@@ -157,6 +157,12 @@ class FragmentScanReceipt
 
 
 	/* Views */
+
+	private fun displayMissingImage() {
+		Toast.makeText(context, "ERROR: Image wasn't picked", Toast.LENGTH_LONG)
+			.show()
+	}
+
 	private fun displayMissingReceipt() {
 		Toast.makeText(
 			requireContext(),
@@ -191,8 +197,7 @@ class FragmentScanReceipt
 	private fun processImage(uri: Uri?) {
 
 		if(uri == null) {
-			Toast.makeText(context, "ERROR: Image wasn't picked", Toast.LENGTH_LONG)
-				.show()
+			displayMissingImage()
 			return
 		}
 
