@@ -8,6 +8,7 @@ import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import java.time.LocalDateTime
+import kotlin.jvm.Throws
 
 class MealsViewModel(private val repository: Repository) : ViewModel() {
 
@@ -48,6 +49,7 @@ class MealsViewModel(private val repository: Repository) : ViewModel() {
 
 class MealsViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(MealsViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

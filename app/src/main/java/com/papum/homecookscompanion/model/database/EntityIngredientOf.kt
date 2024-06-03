@@ -30,7 +30,7 @@ import androidx.room.Index
 class EntityIngredientOf(
 
 	var idRecipe: Long,
-	val idIngredient: Long,
+	var idIngredient: Long,
 
 	var quantityMax: Float,
 	var quantityMin: Float

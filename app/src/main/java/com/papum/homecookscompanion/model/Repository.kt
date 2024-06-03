@@ -97,6 +97,10 @@ class Repository(app: Context) {
 		return daoNutrients.getAllFromId(ids)
 	}
 
+	fun getNutrients_value(ids: List<Long>): List<EntityNutrients> {
+		return daoNutrients.getAllFromId_value(ids)
+	}
+
 	fun getAllProducts(): LiveData<List<EntityProduct>> {
 		return daoProduct.getAll()
 	}
@@ -109,6 +113,10 @@ class Repository(app: Context) {
 		return daoProductAndIngredientOf.getAllFromRecipeId(recipeId)
 	}
 
+	fun getAllIngredients_fromRecipeId_value(recipeId: Long): List<EntityProductAndIngredientOf> {
+		return daoProductAndIngredientOf.getAllFromRecipeId_value(recipeId)
+	}
+
 	fun getMatchingProductsRecognized(recognizedTexts: List<String>, shopId: Long): LiveData<List<EntityProductAndProductRecognized>> {
 		return daoProductAndProductRecognized.getAll_fromTextAndShop(recognizedTexts, shopId)
 	}
@@ -117,7 +125,7 @@ class Repository(app: Context) {
 	/**
 	 * Get all products either in inventory or alerts (not necessarily in both).
 	 */
-	fun getAllInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
+	fun getAllInventoryWithAlerts_value(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
 
 		val products = MutableLiveData<List<EntityProductAndInventoryWithAlerts>>()
 		Database.databaseWriteExecutor.execute {
@@ -181,8 +189,16 @@ class Repository(app: Context) {
 		return daoShopsWithPurchases.getAllFromProductId(productId)
 	}
 
-	fun getProduct(id: Long): LiveData<EntityProduct> {
+	fun getProduct(id: Long): LiveData<EntityProduct?> {
 		return daoProduct.getOneFromId(id.toString())
+	}
+
+	fun getProduct_value(id: Long): EntityProduct? {
+		return daoProduct.getOneFromId_value(id.toString())
+	}
+
+	fun getProductFromName_value(name: String, parent: String): EntityProduct? {
+		return daoProduct.getOneFromName_value(name, parent)
 	}
 
 	fun getProductWithNutrients(id: Long): LiveData<EntityProductAndNutrients> {
@@ -249,11 +265,9 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertProduct(product: EntityProduct): Long {
+	suspend fun insertProduct_result(product: EntityProduct): Long {
 		var newId: Long = product.id
-		Database.databaseWriteExecutor.execute {
-			newId = daoProduct.insertProduct(product)
-		}
+		newId = daoProduct.insertProduct(product)
 		return newId
 	}
 
@@ -316,11 +330,18 @@ class Repository(app: Context) {
 		}
 	}
 
+	fun deleteInventoryItem(inventoryItem: EntityInventory) {
+		Database.databaseWriteExecutor.execute {
+			daoInventory.deleteOne(inventoryItem)
+		}
+	}
+
 	fun deleteListItem(listItem: EntityList) {
 		Database.databaseWriteExecutor.execute {
 			daoList.deleteOne(listItem)
 		}
 	}
+
 	fun deleteProducts(products: List<EntityProduct>) {
 		Database.databaseWriteExecutor.execute {
 			products.forEach {

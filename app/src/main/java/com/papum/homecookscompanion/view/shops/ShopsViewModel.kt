@@ -12,6 +12,7 @@ import com.papum.homecookscompanion.model.database.EntityProductAndInventory
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.model.database.EntityShops
 import java.time.LocalDateTime
+import kotlin.jvm.Throws
 
 class ShopsViewModel(private val repository: Repository) : ViewModel() {
 
@@ -32,6 +33,7 @@ class ShopsViewModel(private val repository: Repository) : ViewModel() {
 
 class ShopsViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(ShopsViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

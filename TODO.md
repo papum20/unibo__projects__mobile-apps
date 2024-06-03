@@ -33,13 +33,12 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 	*	[V]	di cui si salva la quantità.
 	*	[V] Gli oggetti possono essere aggiunti automaticamente aggiungendo una spesa effettuata (per es. copiando lo scontrino, o scansionandolo con la telecamera e convertendolo in testo*),
 	*	[V] (o rimossi)
-		*	note: if new_quantity = 0
 	*	[V] o manualmente, uno per uno (per es. per effettuare correzioni),
 	*	[V] mentre vengono rimossi quando si aggiungono a un pasto;
 5.	esportazione/importazione dati: si possono esportare dati (per es. ricette) come archivio - per esempio, come backup o per condividerli;
 	*	[V]	esporta ricetta (condividi file json)
-	*	importa ricetta (json)
-6.	condivisione dati: per es. si condivide il suddetto archivio con qualcuno (che lo potrà poi importare nell'app dal file);
+	*	[V] importa ricetta (json)
+6.	[V] condivisione dati: per es. si condivide il suddetto archivio con qualcuno (che lo potrà poi importare nell'app dal file);
 7.	[V]	notifiche: si possono impostare notifiche per quando le scorte di un determinato oggetto scendono sotto una certa soglia (per es. se rimangono meno di 0,5kg di farina).
 	*	nota: serve un primo avvio dell'app per farle partire; inoltre, serve di nuovo se si fa un arresto forzato
 
@@ -131,6 +130,8 @@ products:
 *	more orders
 *	filter
 *	search (on full name from hierarchy)
+*	import: should also export/import recursively recipes ingredients of other recipes
+	*	idea: check dependencies when exporting, putting the base level of the tree as first elements in json, so when importing they are resolved in order and already exist when needed
 
 all quantity (e.g. inventory, list):
 *	default: grams

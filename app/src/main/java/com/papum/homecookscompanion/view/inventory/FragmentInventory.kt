@@ -152,6 +152,12 @@ class FragmentInventory :
 		}
 	}
 
+	override fun onClickRemove(inventoryItem: EntityInventory) {
+		Log.d(TAG,  "Removing from inventory: id ${inventoryItem.idProduct}")
+		viewModel.removeFromInventory(inventoryItem)
+		adapter.deleteItem(inventoryItem.idProduct)
+	}
+
 	override fun onClickAddToListCancel(dialog: DialogFragment) {
 
 	}

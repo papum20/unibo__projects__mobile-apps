@@ -10,23 +10,18 @@ import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import java.time.LocalDateTime
+import kotlin.jvm.Throws
 
 class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
 
 	fun getAllProductsInInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
-		return repository.getAllInventoryWithAlerts()
+		return repository.getAllInventoryWithAlerts_value()
 	}
 
-	/*
-	fun insertProduct(product: EntityProduct) {
-		repository.insertProduct(product)
+	fun removeFromInventory(inventoryItem: EntityInventory) {
+		repository.deleteInventoryItem(inventoryItem)
 	}
-
-	fun deleteProduct(products: List<EntityProduct>) {
-		repository.deleteProducts(products)
-	}
-	 */
 
 	/* Insert */
 
@@ -73,6 +68,7 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
 class InventoryViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(InventoryViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

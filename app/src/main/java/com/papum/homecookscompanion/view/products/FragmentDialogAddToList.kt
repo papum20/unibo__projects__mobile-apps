@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import kotlin.jvm.Throws
 
 class FragmentDialogAddToList(
 	private val listener: IListenerDialog
@@ -24,6 +25,7 @@ class FragmentDialogAddToList(
 	}
 
 
+	@Throws(IllegalStateException::class)
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
 		val productId = arguments?.getLong(KEY_PRODUCT)

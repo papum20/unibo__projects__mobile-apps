@@ -100,7 +100,7 @@ class FragmentMapShopsForProduct :
 		/* observers */
 
 		viewModel.getProductFromId(productId).observe(viewLifecycleOwner) { product ->
-			tvProduct.text = product.toString()
+			tvProduct.text = product?.toString()
 		}
 
 		// all shops in radius

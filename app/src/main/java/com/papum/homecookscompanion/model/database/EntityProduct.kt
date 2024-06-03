@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.model.database
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
@@ -13,7 +14,10 @@ import kotlinx.parcelize.Parcelize
  * Brand can also be last name of hierarchy.
  */
 @Entity(
-	tableName = "Product"
+	tableName = "Product",
+	indices = [
+		Index(value = ["name", "parent"], unique = true)
+	]
 )
 @Parcelize
 data class EntityProduct(
@@ -21,7 +25,7 @@ data class EntityProduct(
 	var id: Long,
 
 	var name: String,		// product name
-	var parent: String?,	// parent name
+	var parent: String,		// parent name
 
 	var isEdible: Boolean,	// edible if it's a food or a recipe
 	var isRecipe: Boolean

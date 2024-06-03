@@ -7,6 +7,7 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
+import kotlin.jvm.Throws
 
 class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 
@@ -31,14 +32,11 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 		fats: Float?,
 		proteins: Float?,
 	) {
-		val newParent =
-			if (parent != "") parent
-			else null
 		return repository.insertProductAndNutrients(
 			EntityProduct(
 				id = 0,
 				name = name,
-				parent = newParent,
+				parent = parent,
 				isEdible = true,
 				isRecipe = false
 			),
@@ -57,6 +55,7 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 
 class EditFoodViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(EditFoodViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

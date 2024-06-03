@@ -9,6 +9,7 @@ import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProduct
 import java.time.LocalDateTime
+import kotlin.jvm.Throws
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
@@ -19,7 +20,7 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 		return repository.getAllProducts()
 	}
 
-	fun getProduct_fromId(id: Long): LiveData<EntityProduct> {
+	fun getProduct_fromId(id: Long): LiveData<EntityProduct?> {
 		return repository.getProduct(id)
 	}
 
@@ -57,6 +58,7 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
 class ProductsViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(ProductsViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

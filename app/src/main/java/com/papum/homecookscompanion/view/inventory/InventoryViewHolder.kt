@@ -11,8 +11,8 @@ import com.papum.homecookscompanion.R
 
 class InventoryViewHolder(itemView: View) : ViewHolder(itemView) {
 
-	val layoutCollapse: LinearLayout = itemView.findViewById(R.id.recycler_card_inventory_layout_collapse)
-	val layoutInfo: ConstraintLayout = itemView.findViewById(R.id.recycler_card_inventory_layout_info)
+	val layoutCollapse: ConstraintLayout	= itemView.findViewById(R.id.recycler_card_inventory_layout_collapse)
+	val layoutInfo: ConstraintLayout		= itemView.findViewById(R.id.recycler_card_inventory_layout_info)
 
 	val etAlert:EditText	= itemView.findViewById(R.id.recycler_card_inventory_alert)
 	val tvMeasure:TextView	= itemView.findViewById(R.id.recycler_card_inventory_measure)
@@ -23,4 +23,5 @@ class InventoryViewHolder(itemView: View) : ViewHolder(itemView) {
 	val btnExpand: Button		= itemView.findViewById(R.id.recycler_card_inventory_btn_expand)
 	val btnAddList: Button		= itemView.findViewById(R.id.recycler_card_inventory_btn_addList)
 	val btnAddMeals: Button		= itemView.findViewById(R.id.recycler_card_inventory_btn_addMeals)
+	val btnRemove: Button		= itemView.findViewById(R.id.recycler_card_inventory_btn_remove)
 }

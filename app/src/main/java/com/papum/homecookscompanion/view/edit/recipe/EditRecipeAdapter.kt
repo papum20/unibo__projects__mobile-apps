@@ -19,7 +19,7 @@ import com.papum.homecookscompanion.model.database.EntityProductAndList
 
 
 class EditRecipeAdapter(
-	var items: List<EntityProductAndIngredientOf>,
+	var items: MutableList<EntityProductAndIngredientOf>,
 	private val uiListener: IListenerEditRecipeItem
 ) : Adapter<EditRecipeViewHolder>() {
 
@@ -42,6 +42,8 @@ class EditRecipeAdapter(
 
     override fun onBindViewHolder(holder: EditRecipeViewHolder, position: Int) {
 
+		Log.d(TAG, "on bind ${holder.adapterPosition}")
+
 		holder.etQuantity.setText(
 			items.getOrNull(position)?.ingredientItem?.quantityMin.toString()
 		)
@@ -49,7 +51,7 @@ class EditRecipeAdapter(
 		holder.etQuantity.tag = items[position]
 
 		holder.tvName.text = items[position].let {
-			it.product.parent?.let { p ->
+			it.product.parent.let { p ->
 				"${it.product.name}, $p"
 			} ?: it.product.name
 		}
@@ -104,22 +106,11 @@ class EditRecipeAdapter(
 
 	@SuppressLint("NotifyDataSetChanged")	// all fetched products change
 	fun updateItems(newItems: List<EntityProductAndIngredientOf>) {
-		items = newItems
+		items = newItems.toMutableList()
 		notifyDataSetChanged()
-		Log.d(TAG, "new products: $itemCount")
+		Log.d(TAG, "update all, new products: $itemCount")
 	}
 
-	fun addItem(newItem: EntityProductAndIngredientOf) {
-		notifyItemInserted(items.size - 1)
-	}
-
-	fun deleteItem(position: Int) {
-		notifyItemRemoved(position)
-	}
-
-	fun updateIngredient(position: Int) {
-		notifyItemChanged(position)
-	}
 
 
 	companion object {

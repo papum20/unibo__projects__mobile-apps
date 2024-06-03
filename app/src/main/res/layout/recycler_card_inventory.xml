@@ -89,49 +89,68 @@ android:layout_height="wrap_content">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recycler_card_inventory_layout_collapse"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/recycler_card_inventory_img_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_alert"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
-                app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_quantity"
-                app:srcCompat="@android:drawable/ic_popup_reminder" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/recycler_card_inventory_alert"
                 android:layout_width="@dimen/quantity_width"
                 android:layout_height="@dimen/et_height"
+                android:layout_margin="@dimen/et_margin"
                 android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|numberSigned"
-                android:layout_margin="@dimen/et_margin"
                 android:text="@string/product_format_quantity"
                 android:textAlignment="center"
-                />
+                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+                app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_addList"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_img_alert"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/recycler_card_inventory_btn_addList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/products_btn_addToList"
-                android:visibility="visible" />
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+                app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_addMeals"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_alert"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
 
             <Button
                 android:id="@+id/recycler_card_inventory_btn_addMeals"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/products_btn_addToMeals" />
-        </LinearLayout>
+                android:text="@string/products_btn_addToMeals"
+                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_btn_addList"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/recycler_card_inventory_btn_remove"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_remove"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_img_alert" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

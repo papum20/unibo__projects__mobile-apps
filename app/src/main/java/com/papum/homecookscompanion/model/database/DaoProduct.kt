@@ -23,7 +23,21 @@ interface DaoProduct {
         FROM Product
 		WHERE id = :id
     """)
-	fun getOneFromId(id: String): LiveData<EntityProduct>
+	fun getOneFromId(id: String): LiveData<EntityProduct?>
+
+	@Query("""
+        SELECT *
+        FROM Product
+		WHERE id = :id
+    """)
+	fun getOneFromId_value(id: String): EntityProduct?
+
+	@Query("""
+        SELECT *
+        FROM Product
+		WHERE name = :name AND parent = :parent
+    """)
+	fun getOneFromName_value(name: String, parent: String): EntityProduct?
 
 
 	/**

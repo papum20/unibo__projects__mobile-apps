@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.database.EntityProduct
+import kotlin.jvm.Throws
 
 class ProductResultViewModel : ViewModel() {
 
@@ -36,6 +37,7 @@ class ProductResultViewModel : ViewModel() {
  */
 class ProductResultViewModelFactory(private val activity: FragmentActivity) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(ProductResultViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

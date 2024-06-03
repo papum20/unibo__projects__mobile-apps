@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityProductAndList
+import kotlin.jvm.Throws
 
 class ListViewModel(private val repository: Repository) : ViewModel() {
 
@@ -37,6 +38,7 @@ class ListViewModel(private val repository: Repository) : ViewModel() {
 
 class ListViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(ListViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

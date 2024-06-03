@@ -10,6 +10,7 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityShopsWithPurchases
 import org.osmdroid.util.GeoPoint
+import kotlin.jvm.Throws
 import kotlin.math.roundToInt
 
 class MapShopsForProductViewModel(private val repository: Repository) : ViewModel() {
@@ -20,7 +21,7 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
 
 	/* Query */
 
-	fun getProductFromId(productId: Long): LiveData<EntityProduct> =
+	fun getProductFromId(productId: Long): LiveData<EntityProduct?> =
 		repository.getProduct(productId)
 
 	/**
@@ -144,6 +145,7 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
  */
 class MapShopsForProductViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(MapShopsForProductViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

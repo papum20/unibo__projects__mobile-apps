@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -25,7 +26,7 @@ class InventoryAdapter(
 	private val uiListener: InventoryAdapter.IListenerInventoryItem
 ) : Adapter<InventoryViewHolder>() {
 
-	private var layoutExpanded: LinearLayout? = null	// item's layout currently expanded (max 1 is expanded at a time)
+	private var layoutExpanded: ConstraintLayout? = null	// item's layout currently expanded (max 1 is expanded at a time)
 
 
 	interface IListenerInventoryItem {
@@ -33,6 +34,7 @@ class InventoryAdapter(
 		fun onClickInfo(product: EntityProduct)
 		fun onClickAddToList(product: EntityProduct)
 		fun onClickAddToMeals(product: EntityProduct)
+		fun onClickRemove(inventoryItem: EntityInventory)
 
 		/**
 		 * `id` used to create entry if not existing in inventory.
@@ -59,17 +61,14 @@ class InventoryAdapter(
 		// associate item with EditText
 		holder.etAlert.tag = items?.get(position)
 
-		holder.etQuantity.setText(items?.get(position)?.inventoryItem?.let { item ->
-				item.quantity.toString()
-			}?: "0.00"
+		holder.etQuantity.setText(
+			items?.get(position)?.inventoryItem?.quantity?.toString() ?: "0.00"
 		)
 		// associate item with EditText
 		holder.etQuantity.tag = items?.get(position)
 
 		holder.tvName.text = items?.get(position)?.let {
-			it.product.parent?.let { p ->
-				"${it.product.name}, $p"
-			} ?: it.product.name
+			"${it.product.name}, ${it.product.parent}"
 		} ?: "[wrong entry]"
 
 		holder.tvType.text = items?.get(position)?.let {
@@ -78,17 +77,18 @@ class InventoryAdapter(
 			else							"(Food)"
 		} ?: "(UnknownType)"
 
+
 		/* UI listeners */
 
 		// expand/collapse
 		holder.btnExpand.setOnClickListener { _ ->
 			when(holder.layoutCollapse.visibility) {
-				View.GONE	-> {
+				View.GONE -> {
 					layoutExpanded?.visibility			= View.GONE
 					holder.layoutCollapse.visibility	= View.VISIBLE
 					layoutExpanded = holder.layoutCollapse
 				}
-				else		-> holder.layoutCollapse.visibility = View.GONE
+				else -> holder.layoutCollapse.visibility = View.GONE
 			}
 		}
 
@@ -159,6 +159,13 @@ class InventoryAdapter(
 			}
 		}
 
+		// remove
+		holder.btnRemove.setOnClickListener { _ ->
+			items?.get(holder.adapterPosition)?.let { item ->
+				item.inventoryItem?.let { uiListener.onClickRemove(it) }
+			}
+		}
+
     }
 
     override fun getItemCount(): Int {
@@ -206,24 +213,18 @@ class InventoryAdapter(
 		}
 	}
 
-	/*
-    fun addItem(newItem: ListItem) {
-        items?.let {
-			it.add(newItem)
-			notifyItemInserted(it.size - 1)
-		}
-    }
 
-    fun deleteItem(name:String) {
+    fun deleteItem(id: Long) {
 		items?.let {
 			val index = it.indexOf(
-				it.find { item -> item.name == name }
+				it.find { item -> item.inventoryItem?.idProduct == id }
 			)
-			it.removeAt(index)
-			notifyItemRemoved(index)
+			if(index != -1) {
+				it.removeAt(index)
+				notifyItemRemoved(index)
+			}
 		}
 	}
-	*/
 
 
 	companion object {

@@ -15,6 +15,7 @@ import com.papum.homecookscompanion.model.database.EntityProductRecognized
 import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
 import java.time.LocalDateTime
+import kotlin.jvm.Throws
 
 class ScanViewModel(val repository: Repository) : ViewModel() {
 
@@ -74,6 +75,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	/**
 	 * @throws IllegalArgumentException if no shop is selected
 	 */
+	@Throws(IllegalArgumentException::class)
 	fun addAllAssociated_toInventoryAndPurchases() {
 		if(selectedShop.value == null)
 			throw IllegalArgumentException("No shop selected")
@@ -118,6 +120,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	/**
 	 * @throws IllegalArgumentException if no shop is selected
 	 */
+	@Throws(IllegalArgumentException::class)
 	 fun saveAllRecognizedTextAssociations() {
 		selectedShop.value?.let { shop ->
 			receiptItems.value?.let { items ->
@@ -359,6 +362,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 
 class ScanViewModelFactory(private val repository: Repository) : ViewModelProvider.Factory {
 
+	@Throws(IllegalArgumentException::class)
 	override fun <T : ViewModel> create(modelClass: Class<T>): T {
 		if(modelClass.isAssignableFrom(ScanViewModel::class.java)) {
 			//@Suppress("UNCHECKED_CAST")

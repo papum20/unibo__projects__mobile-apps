@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 		EntityPurchases::class,
 		EntityShops::class,
    ],
-	version = 28,
+	version = 30,
 	exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -72,8 +72,12 @@ abstract class Database : RoomDatabase() {
 					val daoProductRecognized	= INSTANCE?.daoProductRecognized()
 					val daoShops				= INSTANCE?.daoShops()
 
+					val idEdible	= daoProductAndNutrients?.insertProductAndNutrients(
+							EntityProduct(0, "edible", "",		isEdible=true, isRecipe=false),
+							EntityNutrients(0, null, null, null, null)
+						)
 					val idPlant		= daoProductAndNutrients?.insertProductAndNutrients(
-							EntityProduct(0, "plant", null,		isEdible=true, isRecipe=false),
+							EntityProduct(0, "plant", "edible",	isEdible=true, isRecipe=false),
 							EntityNutrients(0, null, null, null, null)
 						)
 					val idGarlic	= daoProductAndNutrients?.insertProductAndNutrients(
@@ -93,7 +97,7 @@ abstract class Database : RoomDatabase() {
 							EntityNutrients(0, null, null, null, null)
 						)
 					val idRecipe	= daoProductAndNutrients?.insertProductAndNutrients(
-							EntityProduct(0, "recipe", null,		isEdible=true, isRecipe=true),
+							EntityProduct(0, "recipe", "edible",	isEdible=true, isRecipe=true),
 							EntityNutrients(0, null, null, null, null)
 						)
 

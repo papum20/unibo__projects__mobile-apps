@@ -21,6 +21,15 @@ interface DaoProductAndIngredientOf {
 	@Transaction
 	fun getAllFromRecipeId(id: Long): LiveData<List<EntityProductAndIngredientOf>>
 
+	@Query("""
+        SELECT *
+        FROM Product
+        INNER JOIN IngredientOf ON Product.id = IngredientOf.idIngredient
+		WHERE idRecipe = :id
+    """)
+	@Transaction
+	fun getAllFromRecipeId_value(id: Long): List<EntityProductAndIngredientOf>
+
 	/* insert */
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,8 +42,9 @@ interface DaoProductAndIngredientOf {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertRecipeAndIngredients(recipe: EntityProduct, ingredientsList: List<EntityIngredientOf>): Long {
 		val id = _insertProduct(recipe)
-		ingredientsList.map { it.idRecipe = id }
-		_insertAllIngredients(ingredientsList)
+		_insertAllIngredients(
+			ingredientsList.map { it.apply {idRecipe = id} }
+		)
 		return id
 	}
 

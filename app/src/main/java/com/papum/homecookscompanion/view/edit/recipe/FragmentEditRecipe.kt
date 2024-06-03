@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,14 +25,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.model.database.EntityRecipeWithIngredientsAndNutrients
 import com.papum.homecookscompanion.utils.Const
 import com.papum.homecookscompanion.utils.files.FileFormatterRecipe
 import com.papum.homecookscompanion.view.products.ProductResultViewModel
 import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
-import java.io.BufferedReader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.InputStream
-import java.io.InputStreamReader
 
 
 class FragmentEditRecipe :
@@ -85,23 +87,25 @@ class FragmentEditRecipe :
 			)[EditRecipeViewModel::class.java]
 
 		/* view */
-		tvName			= view.findViewById<TextView>( R.id.fragment_edit_recipe_name)
-		tvParent		= view.findViewById<TextView>( R.id.fragment_edit_recipe_parent)
-		tvKcal			= view.findViewById<TextView>( R.id.nutrients_kcal)
-		tvCarbohydrates	= view.findViewById<TextView>( R.id.nutrients_carbohydrates)
-		tvFats			= view.findViewById<TextView>( R.id.nutrients_fats)
-		tvProteins		= view.findViewById<TextView>( R.id.nutrients_proteins)
-		tvWeightRecipe	= view.findViewById<TextView>( R.id.fragment_edit_recipe_weight)
-		tvWeightDisplay	= view.findViewById<TextView>( R.id.nutrients_quantity)
+		tvName			= view.findViewById(R.id.fragment_edit_recipe_name)
+		tvParent		= view.findViewById(R.id.fragment_edit_recipe_parent)
+		tvKcal			= view.findViewById(R.id.nutrients_kcal)
+		tvCarbohydrates	= view.findViewById(R.id.nutrients_carbohydrates)
+		tvFats			= view.findViewById(R.id.nutrients_fats)
+		tvProteins		= view.findViewById(R.id.nutrients_proteins)
+		tvWeightRecipe	= view.findViewById(R.id.fragment_edit_recipe_weight)
+		tvWeightDisplay	= view.findViewById(R.id.nutrients_quantity)
 
 
 		/* if it's editing a food (and not creating), setup */
 		if(recipeId != Const.ID_PRODUCT_NULL) {
 			viewModel.getRecipe_fromId(recipeId).observe(viewLifecycleOwner) { recipe ->
-				Log.d(TAG, "recipe to edit fetched, it's $recipe")
-				tvName?.text	= recipe.name
-				tvParent?.text	= recipe.parent
-				viewModel.initRecipe(recipe)
+				if(recipe != null) {
+					Log.d(TAG, "recipe to edit fetched, it's $recipe")
+					tvName?.text = recipe.name
+					tvParent?.text = recipe.parent
+					viewModel.initRecipe(recipe)
+				}
 			}
 		}
 
@@ -123,7 +127,9 @@ class FragmentEditRecipe :
 		}
 
 		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_share).setOnClickListener {
-			shareFile()
+			viewLifecycleOwner.lifecycleScope.launch {
+				shareFile()
+			}
 		}
 
 		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_save).setOnClickListener {
@@ -149,9 +155,15 @@ class FragmentEditRecipe :
 
 		// on ingredients fetched
 		viewModel.fetchIngredients().observe(viewLifecycleOwner) { ingredients ->
-			viewModel.initIngredients(ingredients.toMutableList())
-			adapter.updateItems(viewModel.getIngredients())
-			Log.d(TAG, "Updated ingredients with fetched ${ingredients.size} -> ${viewModel.getIngredients().size}")
+			if ( viewModel.initIngredients(ingredients.toMutableList()) ) {
+				Log.d(TAG, "fetched ingredients, new size: ${ingredients.size}")
+			}
+		}
+
+		// on ingredients fetched
+		viewModel.ingredients.observe(viewLifecycleOwner) { ingredients ->
+			adapter.updateItems(ingredients)
+			Log.d(TAG, "Updated ingredients, new size: ${ingredients.size}")
 		}
 
 		// on nutrients updated
@@ -172,12 +184,29 @@ class FragmentEditRecipe :
 			tvWeightDisplay?.text = weight.toString()
 		}
 
+		// on successful import
+		viewModel.importResult.observe(viewLifecycleOwner) { result ->
+			if(result != null) {
+				Log.d(TAG, "Import recipe successful: $result")
+				if (result == EditRecipeViewModel.Companion.ImportResult.SUCCESS)
+					showSuccessReadRecipe()
+				else if(result == EditRecipeViewModel.Companion.ImportResult.DUPLICATE)
+					showSuccessReadRecipeDuplicate()
+
+				adapter.updateItems(viewModel.getIngredients())
+
+				viewModel.getRecipe()?.let { importedRecipe ->
+					tvName?.text = importedRecipe.name
+					tvParent?.text = importedRecipe.parent
+				}
+			}
+		}
+
 		// on product selected
 		viewModel_selectProduct.selectedProduct.observe(viewLifecycleOwner) { selectedProduct ->
 			selectedProduct?.let {
-				val newIngredient = viewModel.addIngredient(it)
+				viewModel.addIngredient(it)
 				viewModel_selectProduct.reset()
-				adapter.addItem(newIngredient)
 			}
 		}
 
@@ -194,39 +223,23 @@ class FragmentEditRecipe :
 			return
 		}
 
-		val resolver = requireContext().contentResolver
-
-/*
-		val content = total.toString()
-
-		val externalFilesPath = File(requireContext().ex, getString(R.string.path_cache))
-		filesPath.mkdirs()
-
-		val tempFile = File(filesPath, "my_temp_file.json")
-		tempFile.createNewFile()
-		val uri = FileProvider.getUriForFile(
-			requireContext(),
-			getString(R.string.file_provider_authority),
-			tempFile
-		)
-
-		val file = File(requireContext().cacheDir, getString(R.string.path_cache))
-*/
-
-		val recipeWithIngredients = FileFormatterRecipe.readRecipe(resolver, uri)
-		if(recipeWithIngredients == null) {
+		val importedRecipe = FileFormatterRecipe.readRecipe( requireContext().contentResolver, uri )
+		if(importedRecipe == null) {
 			showErrorReadRecipe()
 			return
 		}
 
-		viewModel.importRecipe(recipeWithIngredients)
-		showSuccessReadRecipe()
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewModel.importRecipe(importedRecipe)
 
-		adapter.updateItems(viewModel.getIngredients())
-
-		tvName?.text	= recipeWithIngredients.recipe.name
-		tvParent?.text	= recipeWithIngredients.recipe.parent
-
+			viewModel.getRecipe()?.let { newRecipe ->
+				Log.d(TAG, "new vm recipe is ${newRecipe}")
+				viewModel.saveRecipe(newRecipe.name, newRecipe.parent)
+				navController.navigateUp()
+			} ?: run {
+				showErrorMissingRecipe()
+			}
+		}
 	}
 
 	/**
@@ -237,39 +250,50 @@ class FragmentEditRecipe :
 		launcherImportFile.launch(FileFormatterRecipe.MIME_TYPE)
 	}
 
-	private fun shareFile() {
+	private suspend fun shareFile() {
 
 		if(viewModel.getRecipe() == null) {
 			showErrorMissingRecipe()
 			return
 		}
 
+		val recipe = viewModel.getRecipe()!!
+
 		val filesPath = File(requireContext().cacheDir, getString(R.string.path_cache))
 		filesPath.mkdirs()
 
-		val tempFile = File(filesPath, "my_temp_file.json")
-		tempFile.createNewFile()
-		val uri = FileProvider.getUriForFile(
-			requireContext(),
-			getString(R.string.file_provider_authority),
-			tempFile
-		)
-		Log.d(TAG, "sharing file with uri $uri")
+		val tempFile = File(filesPath, FileFormatterRecipe.getFileName(recipe))
 
-		FileFormatterRecipe.writeRecipe(
-			viewModel.getRecipe()!!, viewModel.getIngredients(), tempFile)
+		withContext(Dispatchers.IO) {
 
-		// Set up an Intent to send back to apps that request a file
-		val resultIntent: Intent = Intent().apply {
-			action = Intent.ACTION_SEND
-			putExtra(Intent.EXTRA_STREAM, uri)
-			type = FileFormatterRecipe.MIME_TYPE
+			tempFile.createNewFile()
+			val uri = FileProvider.getUriForFile(
+				requireContext(),
+				getString(R.string.file_provider_authority),
+				tempFile
+			)
+			Log.d(TAG, "sharing file with uri $uri")
+
+			FileFormatterRecipe.writeRecipe(
+				tempFile, EntityRecipeWithIngredientsAndNutrients(
+					recipe, viewModel.getIngredients(), viewModel.fetchNutrients()
+				)
+			)
+
+			// Set up an Intent to send back to apps that request a file
+			val resultIntent: Intent = Intent().apply {
+				action = Intent.ACTION_SEND
+				putExtra(Intent.EXTRA_STREAM, uri)
+				type = FileFormatterRecipe.MIME_TYPE
+			}
+			// Grant temporary read permission to the content URI
+			resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+			val shareIntent =
+				Intent.createChooser(resultIntent, getString(R.string.intent_share_recipe))
+			startActivity(shareIntent)
 		}
-		// Grant temporary read permission to the content URI
-		resultIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-		val shareIntent = Intent.createChooser(resultIntent, getString(R.string.intent_share_recipe))
-		startActivity(shareIntent)
 	}
 
 
@@ -283,7 +307,7 @@ class FragmentEditRecipe :
 
 	/* display */
 
-	fun showErrorMissingFile() {
+	private fun showErrorMissingFile() {
 		Log.e(TAG, "file wasn't picked")
 		Toast.makeText(context, "ERROR: File wasn't picked", Toast.LENGTH_LONG)
 			.show()
@@ -293,21 +317,28 @@ class FragmentEditRecipe :
 		Toast.makeText(activity, "ERROR: Missing ingredients", Toast.LENGTH_LONG).show()
 	}
 
-	fun showErrorMissingRecipe() {
+	private fun showErrorMissingRecipe() {
 		Log.e(TAG, "viewModel.recipe is null")
-		Toast.makeText(activity, "INTERNAL ERROR, try to restart the app", Toast.LENGTH_LONG)
+		Toast.makeText(activity, "ERROR: Missing recipe, please create and save one first", Toast.LENGTH_LONG)
 			.show()
 	}
 
-	fun showErrorReadRecipe() {
+	private fun showErrorReadRecipe() {
 		Log.e(TAG, "error in reading file")
 		Toast.makeText(activity, "ERROR: Couldn't read recipe from file", Toast.LENGTH_LONG)
 			.show()
 	}
 
-	fun showSuccessReadRecipe() {
+	private fun showSuccessReadRecipeDuplicate() {
+		Log.i(TAG, "Recipe parsed successfully, but had to change name to avoid conflict")
+		Toast.makeText(activity,
+			"Recipe added with a new name, as it's already used",
+			Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showSuccessReadRecipe() {
 		Log.i(TAG, "Recipe parsed successfully")
-		Toast.makeText(activity, "Recipe read successfully!", Toast.LENGTH_SHORT)
+		Toast.makeText(activity, "Recipe read successfully!", Toast.LENGTH_LONG)
 			.show()
 	}
 
@@ -321,13 +352,10 @@ class FragmentEditRecipe :
 
 	override fun onClickRemove(id: Long, position: Int) {
 		viewModel.removeIngredient(id)
-		adapter.deleteItem(position)
 	}
 
 	override fun onSetQuantity(id: Long, quantity: Float, position: Int) {
-		viewModel.updateIngredientQuantity(id, quantity)?.let { newItem ->
-			adapter.updateIngredient(position)
-		}
+		viewModel.updateIngredientQuantity(id, quantity)
 	}
 
 

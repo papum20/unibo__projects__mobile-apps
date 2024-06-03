@@ -20,6 +20,7 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.view.dialogs.FragmentDialogPickerDate
 import com.papum.homecookscompanion.view.dialogs.FragmentDialogPickerTime
 import java.time.LocalDateTime
+import kotlin.jvm.Throws
 
 class FragmentDialogAddToMeals(
 	private val listener: IListenerDialog
@@ -40,6 +41,7 @@ class FragmentDialogAddToMeals(
 	}
 
 
+	@Throws(IllegalStateException::class)
 	override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
 		val productId = arguments?.getLong(KEY_PRODUCT)
