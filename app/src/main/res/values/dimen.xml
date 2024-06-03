@@ -27,6 +27,8 @@
     <dimen name="tv_margin">4dp</dimen>
     <dimen name="tv_padding">3dp</dimen>
 
+    <dimen name="card_margin_v">1dp</dimen>
+
     <!-- dimensions -->
     <dimen name="et_height">50dp</dimen>
 

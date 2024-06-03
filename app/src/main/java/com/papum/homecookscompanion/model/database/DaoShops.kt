@@ -15,6 +15,9 @@ interface DaoShops
 	@Query("SELECT * FROM Shops ")
 	fun getAll(): LiveData<List<EntityShops>>
 
+	@Query("SELECT * FROM Shops ")
+	fun getAll_value(): List<EntityShops>
+
 	@Query("SELECT * FROM Shops WHERE brand LIKE '%'||:pattern||'%'")
 	@Transaction
 	fun getAllMatches_onBrand(pattern: String): LiveData<List<EntityShops>>

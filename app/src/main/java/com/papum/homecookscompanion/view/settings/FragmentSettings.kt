@@ -15,12 +15,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import com.papum.homecookscompanion.R
+import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 
 
@@ -32,9 +33,14 @@ import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 
+	private val viewModel: SettingsViewModel by viewModels {
+		SettingsViewModelFactory(
+			Repository(requireActivity().application)
+		)
+	}
+
 	/* geolocation */
 	private lateinit var geofencingClient: GeofencingClient
-	private val geofenceList: MutableList<Geofence> = mutableListOf()
 
 
 	override fun onCreateView(
@@ -48,6 +54,8 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		viewModel.loadShops()
 
 		/* geolocation */
 		geofencingClient = LocationServices.getGeofencingClient(requireActivity())
@@ -81,7 +89,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 					coarsePermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
 				}
 				.setNegativeButton(getString(R.string.btn_cancel)) { dialog, which ->
-					showToastAborted()
+					showErrorPermissionAborted()
 				}
 
 
@@ -111,7 +119,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 					finePermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 				}
 				.setNegativeButton(getString(R.string.btn_cancel)) { dialog, which ->
-					showToastAborted()
+					showErrorPermissionAborted()
 				}
 
 
@@ -141,7 +149,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 					backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 				}
 				.setNegativeButton(getString(R.string.btn_cancel)) { dialog, which ->
-					showToastAborted()
+					showErrorPermissionAborted()
 				}
 
 
@@ -153,12 +161,6 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 	}
 
-	fun showToastAborted() {
-		Log.d(TAG_PERMISSION, "Aborted: Permission not granted")
-		Toast.makeText(context, "Aborted: Permission not granted", Toast.LENGTH_SHORT)
-			.show()
-	}
-
 
 	/* geolocation */
 
@@ -167,6 +169,12 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 	 */
 	private fun registerGeofences() {
 
+		val geofencesList = viewModel.getGeofencesList()
+		if(geofencesList == null) {
+			showErrorMissingShops()
+			return
+		}
+
 		val pendingIntent: PendingIntent by lazy {
 			val intent = Intent(requireContext(), BroadcastReceiverGeofence::class.java)
 			// We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
@@ -174,21 +182,9 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 			PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 
-		geofenceList.add(
-			Geofence.Builder()
-				.setRequestId(GEOFENCE_ID)
-				.setCircularRegion(
-					BOLOGNA_POINT.latitude,
-					BOLOGNA_POINT.longitude,
-					GEOFENCE_RADIUS_METERS
-				)
-				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
-				.build()
-		)
-
 		val geofencingRequest = GeofencingRequest.Builder().apply {
 			setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-			addGeofences(geofenceList)
+			addGeofences(geofencesList)
 		}.build()
 
 		if (ActivityCompat.checkSelfPermission(
@@ -196,24 +192,17 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 				Manifest.permission.ACCESS_BACKGROUND_LOCATION
 			) != PackageManager.PERMISSION_GRANTED
 		) {
-			Log.e(TAG_GEOFENCES, "Missing background permission")
-			Toast.makeText(context, "Aborted: Missing background permission", Toast.LENGTH_SHORT)
-				.show()
+			showErrorPermissionBackground()
 			return
 		}
 
 		geofencingClient.addGeofences(geofencingRequest, pendingIntent).run {
 			addOnSuccessListener {
 				/* IF THIS FAILS GO TO Settings | Security & location | Location | Mode and set "high accuracy" */
-				Log.i(TAG_GEOFENCES, "Geofences were added")
-				Log.d(TAG_GEOFENCES, "geofences added: ${geofencingRequest.geofences}")
-				Toast.makeText(context, "Success: Geofences were added", Toast.LENGTH_SHORT)
-					.show()
+				showSuccessGeofenncesAdded()
 			}
 			addOnFailureListener {
-				Log.e(TAG_GEOFENCES, "Failed to add geofences")
-				Toast.makeText(context, "Aborted: Failed to add geofences", Toast.LENGTH_SHORT)
-					.show()
+				showErrorAddingGeofences()
 			}
 		}
 
@@ -242,10 +231,10 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		ActivityResultContracts.RequestPermission()
 	) { isGranted ->
 		if (isGranted) {
-			Log.d(TAG_PERMISSION,"granted coarse location")
+			Log.d(TAG,"granted coarse location")
 			check_and_showDialogAskFineLocation()
 		} else {
-			Log.d(TAG_PERMISSION,"not granted coarse location")
+			Log.d(TAG,"not granted coarse location")
 		}
 	}
 
@@ -253,10 +242,10 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		ActivityResultContracts.RequestPermission()
 	) { isGranted ->
 		if (isGranted) {
-			Log.d(TAG_PERMISSION,"granted fine location")
+			Log.d(TAG,"granted fine location")
 			check_and_showDialogAskBackgroundLocation()
 		} else {
-			Log.d(TAG_PERMISSION,"not granted fine location")
+			Log.d(TAG,"not granted fine location")
 		}
 	}
 
@@ -264,11 +253,42 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		ActivityResultContracts.RequestPermission()
 	) { isGranted ->
 		if (isGranted) {
-			Log.d(TAG_PERMISSION,"granted background location")
+			Log.d(TAG,"granted background location")
 			registerGeofences()
 		} else {
-			Log.d(TAG_PERMISSION,"not granted background location")
+			Log.d(TAG,"not granted background location")
 		}
+	}
+
+
+	/* display */
+
+
+
+	private fun showErrorAddingGeofences() {
+		Log.e(TAG, "Failed to add geofences")
+		Toast.makeText(context, "Aborted: Failed to add geofences", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showErrorMissingShops() {
+		Log.d(TAG, "viewModel.shops is null")
+		Toast.makeText(context, "ERROR: please retry later", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showErrorPermissionAborted() {
+		Log.d(TAG, "Aborted: Permission not granted")
+		Toast.makeText(context, "Aborted: Permission not granted", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showErrorPermissionBackground() {
+		Log.e(TAG, "Missing background permission")
+		Toast.makeText(context, "Aborted: Missing background permission", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showSuccessGeofenncesAdded() {
+		Log.d(TAG, "geofences added")
+		Toast.makeText(context, "Success: Geofences were added", Toast.LENGTH_SHORT)
+			.show()
 	}
 
 
@@ -277,14 +297,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 	companion object {
 
-		private const val TAG_GEOFENCES		= "GEOFENCES"
-		private const val TAG_PERMISSION	= "PERMISSIONS"
-
-		private val BOLOGNA_POINT					= LatLng(44.496781,11.356387)
-		private const val GEOFENCE_ID				= "in_shop"
-		private const val GEOFENCE_RADIUS_METERS	= 150f
-		private const val GEOFENCE_DURATION_MILLIS	= 1000000L
-
+		private const val TAG = "GEOFENCES"
 
 		/**
          * Use this factory method to create a new instance of

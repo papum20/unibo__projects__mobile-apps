@@ -156,6 +156,12 @@ view:
 sructure:
 *	editRecipe: structure view-viewModel got messed up, viewModel gives methods to init but view must remember to init its fields (if someone else reads the code he won't understand)
 
+notifications:
+*	on enter shop, notification could display shop name
+*	geofence notification should open app on inventory
+
+misc:
+*	able to receive intents, to open recipe JSONs directly from file
 
 ## notes (report)
 

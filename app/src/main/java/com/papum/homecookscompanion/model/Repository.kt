@@ -178,6 +178,10 @@ class Repository(app: Context) {
 		return daoShops.getAll()
 	}
 
+	fun getAllShops_value(): List<EntityShops> {
+		return daoShops.getAll_value()
+	}
+
 	/**
 	 * Match shops on a substring of brand name.
  	 */

@@ -34,7 +34,6 @@ class BroadcastReceiverGeofence : BroadcastReceiver() {
 
 		// Get the transition type.
 		val geofenceTransition = geofencingEvent.geofenceTransition
-		var messageToDisplay = "Something weird happened with the transition types"
 
 		// Test that the reported transition was of interest.
 		if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
@@ -42,13 +41,10 @@ class BroadcastReceiverGeofence : BroadcastReceiver() {
 
 			// Get the geofences that were triggered. A single event can trigger multiple geofences.
 			val triggeringGeofences = geofencingEvent.triggeringGeofences
-
-			// Get the transition details as a String.
-			messageToDisplay = triggeringGeofences.toString()
+			Log.d(TAG_GEOFENCE, "Triggering geofences; ${triggeringGeofences.toString()}" )
 
 			// Send notification and log the transition details.
-			sendNotification(context, "Location detected", "you entered a shop. Tap to open the app. $messageToDisplay")
-			Log.i(TAG_GEOFENCE, messageToDisplay)
+			sendNotification(context, "You entered a shop", "Tap to check your inventory!")
 
 		} else {
 			// Log the error.
@@ -92,6 +88,7 @@ class BroadcastReceiverGeofence : BroadcastReceiver() {
 
 
 	companion object {
+
 		private const val TAG_GEOFENCE		= "GEOFENCE"
 		private const val TAG_NOTIFICATIONS	= "GEOFENCE"
 	}
