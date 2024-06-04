@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -15,6 +14,7 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
 import com.papum.homecookscompanion.MainActivity
+import com.papum.homecookscompanion.utils.Const
 
 class BroadcastReceiverGeofence : BroadcastReceiver() {
 
@@ -68,7 +68,7 @@ class BroadcastReceiverGeofence : BroadcastReceiver() {
 			context, 0, intent, PendingIntent.FLAG_IMMUTABLE
 		)
 
-		val builder = NotificationCompat.Builder(context, MainActivity.CHANNEL_ID)
+		val builder = NotificationCompat.Builder(context, Const.ID_CHANNEL_GEOFENCES)
 			.setSmallIcon(android.R.drawable.ic_menu_mylocation)
 			.setContentTitle(title)
 			.setContentText(text)

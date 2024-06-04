@@ -16,10 +16,13 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.utils.Const
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 
 /**
@@ -34,14 +37,13 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		val repository = Repository(applicationContext)
 
 		val products_lowStock = repository.getInventory_lowStock()
-		val names = products_lowStock.subList(0, PRODUCTS_NAMES_IN_NOTIFICATION_COUNT)
-			.map { product -> product.product.name }
-			.joinToString(",",
-				postfix = (
-						if(products_lowStock.size > PRODUCTS_NAMES_IN_NOTIFICATION_COUNT) "..."
-						else ""
-					)
+		val names = products_lowStock.subList(0, PRODUCTS_NAMES_IN_NOTIFICATION_COUNT).joinToString(
+			",",
+			postfix = (
+				if (products_lowStock.size > PRODUCTS_NAMES_IN_NOTIFICATION_COUNT) "..."
+				else ""
 			)
+		) { product -> product.product.name }
 
 		sendNotification("${products_lowStock.size} products in low stock!", names)
 
@@ -58,7 +60,7 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 			applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE
 		)
 
-		val builder = NotificationCompat.Builder(applicationContext, MainActivity.CHANNEL_ID)
+		val builder = NotificationCompat.Builder(applicationContext, Const.ID_CHANNEL_STOCK)
 			.setSmallIcon(android.R.drawable.ic_popup_reminder)
 			.setContentTitle(title)
 			.setContentText(text)
@@ -84,7 +86,8 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		/* worker params */
 		private const val PRODUCTS_NAMES_IN_NOTIFICATION_COUNT = 3
 
-		private const val PERIODIC_INTERVAL_HOURS: Long = 24
+		private val PERIODIC_INTERVAL_HOURS	= max(1L, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS)	//24
+		private val FLEX_INTERVAL_MINUTES	= max(5L, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS)		//30
 
 		// hour of day when worker stock should be executed periodically
 		private const val REPEATING_HOUR: Int = 8
@@ -99,14 +102,20 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 
 			val delayTo_nextTime = LocalDateTime.now().let { now ->
 				now.with(LocalTime.MIN)
-					.withHour(REPEATING_HOUR)
-					.plusDays(1)
+
+					.withMinute(0)
+					.plusHours(1)
+			//		.withHour(REPEATING_HOUR)
+			//		.plusDays(1)
 					.toInstant(ZoneOffset.UTC)
 					.toEpochMilli() - now.toInstant(ZoneOffset.UTC).toEpochMilli()
 			}
 
 			// Check stocks once a day, for that day
-			return PeriodicWorkRequestBuilder<WorkerStock>(PERIODIC_INTERVAL_HOURS, TimeUnit.HOURS)
+			return PeriodicWorkRequestBuilder<WorkerStock>(
+				PERIODIC_INTERVAL_HOURS,	TimeUnit.HOURS,
+				FLEX_INTERVAL_MINUTES,		TimeUnit.MINUTES
+			)
 				.setConstraints(createConstraints())
 				.setInitialDelay( delayTo_nextTime, TimeUnit.MILLISECONDS )
 				.build()

@@ -9,6 +9,7 @@ import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
+import com.papum.homecookscompanion.utils.errors.InsufficientQuantityException
 import java.time.LocalDateTime
 import kotlin.jvm.Throws
 
@@ -16,7 +17,7 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 
 
 	fun getAllProductsInInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
-		return repository.getAllInventoryWithAlerts_value()
+		return repository.getAllInventoryWithAlerts()
 	}
 
 	fun removeFromInventory(inventoryItem: EntityInventory) {
@@ -37,7 +38,12 @@ class InventoryViewModel(private val repository: Repository) : ViewModel() {
 		repository.addListItem(EntityList(id, quantity))
 	}
 
+	@Throws(InsufficientQuantityException::class)
 	fun addToMealsFromInventory(inventoryItem: EntityInventory, date: LocalDateTime, quantity: Float) {
+
+		if (inventoryItem.quantity < quantity) {
+			throw InsufficientQuantityException("insufficient quantity in inventory")
+		}
 		repository.insertMealFromInventory(
 			EntityMeals(0, inventoryItem.idProduct, date, quantity),
 			inventoryItem

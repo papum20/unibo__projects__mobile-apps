@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,14 +15,17 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
+import com.papum.homecookscompanion.MainActivity
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.utils.Const
 import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 
 
@@ -73,7 +77,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 	/**
 	 * Ask for coarse location, or go to next step (fine).
 	 */
-	fun check_and_showDialogAskCoarseLocation() {
+	private fun check_and_showDialogAskCoarseLocation() {
 
 		if( ActivityCompat.checkSelfPermission(
 			requireContext(),
@@ -86,7 +90,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 				.setMessage("We need coarse location before asking for background location.")
 				.setTitle("Grant access to coarse location")
 				.setPositiveButton(getString(R.string.btn_enable)) { dialog, which ->
-					coarsePermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+					locationCoarsePermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
 				}
 				.setNegativeButton(getString(R.string.btn_cancel)) { dialog, which ->
 					showErrorPermissionAborted()
@@ -104,7 +108,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 	/**
 	 * Ask for fine location, or go to next step (background).
 	 */
-	fun check_and_showDialogAskFineLocation() {
+	private fun check_and_showDialogAskFineLocation() {
 
 		if( ActivityCompat.checkSelfPermission(
 			requireContext(),
@@ -116,7 +120,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 				.setMessage("We need fine location before asking for background location.")
 				.setTitle("Grant access to and fine location")
 				.setPositiveButton(getString(R.string.btn_enable)) { dialog, which ->
-					finePermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+					locationFinePermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 				}
 				.setNegativeButton(getString(R.string.btn_cancel)) { dialog, which ->
 					showErrorPermissionAborted()
@@ -134,7 +138,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 	/**
 	 * Ask for background location, or go to next step (register geofences).
 	 */
-	fun check_and_showDialogAskBackgroundLocation() {
+	private fun check_and_showDialogAskBackgroundLocation() {
 
 		if( ActivityCompat.checkSelfPermission(
 				requireContext(),
@@ -146,7 +150,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 				.setMessage("We need background location to send you notifications when you are in a shop.")
 				.setTitle("Grant access to background location.")
 				.setPositiveButton(getString(R.string.btn_enable)) { dialog, which ->
-					backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+					locationBackgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
 				}
 				.setNegativeButton(getString(R.string.btn_cancel)) { dialog, which ->
 					showErrorPermissionAborted()
@@ -159,6 +163,41 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 			registerGeofences()
 		}
 
+	}
+
+	/**
+	 * TODO: check or remove this
+	 */
+	private fun check_and_showDialogAskNotifications() {
+		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+			ActivityCompat.checkSelfPermission(
+				requireActivity(),
+				Manifest.permission.POST_NOTIFICATIONS
+			) != PackageManager.PERMISSION_GRANTED) {
+			// POST_NOTIFICATIONS permission exists and is needed from api 33 TIRAMISU
+			notificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+			return
+		}
+
+
+		val intent: Intent = Intent(requireActivity(), MainActivity::class.java).apply {
+			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+			putExtra("caller", "notification")
+		}
+		val pendingIntent: PendingIntent = PendingIntent.getActivity(
+			requireActivity(), 0, intent, PendingIntent.FLAG_IMMUTABLE
+		)
+
+		val builder = NotificationCompat.Builder(requireActivity(), Const.ID_CHANNEL_STOCK)
+			.setSmallIcon(androidx.core.R.drawable.notification_bg)
+			.setContentTitle("Remember that you will die!")
+			.setContentText("Let me explain a number of reasons why this is the case, blah, blah, blah...")
+			.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+			.setAutoCancel(true)
+		builder.addAction(androidx.core.R.drawable.notification_action_background, "PRESS ME", pendingIntent)
+
+		NotificationManagerCompat.from(requireActivity())
+			.notify(MainActivity.NOTIFICATION_ID_STOCK, builder.build())
 	}
 
 
@@ -199,7 +238,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		geofencingClient.addGeofences(geofencingRequest, pendingIntent).run {
 			addOnSuccessListener {
 				/* IF THIS FAILS GO TO Settings | Security & location | Location | Mode and set "high accuracy" */
-				showSuccessGeofenncesAdded()
+				showSuccessGeofencesAdded(geofencesList.size)
 			}
 			addOnFailureListener {
 				showErrorAddingGeofences()
@@ -227,7 +266,18 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 
 	/* Permissions launchers */
 
-	private val coarsePermissionLauncher = registerForActivityResult(
+	private val locationBackgroundPermissionLauncher = registerForActivityResult(
+		ActivityResultContracts.RequestPermission()
+	) { isGranted ->
+		if (isGranted) {
+			Log.d(TAG,"granted background location")
+			registerGeofences()
+		} else {
+			Log.d(TAG,"not granted background location")
+		}
+	}
+
+	private val locationCoarsePermissionLauncher = registerForActivityResult(
 		ActivityResultContracts.RequestPermission()
 	) { isGranted ->
 		if (isGranted) {
@@ -238,7 +288,7 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		}
 	}
 
-	private val finePermissionLauncher = registerForActivityResult(
+	private val locationFinePermissionLauncher = registerForActivityResult(
 		ActivityResultContracts.RequestPermission()
 	) { isGranted ->
 		if (isGranted) {
@@ -249,14 +299,14 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		}
 	}
 
-	private val backgroundPermissionLauncher = registerForActivityResult(
+	private val notificationsPermissionLauncher = registerForActivityResult(
 		ActivityResultContracts.RequestPermission()
-	) { isGranted ->
+	) { isGranted: Boolean ->
 		if (isGranted) {
-			Log.d(TAG,"granted background location")
-			registerGeofences()
+			Log.d(TAG,"granted notifications")
+			check_and_showDialogAskNotifications()
 		} else {
-			Log.d(TAG,"not granted background location")
+			Log.d(TAG,"not granted notifications")
 		}
 	}
 
@@ -285,9 +335,9 @@ class FragmentSettings : Fragment(R.layout.page_fragment_settings) {
 		Toast.makeText(context, "Aborted: Missing background permission", Toast.LENGTH_LONG)
 			.show()
 	}
-	private fun showSuccessGeofenncesAdded() {
-		Log.d(TAG, "geofences added")
-		Toast.makeText(context, "Success: Geofences were added", Toast.LENGTH_SHORT)
+	private fun showSuccessGeofencesAdded(addedNumber: Int) {
+		Log.d(TAG, "Geofences added for $addedNumber shops")
+		Toast.makeText(context, "Added geofences for $addedNumber shops!", Toast.LENGTH_SHORT)
 			.show()
 	}
 

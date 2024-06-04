@@ -3,6 +3,7 @@ package com.papum.homecookscompanion.model
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.database.DaoAlerts
 import com.papum.homecookscompanion.model.database.DaoIngredientOf
 import com.papum.homecookscompanion.model.database.DaoInventory
@@ -125,13 +126,24 @@ class Repository(app: Context) {
 	/**
 	 * Get all products either in inventory or alerts (not necessarily in both).
 	 */
-	fun getAllInventoryWithAlerts_value(): LiveData<List<EntityProductAndInventoryWithAlerts>> {
+	fun getAllInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> =
+		daoProductAndInventoryWithAlerts.getAllInAlerts().switchMap { inAlerts ->
+			daoProductAndInventoryWithAlerts.getAllInInventory().switchMap { inInventory ->
+				MutableLiveData(
+					inAlerts + inInventory.filter { product ->
+						inAlerts.find { alert ->
+							alert.alert?.idProduct == product.inventoryItem?.idProduct
+						} == null
+					}
+				)
 
+		}
+		/*
 		val products = MutableLiveData<List<EntityProductAndInventoryWithAlerts>>()
 		Database.databaseWriteExecutor.execute {
-			val alerts = daoProductAndInventoryWithAlerts.getAllInAlerts()
+			val alerts = daoProductAndInventoryWithAlerts.getAllInAlerts_value()
 			products.postValue(
-				alerts + daoProductAndInventoryWithAlerts.getAllInInventory().filter { product ->
+				alerts + daoProductAndInventoryWithAlerts.getAllInInventory_value().filter { product ->
 					alerts.find { alert ->
 						alert.alert?.idProduct == product.inventoryItem?.idProduct
 					} == null
@@ -139,11 +151,12 @@ class Repository(app: Context) {
 			)
 		}
 		return products
+		 */
 	}
 
 
 	fun getInventory_lowStock(): List<EntityProductAndInventoryWithAlerts> {
-		return daoProductAndInventoryWithAlerts.getAllLowStocks()
+		return daoProductAndInventoryWithAlerts.getAllLowStocks_value()
 	}
 
 	fun getAllList(): LiveData<List<EntityProductAndList>> {

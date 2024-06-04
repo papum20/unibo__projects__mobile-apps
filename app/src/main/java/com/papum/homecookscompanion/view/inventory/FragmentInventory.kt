@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +19,7 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.utils.Const
 import com.papum.homecookscompanion.view.products.FragmentDialogAddToList
 import com.papum.homecookscompanion.view.products.FragmentDialogAddToMeals
 import java.time.LocalDateTime
@@ -63,38 +65,47 @@ class FragmentInventory :
 		recycler.adapter = adapter
 		recycler.layoutManager = LinearLayoutManager(context)
 
-		viewModel.getAllProductsInInventoryWithAlerts().observe(viewLifecycleOwner) { products ->
-			adapter.updateItems(products.toMutableList())
-		}
-
 		/* UI listeners */
 
 		view.findViewById<Button>(R.id.inventory_recycler_btn_scan).setOnClickListener {
 			navController.navigate(
 				FragmentInventoryDirections.actionFragmentInventoryToFragmentScanReceipt()
 			)
-
-			/*
-			context?.let { context ->
-				val textRecognizer = TextRecognizer.Builder(context).build()
-
-				val imageFrame = Frame.Builder()
-					.setBitmap(bitmap) // your image bitmap
-					.build()
-
-				var imageText = ""
-
-
-				val textBlocks = textRecognizer.detect(imageFrame)
-
-				for (i in 0 until textBlocks.size()) {
-					val textBlock = textBlocks[textBlocks.keyAt(i)]
-					imageText = textBlock.value // return string
-				}
-			}
-			 */
 		}
 
+		/* Observers */
+
+		viewModel.getAllProductsInInventoryWithAlerts().observe(viewLifecycleOwner) { products ->
+			adapter.updateItems(products.toMutableList())
+		}
+
+	}
+
+
+	/* Display */
+
+	private fun showErrorAddToMeals(productId: Long, quantity: Float) {
+		Log.e(TAG, "Error adding quantity ${Const.getQuantityString(quantity)} of product $productId to meals")
+		Toast.makeText(context,
+			"Error: insufficient quantity; add more in inventory or add from Products instead",
+			Toast.LENGTH_LONG
+		)
+			.show()
+	}
+	private fun showSuccessAddToAlerts(productId: Long, quantity: Float) {
+		Log.d(TAG, "Added quantity ${Const.getQuantityString(quantity)} of product $productId to alerts")
+		Toast.makeText(context, "Added alert for ${Const.getQuantityString(quantity)}", Toast.LENGTH_SHORT)
+			.show()
+	}
+	private fun showSuccessAddToList(productId: Long, quantity: Float) {
+		Log.d(TAG, "Added quantity ${Const.getQuantityString(quantity)} of product $productId to list")
+		Toast.makeText(context, "Added ${Const.getQuantityString(quantity)} to list", Toast.LENGTH_SHORT)
+			.show()
+	}
+	private fun showSuccessAddToMeals(productId: Long, quantity: Float) {
+		Log.d(TAG, "Added quantity ${Const.getQuantityString(quantity)} of product $productId to meals")
+		Toast.makeText(context, "Added ${Const.getQuantityString(quantity)} to meals", Toast.LENGTH_SHORT)
+			.show()
 	}
 
 
@@ -127,28 +138,33 @@ class FragmentInventory :
 		val _alert = alert ?: viewModel.addAlert(id, quantity)
 		val newAlert = viewModel.updateAlert(_alert, quantity)
 		adapter.updateItemAlert(newAlert)
+		showSuccessAddToAlerts(id, quantity)
 	}
 
 	/* FragmentDialogAddTo*.IListenerDialog */
 
 	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
-		Log.d(TAG,  "Adding to list: id $productId to ${quantity}")
+		showSuccessAddToList(productId, quantity)
 		viewModel.addToList(productId, quantity)
 	}
 
 	override fun onClickAddToMeals(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
-		Log.d(TAG,  "Adding to meals: id $productId to ${quantity}")
+		Log.d(TAG, "Adding to meals: id $productId to ${Const.getQuantityString(quantity)}")
 		adapter.items?.find { item -> item.product.id == productId }?.let { item ->
 			item.inventoryItem?.let { inventoryItem ->
 				val _inventoryItem = inventoryItem.apply {
-						this.quantity?.let { quantityCurrent ->
+						this.quantity.let { quantityCurrent ->
 							this.quantity = quantityCurrent - quantity
 						}
 					}
-				viewModel.addToMealsFromInventory(_inventoryItem, date, quantity)
-				adapter.updateItemInInventory(_inventoryItem)
-
-			} ?: Log.e(TAG, "Tried to add to a meal a productt in inventory.")
+				try {
+					viewModel.addToMealsFromInventory(_inventoryItem, date, quantity)
+					adapter.updateItemInInventory(_inventoryItem)
+					showSuccessAddToMeals(productId, quantity)
+				} catch (e: Exception) {
+					showErrorAddToMeals(productId, quantity)
+				}
+			} ?: showErrorAddToMeals(productId, quantity)
 		}
 	}
 
@@ -170,7 +186,7 @@ class FragmentInventory :
 
 	companion object {
 
-		private const val TAG = "INVENTORY"
+		private const val TAG = "Inventory"
 
         @JvmStatic
         fun newInstance() =

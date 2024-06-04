@@ -1,9 +1,8 @@
 package com.papum.homecookscompanion.model.database
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 
@@ -12,14 +11,6 @@ interface DaoProductAndInventoryWithAlerts {
 
 	/* query */
 
-	/**
-	 * Get all products either in inventory or alerts (not necessarily in both).
-	 */
-	@Transaction
-	fun getAll(): List<EntityProductAndInventoryWithAlerts> {
-		return getAllInAlerts() + getAllInInventory()
-	}
-
 	@Query("""
         SELECT *
 		FROM Alerts
@@ -27,7 +18,7 @@ interface DaoProductAndInventoryWithAlerts {
         LEFT JOIN Product ON Alerts.idProduct = Product.id
     """)
 	@Transaction
-	fun getAllInAlerts(): List<EntityProductAndInventoryWithAlerts>
+	fun getAllInAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>>
 
 	@Query("""
         SELECT *
@@ -36,7 +27,7 @@ interface DaoProductAndInventoryWithAlerts {
         LEFT JOIN Product ON Inventory.idProduct = Product.id
     """)
 	@Transaction
-	fun getAllInInventory(): List<EntityProductAndInventoryWithAlerts>
+	fun getAllInInventory(): LiveData<List<EntityProductAndInventoryWithAlerts>>
 
 	/**
 	 * Get all items with stock lower than alerts.
@@ -49,6 +40,6 @@ interface DaoProductAndInventoryWithAlerts {
 		WHERE Inventory.quantity IS NULL OR Inventory.quantity < Alerts.quantity
     """)
 	@Transaction
-	fun getAllLowStocks(): List<EntityProductAndInventoryWithAlerts>
+	fun getAllLowStocks_value(): List<EntityProductAndInventoryWithAlerts>
 
 }

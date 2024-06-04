@@ -13,8 +13,10 @@
     <string name="path_cache">cache</string>
 
     <!-- services -->
-    <string name="channel_name">Homecook\'s companion</string>
-    <string name="channel_description">All notifications from Homecook\'s companion.</string>
+    <string name="channel_stock_name">Homecook\'s Companion stock</string>
+    <string name="channel_stock_description">Periodic notifications for low stocks.</string>
+    <string name="channel_geofences_name">Homecook\'s Companion geofences</string>
+    <string name="channel_geofences_description">Notifications on entering a shop.</string>
 
     <string name="bottom_nav_label_meals">Meals</string>
     <string name="bottom_nav_label_list">Shopping list</string>
