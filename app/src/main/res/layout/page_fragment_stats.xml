@@ -8,16 +8,50 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/stats_title"
+        android:layout_margin="@dimen/h2_margin"
+        android:text="@string/stats_title"
+        android:textSize="@dimen/h2_fontSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bottom_nav_label_stats"
-        android:textColor="#43a047"
-        android:textSize="40sp"
-        android:textStyle="italic|bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@id/stats_duration_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/stats_duration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/tv_margin"
+        android:text="@string/stats_duration"
+        android:textSize="@dimen/tv_fontSize"
+        app:layout_constraintBottom_toTopOf="@id/stats_nutrients"
+        app:layout_constraintEnd_toStartOf="@id/stats_duration_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stats_title"
+        />
+
+    <Spinner
+        android:id="@+id/stats_duration_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/tv_margin"
+        app:layout_constraintBottom_toTopOf="@id/stats_nutrients"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/stats_duration_label"
+        app:layout_constraintTop_toBottomOf="@id/stats_title"
+        />
+
+    <include layout="@layout/nutrients"
+        android:id="@+id/stats_nutrients"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stats_duration_label"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

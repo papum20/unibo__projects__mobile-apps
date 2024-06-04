@@ -121,6 +121,9 @@
     <string name="settings_header_notifications">Notifications</string>
     <string name="settings_geofence">get notified when you\'re in a shop</string>
 
+    <string name="stats_title">Nutrients summary</string>
+    <string name="stats_duration">Displaying for</string>
+
     <string name="intent_share_recipe">Share this recipe\'s file with…</string>
 
 

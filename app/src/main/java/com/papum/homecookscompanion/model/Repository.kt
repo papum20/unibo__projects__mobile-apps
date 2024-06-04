@@ -180,11 +180,11 @@ class Repository(app: Context) {
 	/**
 	 * `month` from 1.
 	 */
-	fun getAllProductsWithMealsAndNutrients_fromDate(date: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
+	fun getMealsAndNutrients(date: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
 		// set localDateTime to time=0 -> convert to instant (nanosecs from epoch) -> convert to millisecs
 		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
 		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
-		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval_withNutrients(startOfDay, endOfDay)
+		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval(startOfDay, endOfDay)
 	}
 
 	fun getAllShops(): LiveData<List<EntityShops>> {
@@ -202,7 +202,7 @@ class Repository(app: Context) {
 		return daoShops.getAllMatches_onBrand(brandSubstr)
 	}
 
-	fun getPurchases_fromProduct(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
+	fun getPurchases_forProduct(productId: Long): LiveData<List<EntityShopsWithPurchases>> {
 		return daoShopsWithPurchases.getAllFromProductId(productId)
 	}
 
