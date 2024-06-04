@@ -56,12 +56,12 @@ class ListAdapter(
 			}?: "0.00"
 		)
 		// associate item with EditText
-		holder.etQuantity.tag = items.get(position)
+		holder.etQuantity.tag = items[position]
 
 		holder.tvName.text = items.getOrNull(position)?.let {
-			it.product.parent?.let { p ->
+			it.product.parent.let { p ->
 				"${it.product.name}, $p"
-			} ?: it.product.name
+			}
 		} ?: "[wrong entry]"
 
 		holder.tvType.text = items.getOrNull(position)?.let {

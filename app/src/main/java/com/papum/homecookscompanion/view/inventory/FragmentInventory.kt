@@ -149,19 +149,15 @@ class FragmentInventory :
 	}
 
 	override fun onClickAddToMeals(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
-		Log.d(TAG, "Adding to meals: id $productId to ${Const.getQuantityString(quantity)}")
+		Log.d(TAG, "Adding to meals: ${Const.getQuantityString(quantity)} of id $productId")
 		adapter.items?.find { item -> item.product.id == productId }?.let { item ->
 			item.inventoryItem?.let { inventoryItem ->
-				val _inventoryItem = inventoryItem.apply {
-						this.quantity.let { quantityCurrent ->
-							this.quantity = quantityCurrent - quantity
-						}
-					}
+
 				try {
-					viewModel.addToMealsFromInventory(_inventoryItem, date, quantity)
-					adapter.updateItemInInventory(_inventoryItem)
+					viewModel.addToMealsFromInventory(inventoryItem, date, quantity)
 					showSuccessAddToMeals(productId, quantity)
 				} catch (e: Exception) {
+					Log.e(TAG, "Error in adding: ${e.message}")
 					showErrorAddToMeals(productId, quantity)
 				}
 			} ?: showErrorAddToMeals(productId, quantity)

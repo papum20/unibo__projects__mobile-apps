@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
+import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
 import java.time.LocalDateTime
 
 
@@ -21,9 +22,19 @@ import java.time.LocalDateTime
  * Use the [FragmentMeals.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentMeals : Fragment(R.layout.page_fragment_meals) {
+class FragmentMeals :
+	Fragment(R.layout.page_fragment_meals),
+	MealsAdapter.IListenerMealsItem
+{
+
+	val viewModel: MealsViewModel by viewModels {
+		MealsViewModelFactory(
+			Repository(requireActivity().application)
+		)
+	}
 
 	private lateinit var viewDate: TextView			// displays viewModel.currentlySetDate
+
 
 
     override fun onCreateView(
@@ -37,43 +48,32 @@ class FragmentMeals : Fragment(R.layout.page_fragment_meals) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val vm: MealsViewModel by viewModels {
-			MealsViewModelFactory(
-				Repository(requireActivity().application)
-			)
-		}
-
 		/* recycler view */
-		val adapter = MealsAdapter(listOf())
+		val adapter = MealsAdapter(listOf(), this, context)
 
         val recycler = view.findViewById<RecyclerView>(R.id.meals_recycler_view)
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(context)
 
 		/* selected day and buttons to change it */
-		vm.currentlySetDate.value = LocalDateTime.now()
+		viewModel.currentlySetDate.value = LocalDateTime.now()
 		viewDate = view.findViewById(R.id.meals_date_text)
-		updateDisplayedDate(vm.currentlySetDate.value)
+		updateDisplayedDate(viewModel.currentlySetDate.value)
 
 		view.findViewById<Button>(R.id.meals_date_btn_left).setOnClickListener {
-			vm.currentlySetDate.value = vm.currentlySetDate.value?.minusDays(1)
-			updateDisplayedDate(vm.currentlySetDate.value)
+			viewModel.currentlySetDate.value = viewModel.currentlySetDate.value?.minusDays(1)
+			updateDisplayedDate(viewModel.currentlySetDate.value)
 		}
 		view.findViewById<Button>(R.id.meals_date_btn_right).setOnClickListener {
-			vm.currentlySetDate.value = vm.currentlySetDate.value?.plusDays(1)
-			updateDisplayedDate(vm.currentlySetDate.value)
+			viewModel.currentlySetDate.value = viewModel.currentlySetDate.value?.plusDays(1)
+			updateDisplayedDate(viewModel.currentlySetDate.value)
 		}
 
 		/* observe meals/products for the selected day */
-		vm.getAllProducts_fromDateSet()
-			.observe(viewLifecycleOwner) { newData ->
-				Log.d("MEALS_ACTIVITY_UPDATE", "products: ${newData.map { meal -> "${meal.product.name} ${meal.mealsItem.date} ${meal.mealsItem.quantity};" } }")
-				adapter.let { a ->
-					a.items = newData
-					a.notifyDataSetChanged()
-					//Log.d("MEALS_ACTIVITY_UPDATE", "${it.items}; ${it.itemCount}")
-					Log.d("MEALS_ACTIVITY_UPDATE", "products: ${a.itemCount}")
-				}
+		viewModel.getAllMealsWithNutrients()
+			.observe(viewLifecycleOwner) { mealsWithNutrients ->
+				Log.d(TAG, "new meals: ${mealsWithNutrients.size}")
+				adapter.updateAll(mealsWithNutrients)
 			}
 
     }
@@ -91,13 +91,18 @@ class FragmentMeals : Fragment(R.layout.page_fragment_meals) {
 	}
 
 
+	/* MealsAdapter.IListenerMealsItem */
+
+	override fun onSetQuantity(item: EntityProductAndMealsWithNutrients, quantity: Float) {
+		viewModel.updateQuantity(item.meal, quantity)
+	}
+
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         */
-        @JvmStatic
-        fun newInstance() =
-            FragmentMeals()
+
+		private const val TAG = "Meals"
+
     }
+
+
 }

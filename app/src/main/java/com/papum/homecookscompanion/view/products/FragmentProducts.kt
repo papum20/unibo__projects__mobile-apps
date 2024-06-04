@@ -128,17 +128,17 @@ class FragmentProducts :
 	/* FragmentDialogAddTo*.IListenerDialog */
 
 	override fun onClickAddToInventory(dialog: DialogFragment, productId: Long, quantity: Float) {
-		Log.d("PRODUCTS_ADD_INVENTORY",  "id $productId to ${quantity}")
+		Log.d("PRODUCTS_ADD_INVENTORY",  "id $productId to ${Const.getQuantityString(quantity)}")
 		viewModel.addToInventory(productId, quantity)
 	}
 
 	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
-		Log.d("PRODUCTS_ADD_LIST",  "id $productId to ${quantity}")
+		Log.d("PRODUCTS_ADD_LIST",  "id $productId to ${Const.getQuantityString(quantity)}")
 		viewModel.addToList(productId, quantity)
 	}
 
 	override fun onClickAddToMeals(dialog: DialogFragment, productId: Long, date: LocalDateTime, quantity: Float) {
-		Log.d("PRODUCTS_ADD_MEALS",  "id $productId to ${quantity}")
+		Log.d("PRODUCTS_ADD_MEALS",  "id $productId to ${Const.getQuantityString(quantity)}")
 		viewModel.addToMeals(productId, date, quantity)
 	}
 

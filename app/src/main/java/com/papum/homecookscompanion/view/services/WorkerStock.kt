@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -86,8 +87,8 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		/* worker params */
 		private const val PRODUCTS_NAMES_IN_NOTIFICATION_COUNT = 3
 
-		private val PERIODIC_INTERVAL_HOURS	= max(1L, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS)	//24
-		private val FLEX_INTERVAL_MINUTES	= max(5L, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS)		//30
+		private val PERIODIC_INTERVAL_HOURS	= max(1L, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000 / 60 / 60)	//24
+		private val FLEX_INTERVAL_MINUTES	= max(5L, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS / 1000 / 60)	//30
 
 		// hour of day when worker stock should be executed periodically
 		private const val REPEATING_HOUR: Int = 8
@@ -101,12 +102,10 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		fun createWorkRequest() : PeriodicWorkRequest {
 
 			val delayTo_nextTime = LocalDateTime.now().let { now ->
-				now.with(LocalTime.MIN)
-
-					.withMinute(0)
-					.plusHours(1)
-			//		.withHour(REPEATING_HOUR)
-			//		.plusDays(1)
+				now
+					.with(LocalTime.MIN)
+					.withHour(REPEATING_HOUR)
+					.plusDays(1)
 					.toInstant(ZoneOffset.UTC)
 					.toEpochMilli() - now.toInstant(ZoneOffset.UTC).toEpochMilli()
 			}

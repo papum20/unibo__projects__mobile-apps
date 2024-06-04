@@ -10,7 +10,7 @@ class EntityProductAndMealsWithNutrients(
 		parentColumn = "id",
 		entityColumn = "idEdible"
 	)
-	val meals: List<EntityMeals>,
+	val meal: EntityMeals,
 	@Relation(
 		parentColumn = "id",
 		entityColumn = "idProduct"

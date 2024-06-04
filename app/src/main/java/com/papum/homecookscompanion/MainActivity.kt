@@ -91,11 +91,17 @@ class MainActivity : AppCompatActivity() {
 		/* Services (workers) */
 
 		// Enqueue the Stock work request to WorkManager
-		WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-			WORKER_STOCK_NAME,
-			ExistingPeriodicWorkPolicy.UPDATE,
-			WorkerStock.createWorkRequest()
-		)
+		val workManager = WorkManager.getInstance(this).apply {
+			enqueueUniquePeriodicWork(
+				WORKER_STOCK_NAME,
+				ExistingPeriodicWorkPolicy.UPDATE,
+				WorkerStock.createWorkRequest()
+			)
+		}
+		workManager.getWorkInfosForUniqueWorkLiveData(WORKER_STOCK_NAME).observe(this) { info ->
+			Log.d(TAG, "Works info for $WORKER_STOCK_NAME (size ${info.size}):\n${info.joinToString(separator = "\n") { it.toString() }}")
+		}
+
 
 		Log.d(TAG,"Added work request to work manager for stocks")
 

@@ -1,17 +1,34 @@
 package com.papum.homecookscompanion.view.meals
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
-import com.papum.homecookscompanion.model.database.EntityProductAndMeals
+import com.papum.homecookscompanion.model.database.EntityList
+import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.model.database.EntityProductAndList
+import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
+import com.papum.homecookscompanion.utils.UtilProducts
+import com.papum.homecookscompanion.view.list.ListAdapter
 import java.time.LocalDateTime
 
 
-class MealsAdapter(var items:List<EntityProductAndMeals>?) : Adapter<MealsViewHolder>() {
+class MealsAdapter(
+	var items:List<EntityProductAndMealsWithNutrients>,
+	private val uiListener: IListenerMealsItem,
+	val context: Context?
+) : Adapter<MealsViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealsViewHolder {
+	interface IListenerMealsItem {
+		fun onSetQuantity(item: EntityProductAndMealsWithNutrients, quantity: Float)
+	}
+
+
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealsViewHolder {
         return MealsViewHolder(
             LayoutInflater.from(parent.context)
 				.inflate(R.layout.recycler_card_meals, parent, false)
@@ -19,46 +36,67 @@ class MealsAdapter(var items:List<EntityProductAndMeals>?) : Adapter<MealsViewHo
     }
 
     override fun onBindViewHolder(holder: MealsViewHolder, position: Int) {
-		Log.d("MEALS_VIEW_HOLDER", "${items}; ${position}")
 
-		items?.get(position)?.let { item ->
-			val localDate: LocalDateTime = item.mealsItem.date
+		items[position].let { item ->
+			val localDate: LocalDateTime = item.meal.date
 
-			holder.tvName.text = item.product.parent?.let { p ->
-					"${item.product.name}, $p"
-				} ?: item.product.name
+			holder.tvName.text = item.product.parent.let { p ->
+				"${item.product.name}, $p"
+			}
 			holder.tvType.text =
-				if(!item.product.isEdible)		"(NonEdible)"
-				else if(item.product.isRecipe)	"(Recipe)"
-				else							"(Food)"
-			holder.tvQuantity.text	= item.mealsItem.quantity.toString()
-			holder.tvTime.text		= holder.itemView.context.getString( R.string.product_format_time,
-				localDate.hour, localDate.minute )
+				if (!item.product.isEdible) "(NonEdible)"
+				else if (item.product.isRecipe) "(Recipe)"
+				else "(Food)"
+			holder.etQuantity.setText(item.meal.quantity.toString())
+			holder.tvTime.text = holder.itemView.context.getString(
+				R.string.product_format_time,
+				localDate.hour, localDate.minute
+			)
+
+			// associate item with EditText
+			holder.etQuantity.tag = items[position]
+
+			context?.let { context ->
+				holder.tvKcal.text = UtilProducts.getKcalShort(context, item.nutrients.kcal)
+				holder.tvCarb.text = UtilProducts.getCarbShort(context, item.nutrients.carbohydrates)
+				holder.tvFats.text = UtilProducts.getFatsShort(context, item.nutrients.fats)
+				holder.tvProt.text = UtilProducts.getProtShort(context, item.nutrients.proteins)
+			}
+
 		}
+
+
+		/* UI listeners */
+
+		// update product quantity for list
+		holder.etQuantity.setOnEditorActionListener { v, actionId, event ->
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				val item = v.tag as? EntityProductAndMealsWithNutrients
+				item?.let {
+					(v as EditText).text.toString().toFloatOrNull()?.let { quantity ->
+						uiListener.onSetQuantity(item, quantity)
+					}
+					// hide keyboard
+					val imm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+					imm.hideSoftInputFromWindow(v.windowToken, 0)
+				}
+				true
+			} else {
+				false
+			}
+		}
+
 
 	}
 
     override fun getItemCount(): Int {
-        return items?.size ?: 0
+        return items.size
     }
 
-	/*
-    fun addItem(newItem: ListItem) {
-        items?.let {
-			it.add(newItem)
-			notifyItemInserted(it.size - 1)
-		}
-    }
-
-    fun deleteItem(name:String) {
-		items?.let {
-			val index = it.indexOf(
-				it.find { item -> item.name == name }
-			)
-			it.removeAt(index)
-			notifyItemRemoved(index)
-		}
+	fun updateAll(items: List<EntityProductAndMealsWithNutrients>) {
+		this.items = items
+		notifyDataSetChanged()
 	}
-	*/
+
 
 }

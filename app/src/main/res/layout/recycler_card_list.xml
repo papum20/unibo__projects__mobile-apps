@@ -78,7 +78,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_list_btn_expand"
                 app:layout_constraintStart_toEndOf="@id/recycler_card_list_text"
-                app:layout_constraintTop_toTopOf="@id/recycler_card_list_measure" />
+                app:layout_constraintTop_toBottomOf="@id/recycler_card_list_measure" />
 
 
             <Button

@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.model.database.EntityProductAndMeals
+import com.papum.homecookscompanion.model.database.EntityMeals
+import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
+import com.papum.homecookscompanion.utils.errors.BadQuantityException
 import java.time.LocalDateTime
+import java.time.LocalTime
 import kotlin.jvm.Throws
 
 class MealsViewModel(private val repository: Repository) : ViewModel() {
@@ -15,34 +18,37 @@ class MealsViewModel(private val repository: Repository) : ViewModel() {
 	val currentlySetDate: MutableLiveData<LocalDateTime> = MutableLiveData(LocalDateTime.now()) 	// default to today
 
 
-	fun getAllProducts(): LiveData<List<EntityProductAndMeals>> {
-		return repository.getAllMeals()
-	}
+	/* queries */
 
 	/**
 	 * `month` from 1.
 	 */
-	fun getAllProducts_fromDate(date: LocalDateTime): LiveData<List<EntityProductAndMeals>> {
-		return repository.getMeals(date)
+	private fun _getAllMealsWithNutrients(date: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
+		return repository.getMealsAndNutrients(
+			date.with(LocalTime.MIN), date.with(LocalTime.MAX)
+		)
 	}
 
 	/**
 	 * Get all products for date `this.currentlySetDate`
 	 */
-	fun getAllProducts_fromDateSet(): LiveData<List<EntityProductAndMeals>> =
+	fun getAllMealsWithNutrients(): LiveData<List<EntityProductAndMealsWithNutrients>> =
 		currentlySetDate.switchMap { date ->
-			getAllProducts_fromDate(date)
+			_getAllMealsWithNutrients(date)
 		}
 
-	/*
-	fun insertProduct(product: EntityProduct) {
-		repository.insertProduct(product)
+
+	/* insert */
+
+	@Throws(BadQuantityException::class)
+	fun updateQuantity(meal: EntityMeals, newQuantity: Float) {
+
+		if(newQuantity < 0) {
+			throw BadQuantityException("Quantity cannot be negative")
+		}
+		repository.insertMealBackToInventory(meal, newQuantity)
 	}
 
-	fun deleteProduct(products: List<EntityProduct>) {
-		repository.deleteProducts(products)
-	}
-	 */
 
 }
 

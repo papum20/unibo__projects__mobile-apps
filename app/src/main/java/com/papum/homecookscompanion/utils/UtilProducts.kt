@@ -1,5 +1,7 @@
 package com.papum.homecookscompanion.utils
 
+import android.content.Context
+import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityIngredientOf
 import com.papum.homecookscompanion.model.database.EntityNutrients
 
@@ -42,6 +44,27 @@ object UtilProducts {
 		}
 
 	}
+
+
+	fun getKcalShort(context: Context, value: Float?): String =
+		value?.let {
+			context.getString(R.string.nutrients_placeholder_short_kcal, it)
+		} ?: context.getString(R.string.quantity_unavailable)
+
+	fun getCarbShort(context: Context, value: Float?): String =
+		value?.let {
+			context.getString(R.string.nutrients_placeholder_short_carb, it)
+		} ?: context.getString(R.string.quantity_unavailable)
+
+	fun getFatsShort(context: Context, value: Float?): String =
+		value?.let {
+			context.getString(R.string.nutrients_placeholder_short_fats, it)
+		} ?: context.getString(R.string.quantity_unavailable)
+
+	fun getProtShort(context: Context, value: Float?): String =
+		value?.let {
+			context.getString(R.string.nutrients_placeholder_short_prot, it)
+		} ?: context.getString(R.string.quantity_unavailable)
 
 
 }

@@ -43,9 +43,10 @@ import com.papum.homecookscompanion.model.database.EntityPurchases
 import com.papum.homecookscompanion.model.database.EntityShops
 import com.papum.homecookscompanion.model.database.EntityShopsWithPurchases
 import com.papum.homecookscompanion.utils.UtilProducts
+import com.papum.homecookscompanion.utils.errors.BadQuantityException
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.ZoneOffset
+import kotlin.jvm.Throws
 
 class Repository(app: Context) {
 
@@ -167,24 +168,11 @@ class Repository(app: Context) {
 			return daoProductAndMeals.getAll()
 	}
 
-	/**
-	 * `month` from 1.
-	 */
-	fun getMeals(date: LocalDateTime): LiveData<List<EntityProductAndMeals>> {
-		// set localDateTime to time=0 -> convert to instant (nanosecs from epoch) -> convert to millisecs
-		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
-		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
-		return daoProductAndMeals.getAllFromDateTimeInterval(startOfDay, endOfDay)
-	}
-
-	/**
-	 * `month` from 1.
-	 */
-	fun getMealsAndNutrients(date: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
-		// set localDateTime to time=0 -> convert to instant (nanosecs from epoch) -> convert to millisecs
-		val startOfDay	= date.with(LocalTime.MIN).toInstant(ZoneOffset.UTC).toEpochMilli()
-		val endOfDay	= date.with(LocalTime.MAX).toInstant(ZoneOffset.UTC).toEpochMilli()
-		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval(startOfDay, endOfDay)
+	fun getMealsAndNutrients(start: LocalDateTime, end: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
+		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval(
+			start.toInstant(ZoneOffset.UTC).toEpochMilli(),
+			end.toInstant(ZoneOffset.UTC).toEpochMilli()
+		)
 	}
 
 	fun getAllShops(): LiveData<List<EntityShops>> {
@@ -241,16 +229,6 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun addInventoryItem(inventoryProduct: EntityInventory): EntityInventory {
-		var newId: Long = inventoryProduct.idProduct
-		Database.databaseWriteExecutor.execute {
-			newId = daoInventory.insertOne(inventoryProduct)
-		}
-		return inventoryProduct.apply {
-			idProduct = newId
-		}
-	}
-
 	fun addListItem(listProduct: EntityList): EntityList {
 		var newId: Long = listProduct.idProduct
 		Database.databaseWriteExecutor.execute {
@@ -269,16 +247,46 @@ class Repository(app: Context) {
 	}
 
 	/**
+	 * (Re)insert quantity from meal to inventory.
+	 * Update quantity of meal (or delete from meals if quantity=0),
+	 * then (if didn't give error) add to inventory.
+	 * Update quantity to null if null.
+	 */
+	@Throws(BadQuantityException::class)
+	fun insertMealBackToInventory(meal: EntityMeals, newQuantity: Float) {
+
+		if(newQuantity >= meal.quantity)
+			throw BadQuantityException("New quantity must be lower than current quantity")
+
+		val oldQuantity	= meal.quantity
+		meal.quantity	= newQuantity
+
+		Database.databaseWriteExecutor.execute {
+			if(meal.quantity <= 0F) daoMeals.deleteOne(meal)
+			else daoMeals.updateOne(meal)
+
+			addInventoryItemQuantity(EntityInventory(
+				idProduct = meal.idEdible,
+				quantity =  oldQuantity - newQuantity
+			))
+		}
+	}
+
+	/**
 	 * Update quantity from inventory (or delete if quantity=0),
+	 * removing meal.quantity from inventory.quantity,
 	 * then (if didn't give error) add to meals.
 	 * Update quantity to null if null.
 	 */
-	fun insertMealFromInventory(mealsProduct: EntityMeals, inventoryProduct: EntityInventory) {
+	fun insertMealFromInventory(meal: EntityMeals, inventoryProduct: EntityInventory) {
 		Database.databaseWriteExecutor.execute {
-			if(inventoryProduct.quantity <= 0F) daoInventory.deleteOne(inventoryProduct)
-			else daoInventory.updateOne(inventoryProduct)
+			if(inventoryProduct.quantity - meal.quantity <= 0F)
+				daoInventory.deleteOne(inventoryProduct)
+			else daoInventory.updateOne(inventoryProduct.apply{
+				quantity -= meal.quantity
+			})
 
-			daoMeals.insertOne(mealsProduct)
+			daoMeals.insertOne(meal)
 		}
 	}
 
@@ -390,21 +398,22 @@ class Repository(app: Context) {
 	/**
 	 * Sum quantity if not null and already exists in inventory, otherwise add.
 	 */
-	fun addInventoryItemQuantity(inventoryItem: EntityInventory) {
+	fun addInventoryItemQuantity(inventoryItem: EntityInventory): EntityInventory {
+
+		val res: EntityInventory = inventoryItem
 		Database.databaseWriteExecutor.execute {
 			val fetchedItem = daoInventory.getOne_fromId(inventoryItem.idProduct)
 			if (fetchedItem == null) {
-				daoInventory.insertOne(inventoryItem)
+				val newId = daoInventory.insertOne(inventoryItem)
+				res.idProduct = newId
 			} else {
-				daoInventory.updateOne(
-					fetchedItem.apply {
-						quantity += inventoryItem.quantity
-					}
-				)
+				fetchedItem.quantity += inventoryItem.quantity
+				daoInventory.updateOne(fetchedItem)
 			}
-
 		}
+		return res
 	}
+
 	/**
 	 * Sum quantity if not null and already exists in inventory, otherwise add.
 	 */

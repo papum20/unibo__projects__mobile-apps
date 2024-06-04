@@ -31,4 +31,9 @@ class EntityNutrients(
 	var carbohydrates: Float?,
 	var fats: Float?,
 	var proteins: Float?,
-)
+) {
+
+	override fun toString(): String {
+		return "${kcal}kcal, ${carbohydrates}g carbs, ${fats}g fats, ${proteins}g proteins"
+	}
+}

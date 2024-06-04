@@ -42,10 +42,15 @@
     <string name="editFood_placeholder_name">(name)</string>
     <string name="editFood_placeholder_parent">(parent category)</string>
 
+    <string name="nutrients_format_value">%5.3f</string>
     <string name="nutrients_placeholder_carbohydrates">(carbohydrates)</string>
     <string name="nutrients_placeholder_fats">(fats)</string>
     <string name="nutrients_placeholder_kcal">(kcal)</string>
     <string name="nutrients_placeholder_proteins">(proteins)</string>
+    <string name="nutrients_placeholder_short_kcal">kcal:%5.1f</string>
+    <string name="nutrients_placeholder_short_carb">carb:%5.1f</string>
+    <string name="nutrients_placeholder_short_fats">fats:%5.1f</string>
+    <string name="nutrients_placeholder_short_prot">prot:%5.1f</string>
 
     <string name="product_format_date">%02d/%02d/%04d</string>
     <string name="product_format_time">%02d:%02d</string>
@@ -98,9 +103,9 @@
     <string name="nutrients_title">Nutrients</string>
     <string name="nutrients_quantity">For</string>
     <string name="nutrients_kcal">Kcal: </string>
-    <string name="nutrients_carbohydrates">Carbohydrates: </string>
-    <string name="nutrients_fats">Fats: </string>
-    <string name="nutrients_proteins">Proteins: </string>
+    <string name="nutrients_carbohydrates">Carbohydrates (g): </string>
+    <string name="nutrients_fats">Fats (g): </string>
+    <string name="nutrients_proteins">Proteins (g): </string>
 
     <string name="products_btn_addToList">+List</string>
     <string name="products_btn_addToInventory">+Inventory</string>
@@ -122,7 +127,7 @@
     <string name="settings_geofence">get notified when you\'re in a shop</string>
 
     <string name="stats_title">Nutrients summary</string>
-    <string name="stats_duration">Displaying for</string>
+    <string name="stats_duration">Daily average for</string>
 
     <string name="intent_share_recipe">Share this recipe\'s file with…</string>
 
@@ -153,6 +158,9 @@
     <!-- measures -->
     <string name="product_measure_price">€</string>
     <string name="product_placeholder_measure_quantity">g</string>
+
+    <!-- values -->
+    <string name="quantity_unavailable">(unavailable)</string>
 
     <!-- other texts -->
 
