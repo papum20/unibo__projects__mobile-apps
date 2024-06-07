@@ -44,8 +44,8 @@ class MealsAdapter(
 			UtilViewProduct.set(item.product, holder.tvName, holder.icon)
 
 			item.meal.date.let { date ->
-				holder.tvTime.text = context?.getString(R.string.product_format_date,
-					date.dayOfMonth, date.monthValue, date.year)
+				holder.tvTime.text = context?.getString(R.string.product_format_time,
+					date.hour, date.minute)
 			}
 			holder.etQuantity.setText(
 				context?.getString(R.string.product_format_quantity, item.meal.quantity) ?: "" )

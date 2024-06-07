@@ -130,6 +130,8 @@
     <string name="settings_header_notifications">Notifications</string>
     <string name="settings_geofence">get notified when you\'re in a shop</string>
 
+    <string name="shops_add">Add a shop:</string>
+
     <string name="stats_title">Nutrients summary</string>
     <string name="stats_duration">Daily average for</string>
 
@@ -175,18 +177,26 @@
     <string name="link_icon_flaticon_app">"https://www.flaticon.com/free-icons/cleaver - Cleaver icons created by Good Ware - Flaticon"</string>
 
     <string name="link_icon_flaticon_about">"https://www.flaticon.com/free-icons/info - Info icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_add">"https://www.flaticon.com/free-icons/plus - Plus icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_bell">"https://www.flaticon.com/free-icons/bell - Bell icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_confirm">"https://www.flaticon.com/free-icons/correct - Correct bin icons created by cah nggunung - Flaticon"</string>
+    <string name="link_icon_flaticon_cross">"https://www.flaticon.com/free-icons/cross - Cross bin icons created by cah nggunung - Flaticon"</string>
+    <string name="link_icon_flaticon_day_prev">"https://www.flaticon.com/free-icons/arrows - Arrows icons created by cah nggunung - Flaticon"</string>
     <string name="link_icon_flaticon_delete">"https://www.flaticon.com/free-icons/recycle-bin - Recycle bin icons created by cah nggunung - Flaticon"</string>
+    <string name="link_icon_flaticon_download">"https://www.flaticon.com/free-icons/download - Download bin icons created by cah nggunung - Flaticon"</string>
     <string name="link_icon_flaticon_expand_down">"https://www.flaticon.com/free-icons/down - Down icons created by ghufronagustian - Flaticon"</string>
     <string name="link_icon_flaticon_expand_up">"https://www.flaticon.com/free-icons/up - Up icons created by ghufronagustian - Flaticon"</string>
     <string name="link_icon_flaticon_food">"https://www.flaticon.com/free-icons/healthy-food - Healthy food icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_inventory">"https://www.flaticon.com/free-icons/fridge - Fridge icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_list">"https://www.flaticon.com/free-icons/to-do-list - To do list icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_map">"https://www.flaticon.com/free-icons/map - Map icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_meal">"https://www.flaticon.com/free-icons/plate - Plate icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_non_edible">"https://www.flaticon.com/free-icons/parcel - Parcel icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_pick_image">"https://www.flaticon.com/free-icons/add-image - Add image icons created by Freepik - Flaticon"</string>
     <string name="link_icon_flaticon_recipe">"https://www.flaticon.com/free-icons/salad - Salad icons created by Freepik - Flaticon"</string>
+    <string name="link_icon_flaticon_scan">"https://www.flaticon.com/free-icons/education - Education icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_settings">"https://www.flaticon.com/free-icons/settings - Settings icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_share">"https://www.flaticon.com/free-icons/share - Share icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_shop">"https://www.flaticon.com/free-icons/seller - Seller icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_stats">"https://www.flaticon.com/free-icons/pie-chart - Pie chart icons created by Good Ware - Flaticon"</string>
     <!-- other texts (unused?) -->

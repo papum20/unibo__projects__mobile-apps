@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -67,13 +66,13 @@ class FragmentStats :
 			view.findViewById<TextView>(R.id.nutrients_kcal).text = nutrients.kcal?.let {
 				getString(R.string.nutrients_format_value, it)
 			} ?: getString(R.string.quantity_unavailable)
-			view.findViewById<TextView>(R.id.nutrients_carbohydrates).text = nutrients.carbohydrates?.let {
+			view.findViewById<TextView>(R.id.nutrients_carb).text = nutrients.carbohydrates?.let {
 				getString(R.string.nutrients_format_value, it)
 			} ?: getString(R.string.quantity_unavailable)
 			view.findViewById<TextView>(R.id.nutrients_fats).text = nutrients.fats?.let {
 				getString(R.string.nutrients_format_value, it)
 			} ?: getString(R.string.quantity_unavailable)
-			view.findViewById<TextView>(R.id.nutrients_proteins).text = nutrients.proteins?.let {
+			view.findViewById<TextView>(R.id.nutrients_prot).text = nutrients.proteins?.let {
 				getString(R.string.nutrients_format_value, it)
 			} ?: getString(R.string.quantity_unavailable)
 		}

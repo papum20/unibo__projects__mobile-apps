@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,11 +61,11 @@ class FragmentMeals :
 		viewDate = view.findViewById(R.id.meals_date_text)
 		updateDisplayedDate(viewModel.currentlySetDate.value)
 
-		view.findViewById<Button>(R.id.meals_date_btn_left).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.meals_date_btn_left).setOnClickListener {
 			viewModel.currentlySetDate.value = viewModel.currentlySetDate.value?.minusDays(1)
 			updateDisplayedDate(viewModel.currentlySetDate.value)
 		}
-		view.findViewById<Button>(R.id.meals_date_btn_right).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.meals_date_btn_right).setOnClickListener {
 			viewModel.currentlySetDate.value = viewModel.currentlySetDate.value?.plusDays(1)
 			updateDisplayedDate(viewModel.currentlySetDate.value)
 		}

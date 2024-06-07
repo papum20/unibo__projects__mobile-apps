@@ -80,7 +80,7 @@
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_kcal"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_carbohydrates_text"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_carb_text"
         app:layout_constraintEnd_toStartOf="@id/nutrients_edit_kcal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nutrients_edit_quantity_text"
@@ -93,26 +93,26 @@
         android:hint="@string/nutrients_placeholder_kcal"
         android:inputType="number|numberDecimal|numberSigned"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_carbohydrates"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_carb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nutrients_edit_kcal_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_edit_quantity"
         />
 
     <TextView
-        android:id="@+id/nutrients_edit_carbohydrates_text"
+        android:id="@+id/nutrients_edit_carb_text"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_carbohydrates"
         android:textSize="@dimen/et_fontSize"
         app:layout_constraintBottom_toTopOf="@id/nutrients_edit_fats_text"
-        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_carbohydrates"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_carb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nutrients_edit_kcal_text"
         />
     <EditText
-        android:id="@+id/nutrients_edit_carbohydrates"
+        android:id="@+id/nutrients_edit_carb"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:ems="10"
@@ -121,7 +121,7 @@
         android:textSize="@dimen/et_fontSize" 
         app:layout_constraintBottom_toTopOf="@id/nutrients_edit_fats"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/nutrients_edit_carbohydrates_text"
+        app:layout_constraintStart_toEndOf="@id/nutrients_edit_carb_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_edit_kcal"
 		/>
 
@@ -132,10 +132,10 @@
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_fats"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_proteins_text"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_prot_text"
         app:layout_constraintEnd_toStartOf="@id/nutrients_edit_fats"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_carbohydrates_text"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_carb_text"
 		/>
     <EditText
         android:id="@+id/nutrients_edit_fats"
@@ -145,25 +145,25 @@
         android:hint="@string/nutrients_placeholder_fats"
         android:inputType="number|numberDecimal|numberSigned"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_proteins"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_prot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nutrients_edit_fats_text"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_carbohydrates"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_carb"
 		/>
 
     <TextView
-        android:id="@+id/nutrients_edit_proteins_text"
+        android:id="@+id/nutrients_edit_prot_text"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_proteins"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_proteins"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_prot"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_proteins_text"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_fats_text"
 		/>
     <EditText
-        android:id="@+id/nutrients_edit_proteins"
+        android:id="@+id/nutrients_edit_prot"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:ems="10"
@@ -171,8 +171,8 @@
         android:inputType="number|numberDecimal|numberSigned"
         android:textSize="@dimen/et_fontSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/nutrients_edit_proteins_text"
+        app:layout_constraintStart_toEndOf="@id/nutrients_edit_prot_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_edit_fats"		
-		/>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

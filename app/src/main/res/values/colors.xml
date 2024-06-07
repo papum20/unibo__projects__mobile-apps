@@ -7,9 +7,11 @@
     <color name="bottom_nav_item_text.inactive">#000000CD</color>
 
     <color name="btn_add_bg">#9933FF</color>
-    <color name="btn_confirm_bg">#9933FF</color>
     <color name="btn_collapse_bg">#EEEE3333</color>
-    <color name="btn_delete_bg">#EEEE3333</color>
+    <color name="btn_day">#36A6FF</color>
     <color name="btn_expand_bg">#99CC00CC</color>
+    <color name="btn_main_bg">#2C21CC</color>
+    <color name="btn_negative_bg">#EEED8021</color>
+    <color name="btn_positive_bg">#3AE641</color>
 
 </resources>

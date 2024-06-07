@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -107,11 +108,11 @@ class FragmentScanReceipt
 		recycler.layoutManager = LinearLayoutManager(context)
 
 		/* UI listeners */
-		view.findViewById<Button>(R.id.scan_btn_scan).setOnClickListener { _ ->
+		view.findViewById<ImageButton>(R.id.scan_btn_scan).setOnClickListener { _ ->
 			pickFileAndScan()
 		}
 
-		view.findViewById<Button>(R.id.scan_btn_confirm).setOnClickListener { _ ->
+		view.findViewById<ImageButton>(R.id.scan_btn_confirm).setOnClickListener { _ ->
 			if(viewModel.selectedShop.value == null) {
 				displayMissingShop()
 			} else if(viewModel.receiptItems.value == null) {

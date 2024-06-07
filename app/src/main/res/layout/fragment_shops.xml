@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,16 +10,41 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shops_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="00dp"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/shops_recycler_btn_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/shops_recycler_btn_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="@string/btn_add" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/shops_add_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/tv_padding"
+        android:text="@string/shops_add"
+        android:textSize="@dimen/tv_fontSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/shops_recycler_btn_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shops_recycler_view"
+        />
+
+    <ImageButton
+        android:id="@+id/shops_recycler_btn_add"
+        android:layout_width="@dimen/btn_main_size"
+        android:layout_height="@dimen/btn_main_size"
+        android:layout_marginHorizontal="@dimen/btn_margin"
+        android:src="@drawable/map_512"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/btn_main_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/shops_add_to"
+        app:layout_constraintTop_toBottomOf="@id/shops_recycler_view"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

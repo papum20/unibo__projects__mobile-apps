@@ -179,3 +179,4 @@ misc:
 *	settings -> dflt settings
 	*	+ check in mainactivity and launch if set
 	*	settings for notifications
+*	btn expand: switch icons

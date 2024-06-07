@@ -56,6 +56,7 @@
         app:layout_constraintEnd_toStartOf="@id/nutrients_measure"
         app:layout_constraintStart_toEndOf="@id/nutrients_quantity_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_quantity_text"
         />
     <TextView
         android:id="@+id/nutrients_measure"
@@ -68,6 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nutrients_quantity"
         app:layout_constraintTop_toBottomOf="@id/nutrients_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_quantity_text"
         />
 
     <TextView
@@ -77,7 +79,7 @@
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_kcal"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_carbohydrates_text"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_carb_text"
         app:layout_constraintEnd_toStartOf="@id/nutrients_kcal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nutrients_quantity_text"
@@ -89,26 +91,27 @@
         android:padding="@dimen/tv_padding"
         android:text="@string/product_format_quantity"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_carbohydrates"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_carb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nutrients_kcal_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_quantity"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_kcal_text"
         />
 
     <TextView
-        android:id="@+id/nutrients_carbohydrates_text"
+        android:id="@+id/nutrients_carb_text"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_carbohydrates"
         android:textSize="@dimen/et_fontSize"
         app:layout_constraintBottom_toTopOf="@id/nutrients_fats_text"
-        app:layout_constraintEnd_toStartOf="@id/nutrients_carbohydrates"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_carb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nutrients_kcal_text"
         />
     <TextView
-        android:id="@+id/nutrients_carbohydrates"
+        android:id="@+id/nutrients_carb"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:padding="@dimen/tv_padding"
@@ -116,8 +119,9 @@
         android:textSize="@dimen/et_fontSize"
         app:layout_constraintBottom_toTopOf="@id/nutrients_fats"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/nutrients_carbohydrates_text"
+        app:layout_constraintStart_toEndOf="@id/nutrients_carb_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_kcal"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_carb_text"
 		/>
 
     <TextView
@@ -127,10 +131,10 @@
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_fats"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_proteins_text"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_prot_text"
         app:layout_constraintEnd_toStartOf="@id/nutrients_fats"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_carbohydrates_text"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_carb_text"
 		/>
     <TextView
         android:id="@+id/nutrients_fats"
@@ -139,33 +143,35 @@
         android:padding="@dimen/tv_padding"
         android:text="@string/product_format_quantity"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_proteins"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_prot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nutrients_fats_text"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_carbohydrates"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_carb"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_fats_text"
 		/>
 
     <TextView
-        android:id="@+id/nutrients_proteins_text"
+        android:id="@+id/nutrients_prot_text"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_proteins"
         android:textSize="@dimen/et_fontSize"
-        app:layout_constraintEnd_toStartOf="@id/nutrients_proteins"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_prot"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nutrients_fats_text"
 		/>
     <TextView
-        android:id="@+id/nutrients_proteins"
+        android:id="@+id/nutrients_prot"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_et"
         android:padding="@dimen/tv_padding"
         android:text="@string/product_format_quantity"
         android:textSize="@dimen/et_fontSize"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/nutrients_proteins_text"
+        app:layout_constraintStart_toEndOf="@id/nutrients_prot_text"
         app:layout_constraintTop_toBottomOf="@id/nutrients_fats"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_prot_text"
 		/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

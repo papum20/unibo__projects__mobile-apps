@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_add_list"
-    android:layout_width="@dimen/btn_addTo_size"
-    android:layout_height="@dimen/btn_addTo_size"
+    android:layout_width="@dimen/btn_product_card_size"
+    android:layout_height="@dimen/btn_product_card_size"
     android:src="@drawable/fridge_128"
     android:scaleType="fitCenter"
     android:backgroundTint="@color/btn_add_bg"

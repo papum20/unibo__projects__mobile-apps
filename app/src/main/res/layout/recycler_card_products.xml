@@ -39,9 +39,9 @@
 
             <ImageButton
                 android:id="@+id/recycler_product_btn_select"
-                android:layout_width="@dimen/btn_addTo_size"
-                android:layout_height="@dimen/btn_addTo_size"
-                android:backgroundTint="@color/btn_confirm_bg"
+                android:layout_width="@dimen/btn_product_card_size"
+                android:layout_height="@dimen/btn_product_card_size"
+                android:backgroundTint="@color/btn_positive_bg"
                 android:scaleType="fitCenter"
                 android:src="@drawable/approve_128"
                 app:layout_constraintStart_toEndOf="@id/recycler_product_text"

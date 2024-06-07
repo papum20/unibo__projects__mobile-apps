@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -64,9 +64,9 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
 		val etParent		= view.findViewById<EditText>( R.id.fragment_edit_food_parent)
 		val etKcal			= view.findViewById<EditText>( R.id.nutrients_edit_kcal)
-		val etCarbohydrates	= view.findViewById<EditText>( R.id.nutrients_edit_carbohydrates)
+		val etCarbohydrates	= view.findViewById<EditText>( R.id.nutrients_edit_carb)
 		val etFats			= view.findViewById<EditText>( R.id.nutrients_edit_fats)
-		val etProteins		= view.findViewById<EditText>( R.id.nutrients_edit_proteins)
+		val etProteins		= view.findViewById<EditText>( R.id.nutrients_edit_prot)
 		val tvWeightDisplay	= view.findViewById<TextView>(R.id.nutrients_edit_quantity)
 
 		// weight for displayed nutrients
@@ -88,7 +88,7 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 		/* UI listeners */
 
-		view.findViewById<Button>(R.id.fragment_edit_food_btn_save).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_food_btn_save).setOnClickListener {
 			val name			: String	= etName.text.toString()
 			val parent			: String	= etParent.text.toString()
 			val kcal			: Float?	= etKcal.text.toString().toFloatOrNull()
@@ -111,21 +111,21 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			}
 		}
 
-		view.findViewById<Button>(R.id.fragment_edit_food_btn_cancel).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_food_btn_cancel).setOnClickListener {
 			Log.i(TAG, "not added")
 			navController.navigateUp()
 		}
 
 		// map
 		if(foodId != Const.ID_PRODUCT_NULL) {
-			view.findViewById<Button>(R.id.fragment_edit_food_btn_map).setOnClickListener {
+			view.findViewById<ImageButton>(R.id.fragment_edit_food_btn_map).setOnClickListener {
 				navController.navigate(
 					FragmentEditFoodDirections.actionFragmentEditFoodToFragmentMap(foodId)
 				)
 			}
 		} else {
 			// if creating a new food, don't show map for shops
-			view.findViewById<Button>(R.id.fragment_edit_food_btn_map).let { btnMap ->
+			view.findViewById<ImageButton>(R.id.fragment_edit_food_btn_map).let { btnMap ->
 				btnMap.visibility	= View.GONE
 				btnMap.isClickable	= false
 			}

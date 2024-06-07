@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -76,7 +77,7 @@ class FragmentShops :
 
 		/* UI listeners */
 
-		view.findViewById<Button>(R.id.shops_recycler_btn_add).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.shops_recycler_btn_add).setOnClickListener {
 			navController.navigate(
 				FragmentShopsDirections.actionFragmentShopsToFragmentMapSelectPoint()
 			)

@@ -106,29 +106,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/scan_header_recognized_price" />
 
-    <Button
+
+    <ImageButton
         android:id="@+id/scan_btn_scan"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_select_image_receipt"
-        android:textAlignment="center"
+        android:layout_width="@dimen/btn_main_size"
+        android:layout_height="@dimen/btn_main_size"
+        android:layout_marginHorizontal="@dimen/btn_margin"
+        android:src="@drawable/add_photo_512"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/btn_main_bg"
         app:layout_constraintBottom_toTopOf="@id/scan_info"
         app:layout_constraintEnd_toStartOf="@id/scan_btn_confirm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
         app:layout_constraintWidth_percent="0.5" />
 
-    <Button
+    <ImageButton
         android:id="@+id/scan_btn_confirm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:text="@string/btn_confirm"
+        android:layout_width="@dimen/btn_main_size"
+        android:layout_height="@dimen/btn_main_size"
+        android:layout_marginHorizontal="@dimen/btn_margin"
+        android:src="@drawable/approve_512"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/btn_positive_bg"
         app:layout_constraintBottom_toTopOf="@+id/scan_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/scan_btn_scan"
         app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
-        app:layout_constraintWidth_percent="0.5" />
+        />
 
     <TextView
         android:id="@+id/scan_info"

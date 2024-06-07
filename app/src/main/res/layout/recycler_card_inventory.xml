@@ -65,8 +65,8 @@
 
         <ImageButton
             android:id="@+id/recycler_card_inventory_btn_expand"
-            android:layout_width="@dimen/btn_addTo_size"
-            android:layout_height="@dimen/btn_addTo_size"
+            android:layout_width="@dimen/btn_product_card_size"
+            android:layout_height="@dimen/btn_product_card_size"
             android:src="@drawable/arrow_down_128"
             android:scaleType="fitCenter"
             android:backgroundTint="@color/btn_expand_bg"
@@ -91,9 +91,9 @@
 
             <ImageButton
                 android:id="@+id/recycler_card_inventory_btn_remove"
-                android:layout_width="@dimen/btn_addTo_size"
-                android:layout_height="@dimen/btn_addTo_size"
-                android:backgroundTint="@color/btn_delete_bg"
+                android:layout_width="@dimen/btn_product_card_size"
+                android:layout_height="@dimen/btn_product_card_size"
+                android:backgroundTint="@color/btn_negative_bg"
                 android:scaleType="fitCenter"
                 android:src="@drawable/recycle_bin_128"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -138,8 +138,8 @@
 
             <ImageButton
                 android:id="@+id/recycler_card_inventory_btn_addList"
-                android:layout_width="@dimen/btn_addTo_size"
-                android:layout_height="@dimen/btn_addTo_size"
+                android:layout_width="@dimen/btn_product_card_size"
+                android:layout_height="@dimen/btn_product_card_size"
                 android:backgroundTint="@color/btn_add_bg"
                 android:scaleType="fitCenter"
                 android:src="@drawable/check_list_128"
@@ -150,8 +150,8 @@
 
             <ImageButton
                 android:id="@+id/recycler_card_inventory_btn_addMeals"
-                android:layout_width="@dimen/btn_addTo_size"
-                android:layout_height="@dimen/btn_addTo_size"
+                android:layout_width="@dimen/btn_product_card_size"
+                android:layout_height="@dimen/btn_product_card_size"
                 android:backgroundTint="@color/btn_add_bg"
                 android:scaleType="fitCenter"
                 android:src="@drawable/restaurant_128"

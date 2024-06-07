@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -90,9 +90,9 @@ class FragmentEditRecipe :
 		tvName			= view.findViewById(R.id.fragment_edit_recipe_name)
 		tvParent		= view.findViewById(R.id.fragment_edit_recipe_parent)
 		tvKcal			= view.findViewById(R.id.nutrients_kcal)
-		tvCarbohydrates	= view.findViewById(R.id.nutrients_carbohydrates)
+		tvCarbohydrates	= view.findViewById(R.id.nutrients_carb)
 		tvFats			= view.findViewById(R.id.nutrients_fats)
-		tvProteins		= view.findViewById(R.id.nutrients_proteins)
+		tvProteins		= view.findViewById(R.id.nutrients_prot)
 		tvWeightRecipe	= view.findViewById(R.id.fragment_edit_recipe_weight)
 		tvWeightDisplay	= view.findViewById(R.id.nutrients_quantity)
 
@@ -111,28 +111,28 @@ class FragmentEditRecipe :
 
 		/* UI listeners */
 
-		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_add).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_recipe_btn_add).setOnClickListener {
 			navController.navigate(
 				FragmentEditRecipeDirections.actionFragmentEditRecipeToProductsWithResult()
 			)
 		}
 
-		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_cancel).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_recipe_btn_cancel).setOnClickListener {
 			Log.i(TAG, "not added")
 			navController.navigateUp()
 		}
 
-		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_import).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_recipe_btn_import).setOnClickListener {
 			importFile()
 		}
 
-		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_share).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_recipe_btn_share).setOnClickListener {
 			viewLifecycleOwner.lifecycleScope.launch {
 				shareFile()
 			}
 		}
 
-		view.findViewById<Button>(R.id.fragment_edit_recipe_btn_save).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.fragment_edit_recipe_btn_save).setOnClickListener {
 			val name			: String	= tvName?.text.toString()
 			val parent			: String	= tvParent?.text.toString()
 

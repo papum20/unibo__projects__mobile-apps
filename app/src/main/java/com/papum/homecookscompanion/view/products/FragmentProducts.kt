@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -77,7 +78,7 @@ class FragmentProducts :
 			}
 
 		// create food/recipe
-		view.findViewById<Button>(R.id.products_btn_editFood)
+		view.findViewById<ImageButton>(R.id.products_btn_editFood)
 			.setOnClickListener {
 				navController.navigate(
 					FragmentProductsDirections.actionFragmentProductsToEditFood(
@@ -85,7 +86,7 @@ class FragmentProducts :
 				))
 			}
 
-		view.findViewById<Button>(R.id.products_btn_editRecipe)
+		view.findViewById<ImageButton>(R.id.products_btn_editRecipe)
 			.setOnClickListener {
 				navController.navigate(
 					FragmentProductsDirections.actionFragmentProductsToEditRecipe(
