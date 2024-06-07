@@ -27,7 +27,7 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 	 * Save food and its nutrients.
 	 * A parent as "" is interpreted as null.
 	 */
-	fun createFoodWithNutrients(
+	fun createFood(
 		name: String,
 		parent: String,
 
@@ -36,7 +36,7 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 		fats: Float?,
 		proteins: Float?,
 	) {
-		return repository.insertProductAndNutrients(
+		repository.insertProductAndNutrients(
 			EntityProduct(
 				id = 0,
 				name = name,
@@ -50,6 +50,20 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 				carbohydrates = carbohydrates,
 				fats = fats,
 				proteins = proteins
+			)
+		)
+	}
+	fun createProductNonEdible(
+		name: String,
+		parent: String,
+	) {
+		repository.insertProductNonEdible(
+			EntityProduct(
+				id = 0,
+				name = name,
+				parent = parent,
+				isEdible = false,
+				isRecipe = false
 			)
 		)
 	}

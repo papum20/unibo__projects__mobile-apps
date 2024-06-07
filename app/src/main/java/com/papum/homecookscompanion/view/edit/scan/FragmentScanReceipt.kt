@@ -2,6 +2,7 @@ package com.papum.homecookscompanion.view.edit.scan
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -120,6 +121,10 @@ class FragmentScanReceipt
 			launcherCameraWithPermission.launch(Manifest.permission.CAMERA)
 		}
 
+		view.findViewById<ImageButton>(R.id.scan_btn_info).setOnClickListener { _ ->
+			dialogInfoImage()
+		}
+
 		view.findViewById<ImageButton>(R.id.scan_btn_confirm).setOnClickListener { _ ->
 			if(viewModel.selectedShop.value == null) {
 				showErrorMissingShop()
@@ -165,6 +170,17 @@ class FragmentScanReceipt
 
 
 	/* Views */
+
+	private fun dialogInfoImage() {
+		AlertDialog.Builder(context).apply {
+			setMessage(R.string.receipt_info)
+			setTitle(R.string.receipt_info_title)
+
+			with(create()) {
+				show()
+			}
+		}
+	}
 
 	private fun showErrorCamera() {
 		Log.e(TAG,"Generical camera error")

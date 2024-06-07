@@ -91,6 +91,7 @@
     <string name="editFood_btn_cancel">Cancel</string>
     <string name="editFood_btn_confirm">Create</string>
     <string name="editFood_btn_map">Search on map</string>
+    <string name="editFood_text_edible">Is edible?</string>
     <string name="editRecipe_title">Create a recipe</string>
     <string name="editRecipe_ingredients">Ingredients:</string>
 
@@ -111,7 +112,7 @@
     <string name="nutrients_fats">Fats (g): </string>
     <string name="nutrients_proteins">Proteins (g): </string>
 
-    <string name="products_add_to">Add to:</string>
+    <string name="products_add_to">Create new:</string>
     <string name="products_btn_addToList">+List</string>
     <string name="products_btn_addToInventory">+Inventory</string>
     <string name="products_btn_addToMeals">+Meals</string>
@@ -124,7 +125,13 @@
     <string name="receipt_header_selected_price">Selected price - quantity</string>
     <string name="receipt_shop">Select the shop</string>
     <string name="receipt_shop_info">It\'s required to recognize the receipt products properly.</string>
-    <string name="receipt_info">Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first)</string>
+    <string name="receipt_info_title">FOR A GOOD PICTURE:</string>
+    <string name="receipt_info">
+        \n
+        1. Make sure that only products and prices are visible in the picture of the receipt (tip: you can fold it first, or crop the image with an editor)\n
+        \n
+        2. Lines of text should be as horizontal as possible, so try to keep your phone parallel to the receipt (tip: with an editor, you can also try to adjust the image later)
+    </string>
 
     <string name="recipe_weight">Total weight: </string>
 

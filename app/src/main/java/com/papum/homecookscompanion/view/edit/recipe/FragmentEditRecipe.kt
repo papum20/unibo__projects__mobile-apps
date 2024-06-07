@@ -205,8 +205,12 @@ class FragmentEditRecipe :
 		// on product selected
 		viewModel_selectProduct.selectedProduct.observe(viewLifecycleOwner) { selectedProduct ->
 			selectedProduct?.let {
-				viewModel.addIngredient(it)
-				viewModel_selectProduct.reset()
+				if(!selectedProduct.isEdible) {
+					showErrorNotEdible()
+				} else {
+					viewModel.addIngredient(it)
+					viewModel_selectProduct.reset()
+				}
 			}
 		}
 
@@ -307,16 +311,19 @@ class FragmentEditRecipe :
 
 	/* display */
 
+	private fun showErrorNotEdible() {
+		Log.e(TAG, "selected product non edible")
+		Toast.makeText(context, "ERROR: Please select an edible product", Toast.LENGTH_LONG)
+			.show()
+	}
 	private fun showErrorMissingFile() {
 		Log.e(TAG, "file wasn't picked")
 		Toast.makeText(context, "ERROR: File wasn't picked", Toast.LENGTH_LONG)
 			.show()
 	}
-
 	fun showErrorMissingIngredients() {
 		Toast.makeText(activity, "ERROR: Missing ingredients", Toast.LENGTH_LONG).show()
 	}
-
 	private fun showErrorMissingRecipe() {
 		Log.e(TAG, "viewModel.recipe is null")
 		Toast.makeText(activity, "ERROR: Missing recipe, please create and save one first", Toast.LENGTH_LONG)

@@ -3,6 +3,7 @@ package com.papum.homecookscompanion.model.database
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 
@@ -32,10 +33,10 @@ interface DaoProductAndNutrients {
 
 	/* insert */
 
-	@Insert
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun _insertNutrients(product: EntityNutrients)
 
-	@Insert
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun _insertProduct(product: EntityProduct): Long
 
 	@Transaction

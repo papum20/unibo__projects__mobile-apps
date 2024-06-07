@@ -170,13 +170,10 @@ misc:
 ## last
 *	remove meal
 *	show purchases
-*	icons
-	*	variable icon product/edible/recipe
-	*	bottomNavBar icons
 *	boot broadcast receiver
 *	update cascade recipe nutrients on ingredients
-*	scan: camera
 *	settings -> dflt settings
 	*	+ check in mainactivity and launch if set
 	*	settings for notifications
 *	btn expand: switch icons
+*	meals: select day with dialog

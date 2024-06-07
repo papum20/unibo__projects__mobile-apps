@@ -115,7 +115,7 @@
         android:src="@drawable/camera_512"
         android:scaleType="fitCenter"
         android:backgroundTint="@color/btn_main_bg"
-        app:layout_constraintBottom_toTopOf="@id/scan_info"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/scan_btn_scan"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
@@ -126,13 +126,26 @@
         android:layout_width="@dimen/btn_main_size"
         android:layout_height="@dimen/btn_main_size"
         android:layout_marginHorizontal="@dimen/btn_margin"
-        android:layout_marginEnd="60dp"
         android:src="@drawable/add_photo_512"
         android:scaleType="fitCenter"
         android:backgroundTint="@color/btn_main_bg"
-        app:layout_constraintBottom_toTopOf="@id/scan_info"
-        app:layout_constraintEnd_toStartOf="@id/scan_btn_confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/scan_btn_info"
         app:layout_constraintStart_toEndOf="@id/scan_btn_camera"
+        app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <ImageButton
+        android:id="@+id/scan_btn_info"
+        android:layout_width="@dimen/btn_main_size"
+        android:layout_height="@dimen/btn_main_size"
+        android:layout_marginHorizontal="@dimen/btn_margin"
+        android:src="@drawable/information_512"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/btn_main_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/scan_btn_confirm"
+        app:layout_constraintStart_toEndOf="@id/scan_btn_scan"
         app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
         app:layout_constraintWidth_percent="0.5" />
 
@@ -141,26 +154,14 @@
         android:layout_width="@dimen/btn_main_size"
         android:layout_height="@dimen/btn_main_size"
         android:layout_marginHorizontal="@dimen/btn_margin"
+        android:layout_marginStart="40dp"
         android:src="@drawable/approve_512"
         android:scaleType="fitCenter"
         android:backgroundTint="@color/btn_positive_bg"
-        app:layout_constraintBottom_toTopOf="@+id/scan_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/scan_btn_scan"
-        app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
-        />
-
-    <TextView
-        android:id="@+id/scan_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/tv_padding"
-        android:text="@string/receipt_info"
-        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scan_btn_scan" />
-
+        app:layout_constraintStart_toEndOf="@+id/scan_btn_info"
+        app:layout_constraintTop_toBottomOf="@+id/scan_recycler_view"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -26,7 +26,12 @@
                 android:ems="10"
                 android:hint="@string/editFood_placeholder_name"
                 android:inputType="text"
-                android:textSize="@dimen/et_fontSize" />
+                android:textSize="@dimen/et_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_food_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <EditText
                 android:id="@+id/fragment_edit_food_parent"
@@ -35,18 +40,50 @@
                 android:ems="10"
                 android:hint="@string/editFood_placeholder_parent"
                 android:inputType="text"
-                android:textSize="@dimen/et_fontSize" />
+                android:textSize="@dimen/et_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_food_edible_check"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_name"
+                />
+
+            <TextView
+                android:id="@+id/fragment_edit_food_edible_text"
+                android:layout_width="@dimen/recycler_card_meals_width_right"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/tv_margin"
+                android:padding="@dimen/tv_padding"
+                android:text="@string/editFood_text_edible"
+                android:textSize="@dimen/tv_fontSize"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_food_nutrients"
+                app:layout_constraintEnd_toStartOf="@id/fragment_edit_food_edible_check"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/fragment_edit_food_edible_check"
+            />
+
+            <CheckBox
+                android:id="@+id/fragment_edit_food_edible_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:layout_constraintBottom_toTopOf="@id/fragment_edit_food_nutrients"
+                app:layout_constraintStart_toEndOf="@id/fragment_edit_food_edible_text"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_parent"
+                />
 
             <include layout="@layout/nutrients_edit"
+                android:id="@+id/fragment_edit_food_nutrients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_edit_food_edible_check"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-            />
-        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

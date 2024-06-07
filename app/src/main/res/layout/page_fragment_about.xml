@@ -31,9 +31,80 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_add"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
             android:text="@string/link_icon_flaticon_bell"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_camera"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_confirm"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_cross"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_day_prev"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_delete"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_download"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_expand_down"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_expand_up"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,6 +134,13 @@
             android:layout_margin="@dimen/tv_margin"
             android:text="@string/link_icon_flaticon_meal"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_map"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +157,21 @@
             android:layout_margin="@dimen/tv_margin"
             android:text="@string/link_icon_flaticon_recipe"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_pick_image"
+            />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_scan"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,6 +180,13 @@
             android:text="@string/link_icon_flaticon_settings"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:layout_margin="@dimen/tv_margin"
+            android:text="@string/link_icon_flaticon_share"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

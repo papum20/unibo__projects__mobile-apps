@@ -7,11 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -61,12 +63,14 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		val foodId: Long = args.foodId
 
 		/* form fields */
+		val checkEdible		= view.findViewById<CheckBox>( R.id.fragment_edit_food_edible_check)
 		val etName			= view.findViewById<EditText>( R.id.fragment_edit_food_name)
 		val etParent		= view.findViewById<EditText>( R.id.fragment_edit_food_parent)
 		val etKcal			= view.findViewById<EditText>( R.id.nutrients_edit_kcal)
 		val etCarbohydrates	= view.findViewById<EditText>( R.id.nutrients_edit_carb)
 		val etFats			= view.findViewById<EditText>( R.id.nutrients_edit_fats)
 		val etProteins		= view.findViewById<EditText>( R.id.nutrients_edit_prot)
+		val layoutNutrients	= view.findViewById<ConstraintLayout>( R.id.fragment_edit_food_nutrients)
 		val tvWeightDisplay	= view.findViewById<TextView>(R.id.nutrients_edit_quantity)
 
 		// weight for displayed nutrients
@@ -77,16 +81,23 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 			Log.d(TAG, "product to edit has id $foodId")
 			viewModel.getProduct_fromId(foodId).observe(viewLifecycleOwner) { food ->
 				Log.d(TAG, "product to edit fetched, it's ${food.product.name}")
+				checkEdible.isChecked = food.product.isEdible
 				etName.setText(				food.product.name)
 				etParent.setText(			food.product.parent)
-				etKcal.setText(				food.nutrients.kcal?.toString()				?: "")
-				etCarbohydrates.setText(	food.nutrients.carbohydrates?.toString()	?: "")
-				etFats.setText(				food.nutrients.fats?.toString()				?: "")
-				etProteins.setText(			food.nutrients.proteins?.toString()			?: "")
+				etKcal.setText(				food.nutrients?.kcal?.toString()				?: "")
+				etCarbohydrates.setText(	food.nutrients?.carbohydrates?.toString()	?: "")
+				etFats.setText(				food.nutrients?.fats?.toString()				?: "")
+				etProteins.setText(			food.nutrients?.proteins?.toString()			?: "")
 			}
+		} else {
+			checkEdible.isChecked = DFLT_CHECKED
 		}
 
 		/* UI listeners */
+
+		checkEdible.setOnCheckedChangeListener { buttonView, isChecked ->
+			layoutNutrients.visibility = if(isChecked) View.VISIBLE else View.GONE
+		}
 
 		view.findViewById<ImageButton>(R.id.fragment_edit_food_btn_save).setOnClickListener {
 			val name			: String	= etName.text.toString()
@@ -98,15 +109,17 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 			/* check valid fields */
 			if(name == "") {
-				Toast.makeText(activity, "ERROR: Missing name", Toast.LENGTH_LONG).show()
+				showErrorMissingName()
 			}
 			/* edit food */
 			else {
-				viewModel.createFoodWithNutrients(
-					name, parent, kcal, carbohydrates, fats, proteins
-				)
-				Log.i(TAG, "added $name $parent")
-				Toast.makeText(activity, "Added: $name !", Toast.LENGTH_SHORT).show()
+				if(checkEdible.isChecked)
+					viewModel.createFood(
+						name, parent, kcal, carbohydrates, fats, proteins
+					)
+				else
+					viewModel.createProductNonEdible(name, parent)
+				showSuccessCreated(name, parent, checkEdible.isChecked)
 				navController.navigateUp()
 			}
 		}
@@ -143,6 +156,18 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 	}
 
 
+	/* display */
+
+	private fun showErrorMissingName() {
+		Log.e(TAG, "Missing name")
+		Toast.makeText(activity, "ERROR: Missing name", Toast.LENGTH_LONG).show()
+	}
+	private fun showSuccessCreated(name: String, parent: String, checkedEdible: Boolean) {
+		Log.i(TAG, "added $name $parent, edible: $checkedEdible")
+		Toast.makeText(activity, "Added: $name, $parent !", Toast.LENGTH_SHORT).show()
+	}
+
+
 	/* Permissions */
 
 	private val requestMultiplePermissionsLauncher = registerForActivityResult(
@@ -169,8 +194,10 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 
 	companion object {
 
-		private const val TAG = "FOOD"
+		private const val TAG = "Food"
 		private const val FRAGMENT_TAG_MAP = "fragment_map_edit_food"
+
+		private const val DFLT_CHECKED = true
 
 		private val PERMISSIONS_MAPS = arrayOf(
 			Manifest.permission.ACCESS_COARSE_LOCATION,

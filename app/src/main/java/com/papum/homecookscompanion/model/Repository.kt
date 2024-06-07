@@ -290,6 +290,13 @@ class Repository(app: Context) {
 		}
 	}
 
+	fun insertProductNonEdible(product: EntityProduct): Long {
+		var newId = product.id
+		Database.databaseWriteExecutor.execute {
+			 newId = daoProduct.insertProduct(product)
+		}
+		return newId
+	}
 	suspend fun insertProduct_result(product: EntityProduct): Long {
 		val newId: Long = daoProductAndNutrients.insertProductAndNutrients(product,
 			EntityNutrients(0, null, null, null, null))

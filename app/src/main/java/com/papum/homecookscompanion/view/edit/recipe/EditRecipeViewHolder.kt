@@ -3,6 +3,7 @@ package com.papum.homecookscompanion.view.edit.recipe
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,5 +20,5 @@ class EditRecipeViewHolder(itemView:View) : ViewHolder(itemView) {
 	val etQuantity: EditText = itemView.findViewById(R.id.recycler_card_editRecipe_quantity)
 	val tvType:TextView		= itemView.findViewById(R.id.recycler_card_editRecipe_type)
 
-	val btnRemove: Button = itemView.findViewById(R.id.recycler_card_editRecipe_btn_remove)
+	val btnRemove: ImageButton	= itemView.findViewById(R.id.recycler_card_editRecipe_btn_remove)
 }

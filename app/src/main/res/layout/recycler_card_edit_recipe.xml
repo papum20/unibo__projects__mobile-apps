@@ -78,12 +78,16 @@
             />
 
 
-        <Button
+
+        <ImageButton
             android:id="@+id/recycler_card_editRecipe_btn_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/btn_product_card_size"
+            android:layout_height="@dimen/btn_product_card_size"
+            android:layout_margin="@dimen/icon_margin"
+            android:backgroundTint="@color/btn_negative_bg"
+            android:scaleType="fitCenter"
+            android:src="@drawable/recycle_bin_128"
             android:contentDescription="@string/description_btn_remove"
-            android:text="@string/btn_remove"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/recycler_card_editRecipe_quantity"
