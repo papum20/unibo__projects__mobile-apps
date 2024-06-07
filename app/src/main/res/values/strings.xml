@@ -9,6 +9,7 @@
     <!-- paths (copied from provider_paths.xml) -->
     <string name="file_provider_authority">com.papum.homecookscompanion.fileprovider</string>
     <string name="path_external_files">external_path</string>
+    <string name="path_external_images">my_images</string>
     <string name="path_files">files</string>
     <string name="path_cache">cache</string>
 
@@ -179,6 +180,7 @@
     <string name="link_icon_flaticon_about">"https://www.flaticon.com/free-icons/info - Info icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_add">"https://www.flaticon.com/free-icons/plus - Plus icons created by Good Ware - Flaticon"</string>
     <string name="link_icon_flaticon_bell">"https://www.flaticon.com/free-icons/bell - Bell icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_camera">"https://www.flaticon.com/free-icons/camera - Camera bin icons created by cah nggunung - Flaticon"</string>
     <string name="link_icon_flaticon_confirm">"https://www.flaticon.com/free-icons/correct - Correct bin icons created by cah nggunung - Flaticon"</string>
     <string name="link_icon_flaticon_cross">"https://www.flaticon.com/free-icons/cross - Cross bin icons created by cah nggunung - Flaticon"</string>
     <string name="link_icon_flaticon_day_prev">"https://www.flaticon.com/free-icons/arrows - Arrows icons created by cah nggunung - Flaticon"</string>

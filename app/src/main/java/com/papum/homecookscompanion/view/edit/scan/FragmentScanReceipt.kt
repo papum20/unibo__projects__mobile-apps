@@ -1,7 +1,12 @@
 package com.papum.homecookscompanion.view.edit.scan
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +14,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,7 +34,10 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityShops
 import com.papum.homecookscompanion.view.products.ProductResultViewModel
 import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
+import java.io.File
 import java.io.IOException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 /**
@@ -55,13 +63,9 @@ class FragmentScanReceipt
 	private lateinit var navController: NavController
 	private val adapter = ScanAdapter(mutableListOf(), this)
 
-	private val launcher: ActivityResultLauncher<String> =
-		registerForActivityResult(
-			ActivityResultContracts.GetContent()
-		) { uri: Uri? ->
-			Log.i(TAG, "Selected file: $uri")
-			processImage(uri)
-		}
+	// uri of image taken by camera intent
+	private lateinit var uriCamera: Uri
+
 
 
 	override fun onCreateView(
@@ -112,15 +116,19 @@ class FragmentScanReceipt
 			pickFileAndScan()
 		}
 
+		view.findViewById<ImageButton>(R.id.scan_btn_camera).setOnClickListener { _ ->
+			launcherCameraWithPermission.launch(Manifest.permission.CAMERA)
+		}
+
 		view.findViewById<ImageButton>(R.id.scan_btn_confirm).setOnClickListener { _ ->
 			if(viewModel.selectedShop.value == null) {
-				displayMissingShop()
+				showErrorMissingShop()
 			} else if(viewModel.receiptItems.value == null) {
-				displayMissingReceipt()
+				showErrorMissingReceipt()
 			} else {
 				viewModel.saveAllRecognizedTextAssociations()
 				viewModel.addAllAssociated_toInventoryAndPurchases()
-				displayReceiptAdded()
+				showSuccessReceiptAdded()
 				navController.navigateUp()
 			}
 		}
@@ -158,34 +166,94 @@ class FragmentScanReceipt
 
 	/* Views */
 
-	private fun displayMissingImage() {
+	private fun showErrorCamera() {
+		Log.e(TAG,"Generical camera error")
+		Toast.makeText(context, "ERROR: Camera couldn't be launched", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showErrorFileCreation() {
+		Log.e(TAG,"Couldn't create a file")
+		Toast.makeText(context, "ERROR: Couldn't create file", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showErrorCameraPermission() {
+		Log.e(TAG,"not granted camera permission")
+		Toast.makeText(context, "ERROR: Camera permission wasn't granted", Toast.LENGTH_LONG)
+			.show()
+	}
+	private fun showErrorMissingImage() {
 		Toast.makeText(context, "ERROR: Image wasn't picked", Toast.LENGTH_LONG)
 			.show()
 	}
-
-	private fun displayMissingReceipt() {
-		Toast.makeText(
-			requireContext(),
-			"Select a receipt picture.",
-			Toast.LENGTH_LONG
-		).show()
-		Log.i(TAG, "Select a shop from the suggestions, in order to add this receipt.")
+	private fun showErrorMissingReceipt() {
+		Toast.makeText(requireContext(),"Select a receipt picture.", Toast.LENGTH_LONG)
+			.show()
+		Log.e(TAG, "Select a shop from the suggestions, in order to add this receipt.")
 	}
-	private fun displayMissingShop() {
-		Toast.makeText(
-			requireContext(),
+	private fun showErrorMissingShop() {
+		Toast.makeText(requireContext(),
 			"Select a shop from the suggestions, in order to add this receipt.",
 			Toast.LENGTH_LONG
 		).show()
-		Log.i(TAG, "Select a shop from the suggestions, in order to add this receipt.")
+		Log.e(TAG, "Select a shop from the suggestions, in order to add this receipt.")
 	}
-	private fun displayReceiptAdded() {
-		Toast.makeText(
-			requireContext(),
-			"Receipt successfully addedd!",
-			Toast.LENGTH_SHORT
-		).show()
-		Log.i(TAG, "Receipt successfully added!")
+	private fun showSuccessCamera() {
+		Toast.makeText(requireContext(), "Picture taken", Toast.LENGTH_SHORT)
+			.show()
+		Log.d(TAG, "Picture taken!")
+	}
+	private fun showSuccessImagePicked(uri: Uri?) {
+		Toast.makeText(requireContext(), "Receipt image picked, uri: $uri", Toast.LENGTH_SHORT)
+			.show()
+		Log.d(TAG, "image picked")
+	}
+	private fun showSuccessReceiptAdded() {
+		Toast.makeText(requireContext(),"Receipt successfully added!",	Toast.LENGTH_SHORT)
+			.show()
+		Log.d(TAG, "Receipt successfully added!")
+	}
+
+	/* camera */
+
+
+	@Throws(IOException::class)
+	private fun createImageFile(): File {
+		// Create an image file name
+		val timeStamp: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"))
+
+		val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+			?: throw IOException("External storage not available")
+
+		return File.createTempFile(
+			"JPEG_${timeStamp}_", /* prefix */
+			".jpg", /* suffix */
+			storageDir /* directory */
+		)
+	}
+
+	private fun _cameraIntent() {
+		Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+			// Ensure that there's a camera activity to handle the intent
+			takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
+				// Create the File where the photo should go
+				val photoFile: File? = try {
+					createImageFile()
+				} catch (ex: IOException) {
+					showErrorFileCreation()
+					null
+				}
+				// Continue only if the File was successfully created
+				photoFile?.also {
+					uriCamera = FileProvider.getUriForFile(
+						requireContext(),
+						getString(R.string.file_provider_authority),
+						it
+					)
+					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriCamera)
+					launcherCameraIntent.launch(takePictureIntent)
+				}
+			}
+		}
 	}
 
 
@@ -197,7 +265,7 @@ class FragmentScanReceipt
 	private fun processImage(uri: Uri?) {
 
 		if(uri == null) {
-			displayMissingImage()
+			showErrorMissingImage()
 			return
 		}
 
@@ -224,7 +292,7 @@ class FragmentScanReceipt
 	}
 
 	private fun pickFileAndScan() {
-		launcher.launch("image/*")
+		launcherPicker.launch("image/*")
 		//var chooseFile = Intent(Intent.ACTION_GET_CONTENT)
 		//chooseFile.setType("*/*")
 		//chooseFile = Intent.createChooser(chooseFile, "Choose a file")
@@ -233,6 +301,37 @@ class FragmentScanReceipt
 
 	}
 
+
+	/* launchers */
+
+	private val launcherCameraWithPermission = registerForActivityResult(
+		ActivityResultContracts.RequestPermission()
+	) { isGranted ->
+		if (isGranted) {
+			Log.d(TAG,"granted camera permission")
+			_cameraIntent()
+		} else {
+			showErrorCameraPermission()
+		}
+	}
+
+	private val launcherCameraIntent: ActivityResultLauncher<Intent> =
+		registerForActivityResult(
+			ActivityResultContracts.StartActivityForResult()
+		) { result ->
+			if (result.resultCode == Activity.RESULT_OK) {
+				showSuccessCamera()
+				processImage(uriCamera)
+			}
+		}
+
+	private val launcherPicker: ActivityResultLauncher<String> =
+		registerForActivityResult(
+			ActivityResultContracts.GetContent()
+		) { uri: Uri? ->
+			showSuccessImagePicked(uri)
+			processImage(uri)
+		}
 
 	/* ScanAdapter.IListenerOnClickSelectProduct */
 
