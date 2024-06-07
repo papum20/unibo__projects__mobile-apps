@@ -12,11 +12,13 @@ import com.papum.homecookscompanion.model.database.EntityList
 import com.papum.homecookscompanion.model.database.EntityMeals
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityShops
+import com.papum.homecookscompanion.utils.Const
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import kotlin.jvm.Throws
+import kotlin.math.min
 
 class SettingsViewModel(private val repository: Repository) : ViewModel() {
 
@@ -34,7 +36,8 @@ class SettingsViewModel(private val repository: Repository) : ViewModel() {
 
 
 	fun getGeofencesList() : List<Geofence>? {
-		return shops?.map { shop ->
+		// truncate to max number of geofences
+		return shops?.subList(0, min(Const.GEOFENCE_N_MAX_SHOPS, shops!!.size))?.map { shop ->
 			Geofence.Builder()
 				.setRequestId(getGeofenceId(shop))
 				.setCircularRegion(

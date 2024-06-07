@@ -19,6 +19,7 @@ import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
+import com.papum.homecookscompanion.utils.UtilViewProduct
 
 
 class InventoryAdapter(
@@ -67,16 +68,10 @@ class InventoryAdapter(
 		// associate item with EditText
 		holder.etQuantity.tag = items?.get(position)
 
-		holder.tvName.text = items?.get(position)?.let {
-			"${it.product.name}, ${it.product.parent}"
-		} ?: "[wrong entry]"
-
-		holder.tvType.text = items?.get(position)?.let {
-			if(!it.product.isEdible)		"(NonEdible)"
-			else if(it.product.isRecipe)	"(Recipe)"
-			else							"(Food)"
-		} ?: "(UnknownType)"
-
+		/* fill fields */
+		items?.get(position)?.let {
+			UtilViewProduct.set(it.product, holder.tvName, holder.icon)
+		}
 
 		/* UI listeners */
 

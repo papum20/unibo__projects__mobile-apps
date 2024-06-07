@@ -166,3 +166,16 @@ misc:
 ## notes (report)
 
 *	[V] editRecipe: add nutrients of recipe at each update, so easier to fetch nutrients
+
+## last
+*	remove meal
+*	show purchases
+*	icons
+	*	variable icon product/edible/recipe
+	*	bottomNavBar icons
+*	boot broadcast receiver
+*	update cascade recipe nutrients on ingredients
+*	scan: camera
+*	settings -> dflt settings
+	*	+ check in mainactivity and launch if set
+	*	settings for notifications

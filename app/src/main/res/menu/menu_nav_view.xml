@@ -5,12 +5,24 @@
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/nav_label_settings" />
+        android:title="@string/nav_label_settings"
+        android:icon="@drawable/settings_512"
+        />
 
     <item
         android:id="@+id/shops"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/nav_label_shops" />
+        android:title="@string/nav_label_shops"
+        android:icon="@drawable/seller_512"
+        />
+
+    <item
+        android:id="@+id/about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/nav_label_about"
+        android:icon="@drawable/information_512"
+        />
 
 </menu>

@@ -6,83 +6,116 @@
     android:layout_marginVertical="@dimen/card_margin_v"
     >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recycler_productExpandable_layout_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/recycler_productExpandable_layout_info"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/recycler_productExpandable_img_type"
+            android:layout_width="@dimen/icon_product_type_size"
+            android:layout_height="@dimen/icon_product_type_size"
+            android:layout_margin="@dimen/icon_margin"
+            android:src="@drawable/vegetable_128"
+            app:layout_constraintBottom_toTopOf="@id/recycler_productExpandable_layout_collapse"
+            app:layout_constraintEnd_toStartOf="@id/recycler_productExpandable_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/recycler_productExpandable_text"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:text="@string/product_placeholder_text"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/recycler_productExpandable_layout_collapse"
+            app:layout_constraintEnd_toStartOf="@id/recycler_productExpandable_btn_expand"
+            app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_img_type"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-            <ImageView
-                android:id="@+id/recycler_productExpandable_img_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                app:srcCompat="@android:drawable/ic_menu_agenda" />
+        <ImageButton
+            android:id="@+id/recycler_productExpandable_btn_expand"
+            android:layout_width="@dimen/btn_addTo_size"
+            android:layout_height="@dimen/btn_addTo_size"
+            android:src="@drawable/arrow_down_128"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/btn_expand_bg"
+            android:contentDescription="@string/description_btn_expand"
+            app:layout_constraintBottom_toTopOf="@id/recycler_productExpandable_layout_collapse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_text"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-            <TextView
-                android:id="@+id/recycler_productExpandable_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:text="@string/product_placeholder_type"
-                android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/recycler_productExpandable_text"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/product_placeholder_text"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/recycler_productExpandable_btn_expand"
-                android:layout_width="@dimen/btn_expand_width"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/description_btn_expand"
-                app:icon="@android:drawable/arrow_down_float"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_text"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recycler_productExpandable_layout_collapse"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_productExpandable_text"
+            >
 
-            <Button
+
+            <TextView
+                android:id="@+id/recycler_card_inventory_add_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/tv_padding"
+                android:text="@string/products_add_to"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/recycler_productExpandable_btn_addList"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageButton
                 android:id="@+id/recycler_productExpandable_btn_addList"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/products_btn_addToList"
-                android:visibility="visible" />
+                android:layout_width="@dimen/btn_addTo_size"
+                android:layout_height="@dimen/btn_addTo_size"
+                android:backgroundTint="@color/btn_add_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/check_list_128"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/recycler_productExpandable_btn_addInventory"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_add_to"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-            <Button
+            <ImageButton
                 android:id="@+id/recycler_productExpandable_btn_addInventory"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/products_btn_addToInventory" />
+                android:layout_width="@dimen/btn_addTo_size"
+                android:layout_height="@dimen/btn_addTo_size"
+                android:backgroundTint="@color/btn_add_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/fridge_128"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/recycler_productExpandable_btn_addMeals"
+                app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_btn_addList"
+                app:layout_constraintTop_toTopOf="parent"
+                 />
 
-            <Button
+            <ImageButton
                 android:id="@+id/recycler_productExpandable_btn_addMeals"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/products_btn_addToMeals" />
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_width="@dimen/btn_addTo_size"
+                android:layout_height="@dimen/btn_addTo_size"
+                android:backgroundTint="@color/btn_add_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/restaurant_128"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/recycler_productExpandable_btn_addInventory"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

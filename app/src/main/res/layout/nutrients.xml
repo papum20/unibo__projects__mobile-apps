@@ -5,18 +5,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+
+    <ImageView
+        android:id="@+id/nutrients_img"
+        android:layout_width="@dimen/icon_stats_size"
+        android:layout_height="@dimen/icon_stats_size"
+        android:layout_margin="@dimen/icon_margin"
+        android:src="@drawable/pie_chart_512"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_quantity_text"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <TextView
         android:id="@+id/nutrients_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/h2_margin"
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_title"
         android:textAlignment="center"
         android:textSize="@dimen/h2_fontSize"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/nutrients_quantity_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nutrients_img"
         app:layout_constraintTop_toTopOf="parent"
         />
 
@@ -141,7 +154,7 @@
         android:textSize="@dimen/et_fontSize"
         app:layout_constraintEnd_toStartOf="@id/nutrients_proteins"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_proteins_text"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_fats_text"
 		/>
     <TextView
         android:id="@+id/nutrients_proteins"

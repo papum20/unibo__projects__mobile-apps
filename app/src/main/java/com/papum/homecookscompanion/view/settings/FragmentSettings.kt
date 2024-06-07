@@ -31,7 +31,7 @@ import com.papum.homecookscompanion.view.services.BroadcastReceiverGeofence
 
 /**
  * A simple [Fragment] subclass.
- * Use the [FragmentSettings.newInstance] factory method to
+ * Use the [FragmentAbout.newInstance] factory method to
  * create an instance of this fragment.
  */
 class FragmentSettings : Fragment(R.layout.page_fragment_settings) {

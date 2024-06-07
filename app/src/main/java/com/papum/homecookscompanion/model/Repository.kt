@@ -156,7 +156,7 @@ class Repository(app: Context) {
 	}
 
 
-	fun getInventory_lowStock(): List<EntityProductAndInventoryWithAlerts> {
+	fun getInventory_lowStock_value(): List<EntityProductAndInventoryWithAlerts> {
 		return daoProductAndInventoryWithAlerts.getAllLowStocks_value()
 	}
 
@@ -291,8 +291,8 @@ class Repository(app: Context) {
 	}
 
 	suspend fun insertProduct_result(product: EntityProduct): Long {
-		var newId: Long = product.id
-		newId = daoProduct.insertProduct(product)
+		val newId: Long = daoProductAndNutrients.insertProductAndNutrients(product,
+			EntityNutrients(0, null, null, null, null))
 		return newId
 	}
 

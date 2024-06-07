@@ -13,6 +13,7 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndList
 import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
 import com.papum.homecookscompanion.utils.UtilProducts
+import com.papum.homecookscompanion.utils.UtilViewProduct
 import com.papum.homecookscompanion.view.list.ListAdapter
 import java.time.LocalDateTime
 
@@ -37,24 +38,20 @@ class MealsAdapter(
 
     override fun onBindViewHolder(holder: MealsViewHolder, position: Int) {
 
-		items[position].let { item ->
-			val localDate: LocalDateTime = item.meal.date
+		items.getOrNull(position)?.let { item ->
 
-			holder.tvName.text = item.product.parent.let { p ->
-				"${item.product.name}, $p"
+			/* fill fields */
+			UtilViewProduct.set(item.product, holder.tvName, holder.icon)
+
+			item.meal.date.let { date ->
+				holder.tvTime.text = context?.getString(R.string.product_format_date,
+					date.dayOfMonth, date.monthValue, date.year)
 			}
-			holder.tvType.text =
-				if (!item.product.isEdible) "(NonEdible)"
-				else if (item.product.isRecipe) "(Recipe)"
-				else "(Food)"
-			holder.etQuantity.setText(item.meal.quantity.toString())
-			holder.tvTime.text = holder.itemView.context.getString(
-				R.string.product_format_time,
-				localDate.hour, localDate.minute
-			)
+			holder.etQuantity.setText(
+				context?.getString(R.string.product_format_quantity, item.meal.quantity) ?: "" )
 
 			// associate item with EditText
-			holder.etQuantity.tag = items[position]
+			holder.etQuantity.tag = items.getOrNull(position)
 
 			context?.let { context ->
 				holder.tvKcal.text = UtilProducts.getKcalShort(context, item.nutrients.kcal)

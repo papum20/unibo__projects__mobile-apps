@@ -65,7 +65,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 
 	/* Query */
 
-	fun getShops_matchingBrand(): LiveData<List<EntityShops>> =
+	fun getMatchingShops(): LiveData<List<EntityShops>> =
 		typedShop.switchMap { shopSubstr ->
 			repository.getMatchingShops(shopSubstr)
 		}

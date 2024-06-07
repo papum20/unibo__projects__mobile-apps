@@ -7,101 +7,96 @@
     android:layout_marginVertical="@dimen/card_margin_v"
     >
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recycler_card_inventory_layout_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:paddingHorizontal="@dimen/recycler_card_padding_h">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/recycler_card_inventory_layout_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/recycler_card_padding_h">
+        <ImageView
+            android:id="@+id/recycler_card_inventory_img_type"
+            android:layout_width="@dimen/icon_product_type_size"
+            android:layout_height="@dimen/icon_product_type_size"
+            android:layout_margin="@dimen/icon_margin"
+            android:src="@drawable/vegetable_128"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_layout_collapse"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-            <ImageView
-                android:id="@+id/recycler_card_inventory_img_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_type"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_agenda" />
+        <TextView
+            android:id="@+id/recycler_card_inventory_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="@dimen/recycler_card_padding_text"
+            android:text="@string/product_placeholder_text"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_layout_collapse"
+            app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_quantity"
+            app:layout_constraintStart_toEndOf="@+id/recycler_card_inventory_img_type"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/recycler_card_inventory_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:text="@string/product_placeholder_type"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_text"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_img_type"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/recycler_card_inventory_text"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:padding="@dimen/recycler_card_padding_text"
-                android:text="@string/product_placeholder_text"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/recycler_card_inventory_quantity"
-                app:layout_constraintStart_toEndOf="@+id/recycler_card_inventory_type"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/recycler_card_inventory_measure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/product_placeholder_measure_quantity"
-                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_quantity"
-                app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_expand"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/recycler_card_inventory_measure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_placeholder_measure_quantity"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_quantity"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_expand"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-            <EditText
-                android:id="@+id/recycler_card_inventory_quantity"
-                android:layout_width="@dimen/quantity_width"
-                android:layout_height="@dimen/et_height"
-                android:imeOptions="actionDone"
-                android:inputType="number|numberDecimal|numberSigned"
-                android:layout_margin="@dimen/et_margin"
-                android:text="@string/product_format_quantity"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_expand"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
-                app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_measure" />
+        <EditText
+            android:id="@+id/recycler_card_inventory_quantity"
+            android:layout_width="@dimen/quantity_width"
+            android:layout_height="@dimen/et_height"
+            android:imeOptions="actionDone"
+            android:inputType="number|numberDecimal|numberSigned"
+            android:layout_margin="@dimen/et_margin"
+            android:text="@string/product_format_quantity"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_layout_collapse"
+            app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_expand"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_text"
+            app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_measure" />
 
-            <Button
-                android:id="@+id/recycler_card_inventory_btn_expand"
-                android:layout_width="@dimen/btn_expand_width"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/description_btn_expand"
-                app:icon="@android:drawable/arrow_down_float"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_quantity"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+        <ImageButton
+            android:id="@+id/recycler_card_inventory_btn_expand"
+            android:layout_width="@dimen/btn_addTo_size"
+            android:layout_height="@dimen/btn_addTo_size"
+            android:src="@drawable/arrow_down_128"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/btn_expand_bg"
+            android:contentDescription="@string/description_btn_expand"
+            app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_layout_collapse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_quantity"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recycler_card_inventory_layout_collapse"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_text">
 
-            <ImageView
-                android:id="@+id/recycler_card_inventory_img_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+
+            <ImageButton
+                android:id="@+id/recycler_card_inventory_btn_remove"
+                android:layout_width="@dimen/btn_addTo_size"
+                android:layout_height="@dimen/btn_addTo_size"
+                android:backgroundTint="@color/btn_delete_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/recycle_bin_128"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_alert"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -115,45 +110,59 @@
                 android:inputType="number|numberDecimal|numberSigned"
                 android:text="@string/product_format_quantity"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_img_alert"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_btn_remove"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/recycler_card_inventory_img_alert"
+                android:layout_width="@dimen/icon_alert_size"
+                android:layout_height="@dimen/icon_alert_size"
+                android:src="@drawable/bell_128"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_add_to"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_alert"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/recycler_card_inventory_add_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/tv_padding"
+                android:text="@string/products_add_to"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_addList"
                 app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_img_alert"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/recycler_card_inventory_btn_addList"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/products_btn_addToList"
-                android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+                android:layout_width="@dimen/btn_addTo_size"
+                android:layout_height="@dimen/btn_addTo_size"
+                android:backgroundTint="@color/btn_add_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/check_list_128"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/recycler_card_inventory_btn_addMeals"
-                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_alert"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_add_to"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                />
-
-            <Button
+            <ImageButton
                 android:id="@+id/recycler_card_inventory_btn_addMeals"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btn_addTo_size"
+                android:layout_height="@dimen/btn_addTo_size"
+                android:backgroundTint="@color/btn_add_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/restaurant_128"
                 android:text="@string/products_btn_addToMeals"
-                app:layout_constraintBottom_toTopOf="@id/recycler_card_inventory_btn_remove"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/recycler_card_inventory_btn_addList"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/recycler_card_inventory_btn_remove"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_remove"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycler_card_inventory_img_alert" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -42,6 +42,7 @@
             android:layout_height="@dimen/bottom_nav_height"
             app:itemTextAppearanceActive="@style/bottom_nav_item.active"
             app:itemTextAppearanceInactive="@style/bottom_nav_item.inactive"
+            app:itemIconSize="@dimen/bottom_nav_icon_size"
             app:menu="@menu/menu_bottom_nav" />
 
     </LinearLayout>
@@ -53,7 +54,9 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/menu_nav_view" />
+        app:menu="@menu/menu_nav_view"
+        app:itemIconSize="@dimen/menu_nav_icon_size"
+        />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

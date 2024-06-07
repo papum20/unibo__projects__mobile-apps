@@ -6,4 +6,10 @@
     <color name="bottom_nav_item_text.active">#000005FF</color>
     <color name="bottom_nav_item_text.inactive">#000000CD</color>
 
+    <color name="btn_add_bg">#9933FF</color>
+    <color name="btn_confirm_bg">#9933FF</color>
+    <color name="btn_collapse_bg">#EEEE3333</color>
+    <color name="btn_delete_bg">#EEEE3333</color>
+    <color name="btn_expand_bg">#99CC00CC</color>
+
 </resources>

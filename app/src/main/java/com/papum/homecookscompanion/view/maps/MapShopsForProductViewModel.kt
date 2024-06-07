@@ -31,9 +31,9 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
 	fun getShopsForProduct_inRadius(productId: Long): LiveData<List<EntityShopsWithPurchases>> =
 		repository.getPurchases_forProduct(productId)
 			.switchMap { shopsWithPurchases ->
-				Log.d("VIEWMODEL", "shopswithpurchases switchmap ${shopsRadius.value}")
+				Log.d(TAG, "shopswithpurchases switchmap ${shopsRadius.value}")
 				getShopsRadius().switchMap { radius ->
-					Log.d("VIEWMODEL", "radius switchmap ${shopsRadius.value}")
+					Log.d(TAG, "radius switchmap ${shopsRadius.value}")
 					myPosition.switchMap { myPosition ->
 						MutableLiveData(
 							shopsWithPurchases.map { shopWithPurchases ->
@@ -46,11 +46,11 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
 												shopWithPurchases.shop.latitude,
 												shopWithPurchases.shop.longitude
 											)
-											Log.d("VIEWMODEL", "filter ${position.distanceToAsDouble(positionShop) }")
+											Log.d(TAG, "filter ${position.distanceToAsDouble(positionShop) }")
 											position.distanceToAsDouble(positionShop) <= 1000 * radius
 										} ?: true
 									}.reduceOrNull { acc, purchase ->
-										Log.d("VIEWMODEL", "reduce ${acc.price} ${purchase.price}")
+										Log.d(TAG, "reduce ${acc.price} ${purchase.price}")
 										// get the lowest price for each shop
 										if (purchase.price == null)
 											acc
@@ -76,7 +76,7 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
 	fun getShopWithBestPurchase(productId: Long): LiveData<EntityShopsWithPurchases?> =
 		getShopsForProduct_inRadius(productId)
 			.switchMap { shopsWithPurchases ->
-				Log.d("VIEWMODEL", "best switchmap ${shopsRadius.value}")
+				Log.d(TAG, "best switchmap ${shopsRadius.value}")
 				MutableLiveData(
 					shopsWithPurchases.reduceOrNull { acc, shopWithPurchases ->
 						if( acc.purchases.isEmpty() || acc.purchases[0].price == null )
@@ -111,6 +111,8 @@ class MapShopsForProductViewModel(private val repository: Repository) : ViewMode
 
 
 	companion object {
+
+		private const val TAG = "MapProductVM"
 
 		// DISTANCE[sliderVal], for sliderVal from 0 to 10
 		private val DISTANCE = arrayOf(

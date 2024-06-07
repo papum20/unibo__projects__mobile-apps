@@ -19,11 +19,12 @@
     <string name="channel_geofences_description">Notifications on entering a shop.</string>
 
     <string name="bottom_nav_label_meals">Meals</string>
-    <string name="bottom_nav_label_list">Shopping list</string>
+    <string name="bottom_nav_label_list">List</string>
     <string name="bottom_nav_label_inventory">Inventory</string>
     <string name="bottom_nav_label_stats">Stats</string>
-    <string name="bottom_nav_label_products">All products</string>
+    <string name="bottom_nav_label_products">Products</string>
 
+    <string name="nav_label_about">About</string>
     <string name="nav_label_editFood">Edit food</string>
     <string name="nav_label_editRecipe">Edit recipe</string>
     <string name="nav_label_mapShopsProduct">Search in shops</string>
@@ -78,6 +79,8 @@
 
     <!-- fragments texts -->
 
+    <string name="credits_title">Credits:</string>
+
     <string name="dialog_addShop_address">Address:</string>
     <string name="dialog_addShop_brand">Brand:</string>
     <string name="dialog_addShop_city">City:</string>
@@ -107,6 +110,7 @@
     <string name="nutrients_fats">Fats (g): </string>
     <string name="nutrients_proteins">Proteins (g): </string>
 
+    <string name="products_add_to">Add to:</string>
     <string name="products_btn_addToList">+List</string>
     <string name="products_btn_addToInventory">+Inventory</string>
     <string name="products_btn_addToMeals">+Meals</string>
@@ -160,16 +164,37 @@
     <string name="product_placeholder_measure_quantity">g</string>
 
     <!-- values -->
-    <string name="quantity_unavailable">(unavailable)</string>
+    <string name="quantity_unavailable">(none)</string>
+    <string name="quantity_unavailable_kcal">kcal: (none)</string>
+    <string name="quantity_unavailable_carb">kcal: (none)</string>
+    <string name="quantity_unavailable_fats">fats: (none)</string>
+    <string name="quantity_unavailable_prot">prot: (none)</string>
 
-    <!-- other texts -->
+    <!-- credits -->
 
+    <string name="link_icon_flaticon_app">"https://www.flaticon.com/free-icons/cleaver - Cleaver icons created by Good Ware - Flaticon"</string>
 
+    <string name="link_icon_flaticon_about">"https://www.flaticon.com/free-icons/info - Info icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_bell">"https://www.flaticon.com/free-icons/bell - Bell icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_confirm">"https://www.flaticon.com/free-icons/correct - Correct bin icons created by cah nggunung - Flaticon"</string>
+    <string name="link_icon_flaticon_delete">"https://www.flaticon.com/free-icons/recycle-bin - Recycle bin icons created by cah nggunung - Flaticon"</string>
+    <string name="link_icon_flaticon_expand_down">"https://www.flaticon.com/free-icons/down - Down icons created by ghufronagustian - Flaticon"</string>
+    <string name="link_icon_flaticon_expand_up">"https://www.flaticon.com/free-icons/up - Up icons created by ghufronagustian - Flaticon"</string>
+    <string name="link_icon_flaticon_food">"https://www.flaticon.com/free-icons/healthy-food - Healthy food icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_inventory">"https://www.flaticon.com/free-icons/fridge - Fridge icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_list">"https://www.flaticon.com/free-icons/to-do-list - To do list icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_meal">"https://www.flaticon.com/free-icons/plate - Plate icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_non_edible">"https://www.flaticon.com/free-icons/parcel - Parcel icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_recipe">"https://www.flaticon.com/free-icons/salad - Salad icons created by Freepik - Flaticon"</string>
+    <string name="link_icon_flaticon_settings">"https://www.flaticon.com/free-icons/settings - Settings icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_shop">"https://www.flaticon.com/free-icons/seller - Seller icons created by Good Ware - Flaticon"</string>
+    <string name="link_icon_flaticon_stats">"https://www.flaticon.com/free-icons/pie-chart - Pie chart icons created by Good Ware - Flaticon"</string>
+    <!-- other texts (unused?) -->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">HomeCook\'s companion</string>
+    <string name="nav_header_subtitle"></string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

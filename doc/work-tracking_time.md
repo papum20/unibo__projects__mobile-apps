@@ -1,6 +1,7 @@
 # work time tracking
 
 In hours.  
+All rows in this document in the following format are considered as a record:  
 date : start - end = tot  
 
 ## times
@@ -62,3 +63,10 @@ date : start - end = tot
 03/06 : 19:00 -	21:00 = 02:00  
 04/06 : 08:55 -	10:20 = 01:25  
 04/06 : 19:30 -	22:00 = 02:30  
+
+## report
+
+05/06 : 19:15 - 20:30 = 01:15
+06/06 : 15:30 - 18:30 = 03:00
+06/06 : 19:15 - 21:00 = 01:45
+07/06 : 09:30 - 11:00 = 01:30

@@ -33,7 +33,7 @@
     <AutoCompleteTextView
         android:id="@+id/scan_shop_brand_et"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/et_height"
         android:hint="@string/receipt_placeholder_shop"
         android:inputType="text"
         android:layout_marginHorizontal="15dp"

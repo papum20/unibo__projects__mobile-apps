@@ -14,6 +14,8 @@ object Const {
 	const val ID_CHANNEL_STOCK		= "HomecooksCompanion_stock"
 	const val ID_CHANNEL_GEOFENCES	= "HomecooksCompanion_geofences"
 
+	/* Geofences */
+	const val GEOFENCE_N_MAX_SHOPS = 100
 
 
 	fun getQuantityString(quantity: Float): String =

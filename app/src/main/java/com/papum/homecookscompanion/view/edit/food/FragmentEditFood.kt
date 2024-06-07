@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -66,7 +67,10 @@ class FragmentEditFood : Fragment(R.layout.fragment_edit_food) {
 		val etCarbohydrates	= view.findViewById<EditText>( R.id.nutrients_edit_carbohydrates)
 		val etFats			= view.findViewById<EditText>( R.id.nutrients_edit_fats)
 		val etProteins		= view.findViewById<EditText>( R.id.nutrients_edit_proteins)
+		val tvWeightDisplay	= view.findViewById<TextView>(R.id.nutrients_edit_quantity)
 
+		// weight for displayed nutrients
+		tvWeightDisplay?.text = viewModel.getDisplayWeight().toString()
 
 		/* if it's editing a food (and not creating), setup */
 		if(foodId != Const.ID_PRODUCT_NULL) {

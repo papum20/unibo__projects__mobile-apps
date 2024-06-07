@@ -49,22 +49,22 @@ object UtilProducts {
 	fun getKcalShort(context: Context, value: Float?): String =
 		value?.let {
 			context.getString(R.string.nutrients_placeholder_short_kcal, it)
-		} ?: context.getString(R.string.quantity_unavailable)
+		} ?: context.getString(R.string.quantity_unavailable_kcal)
 
 	fun getCarbShort(context: Context, value: Float?): String =
 		value?.let {
 			context.getString(R.string.nutrients_placeholder_short_carb, it)
-		} ?: context.getString(R.string.quantity_unavailable)
+		} ?: context.getString(R.string.quantity_unavailable_carb)
 
 	fun getFatsShort(context: Context, value: Float?): String =
 		value?.let {
 			context.getString(R.string.nutrients_placeholder_short_fats, it)
-		} ?: context.getString(R.string.quantity_unavailable)
+		} ?: context.getString(R.string.quantity_unavailable_fats)
 
 	fun getProtShort(context: Context, value: Float?): String =
 		value?.let {
 			context.getString(R.string.nutrients_placeholder_short_prot, it)
-		} ?: context.getString(R.string.quantity_unavailable)
+		} ?: context.getString(R.string.quantity_unavailable_prot)
 
 
 }

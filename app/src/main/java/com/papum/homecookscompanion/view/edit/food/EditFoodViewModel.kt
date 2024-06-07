@@ -7,12 +7,16 @@ import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityNutrients
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
+import com.papum.homecookscompanion.utils.Const
 import kotlin.jvm.Throws
 
 class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 
 
 	/* query */
+
+	fun getDisplayWeight(): Float =
+		DFLT_DISPLAY_WEIGHT
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProductAndNutrients> =
 		repository.getProductWithNutrients(id)
@@ -49,6 +53,14 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 			)
 		)
 	}
+
+
+	companion object {
+
+		private const val DFLT_DISPLAY_WEIGHT = Const.MEASURE_QUANTITY
+
+	}
+
 
 }
 

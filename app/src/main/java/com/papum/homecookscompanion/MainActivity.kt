@@ -54,7 +54,9 @@ class MainActivity : AppCompatActivity() {
 
 		// setup toolbar and navbar
 		setSupportActionBar(findViewById(R.id.toolbar))
-		findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
+		val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_nav).apply {
+			setupWithNavController(navController)
+		}
 
 		// setup actionbar with top level destinations
 		val drawerLayout: DrawerLayout = findViewById(R.id.drawer)
@@ -105,7 +107,12 @@ class MainActivity : AppCompatActivity() {
 
 		Log.d(TAG,"Added work request to work manager for stocks")
 
+		/* Edit view */
+		bottomNavView.itemIconTintList	= null	// original colors, can't be done in xml
+		navView.itemIconTintList		= null	// original colors, can't be done in xml
+
 	}
+
 
 
 	/* Navigation */

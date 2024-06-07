@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.utils.UtilViewProduct
 
 
 class ProductsAdapter(
@@ -16,7 +18,7 @@ class ProductsAdapter(
 	private val buttonsListener: IListenerOnClickProductExpandable
 ) : Adapter<ProductsViewHolder>() {
 
-	private var layoutExpanded: LinearLayout? = null	// item's layout currently expanded (max 1 is expanded at a time)
+	private var layoutExpanded: ConstraintLayout? = null	// item's layout currently expanded (max 1 is expanded at a time)
 
 
 	interface IListenerOnClickProductExpandable {
@@ -39,19 +41,9 @@ class ProductsAdapter(
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
 
 		/* fill fields */
-		val name: String = items?.get(position)?.let {
-			it.parent?.let { p ->
-				"${it.name}, $p"
-			} ?: it.name
-		} ?: "[wrong entry]"
-		val type: String = items?.get(position)?.let {
-			if(!it.isEdible)		"(NonEdible)"
-			else if(it.isRecipe)	"(Recipe)"
-			else					"(Food)"
-		} ?: ("UnknownType")
-
-		holder.tvType.text = type
-		holder.tvName.text = name
+		items?.getOrNull(position)?.let {
+			UtilViewProduct.set(it, holder.tvName, holder.icon)
+		}
 
 		/* buttons listeners */
 
@@ -69,26 +61,26 @@ class ProductsAdapter(
 
 		// open product info and nutrients
 		holder.layoutInfo.setOnClickListener { _ ->
-			items?.get(holder.adapterPosition)?.let { product ->
+			items?.getOrNull(holder.adapterPosition)?.let { product ->
 				buttonsListener.onClickInfo(product)
 			}
 		}
 
 		// add product to inventory
 		holder.btnAddInventory.setOnClickListener { _ ->
-			items?.get(holder.adapterPosition)?.let { product ->
+			items?.getOrNull(holder.adapterPosition)?.let { product ->
 				buttonsListener.onClickAddToInventory(product)
 			}
 		}
 		// add product to list
 		holder.btnAddList.setOnClickListener { _ ->
-			items?.get(holder.adapterPosition)?.let { product ->
+			items?.getOrNull(holder.adapterPosition)?.let { product ->
 				buttonsListener.onClickAddToList(product)
 			}
 		}
 		// add product to meals
 		holder.btnAddMeals.setOnClickListener { _ ->
-			items?.get(holder.adapterPosition)?.let { product ->
+			items?.getOrNull(holder.adapterPosition)?.let { product ->
 				buttonsListener.onClickAddToMeals(product)
 			}
 		}

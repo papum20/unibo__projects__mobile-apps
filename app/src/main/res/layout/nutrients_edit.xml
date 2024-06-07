@@ -5,20 +5,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+
+
+    <ImageView
+        android:id="@+id/nutrients_edit_img"
+        android:layout_width="@dimen/icon_stats_size"
+        android:layout_height="@dimen/icon_stats_size"
+        android:layout_margin="@dimen/icon_margin"
+        android:src="@drawable/pie_chart_512"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_quantity_text"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <TextView
         android:id="@+id/nutrients_edit_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/h2_margin"
         android:padding="@dimen/tv_padding"
         android:text="@string/nutrients_title"
         android:textAlignment="center"
         android:textSize="@dimen/h2_fontSize"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_kcal_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_quantity_text"
+        app:layout_constraintStart_toEndOf="@id/nutrients_edit_img"
         app:layout_constraintTop_toTopOf="parent"
-		/>
+        />
+
+    <TextView
+        android:id="@+id/nutrients_edit_quantity_text"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_edit_et"
+        android:padding="@dimen/tv_padding"
+        android:text="@string/nutrients_quantity"
+        android:textSize="@dimen/et_fontSize"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_kcal_text"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_quantity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_title"
+        />
+    <TextView
+        android:id="@+id/nutrients_edit_quantity"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_edit_et"
+        android:padding="@dimen/tv_padding"
+        android:text="@string/product_format_quantity"
+        android:textSize="@dimen/et_fontSize"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_kcal"
+        app:layout_constraintEnd_toStartOf="@id/nutrients_edit_measure"
+        app:layout_constraintStart_toEndOf="@id/nutrients_edit_quantity_text"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_edit_quantity_text"
+        />
+    <TextView
+        android:id="@+id/nutrients_edit_measure"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_edit_et"
+        android:padding="@dimen/tv_padding"
+        android:text="@string/product_placeholder_measure_quantity"
+        android:textSize="@dimen/et_fontSize"
+        app:layout_constraintBottom_toTopOf="@id/nutrients_edit_kcal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/nutrients_edit_quantity"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/nutrients_edit_quantity_text"
+        />
 
     <TextView
         android:id="@+id/nutrients_edit_kcal_text"
@@ -30,7 +83,7 @@
         app:layout_constraintBottom_toTopOf="@id/nutrients_edit_carbohydrates_text"
         app:layout_constraintEnd_toStartOf="@id/nutrients_edit_kcal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_title"
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_quantity_text"
         />
     <EditText
         android:id="@+id/nutrients_edit_kcal"
@@ -43,8 +96,8 @@
         app:layout_constraintBottom_toTopOf="@id/nutrients_edit_carbohydrates"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/nutrients_edit_kcal_text"
-        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_title"
-		/>
+        app:layout_constraintTop_toBottomOf="@id/nutrients_edit_quantity"
+        />
 
     <TextView
         android:id="@+id/nutrients_edit_carbohydrates_text"

@@ -21,7 +21,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.Text.Line
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.papum.homecookscompanion.R
@@ -128,7 +127,7 @@ class FragmentScanReceipt
 		/* observers */
 
 		// typed shop brand
-		viewModel.getShops_matchingBrand().observe(viewLifecycleOwner) { shopsBrands ->
+		viewModel.getMatchingShops().observe(viewLifecycleOwner) { shopsBrands ->
 			adapterShopsBrands.clear()
 			adapterShopsBrands.addAll(shopsBrands)
 			adapterShopsBrands.notifyDataSetChanged()
