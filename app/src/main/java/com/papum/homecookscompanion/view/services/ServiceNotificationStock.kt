@@ -15,6 +15,7 @@ import com.papum.homecookscompanion.utils.Const
 
 /**
  * Service to send notification for low stocks of products.
+ * TODO: unused
  */
 class ServiceNotificationStock : Service() {
 

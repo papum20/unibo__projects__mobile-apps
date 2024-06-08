@@ -19,7 +19,7 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 		DFLT_DISPLAY_WEIGHT
 
 	fun getProduct_fromId(id: Long): LiveData<EntityProductAndNutrients> =
-		repository.getProductWithNutrients(id)
+		repository.getProductEdible(id)
 
 	/* insert */
 
@@ -36,7 +36,7 @@ class EditFoodViewModel(private val repository: Repository) : ViewModel() {
 		fats: Float?,
 		proteins: Float?,
 	) {
-		repository.insertProductAndNutrients(
+		repository.insertProductEdible(
 			EntityProduct(
 				id = 0,
 				name = name,

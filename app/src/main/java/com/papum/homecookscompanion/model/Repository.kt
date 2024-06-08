@@ -1,12 +1,14 @@
 package com.papum.homecookscompanion.model
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.database.DaoAlerts
 import com.papum.homecookscompanion.model.database.DaoIngredientOf
 import com.papum.homecookscompanion.model.database.DaoInventory
+import com.papum.homecookscompanion.model.database.DaoInventoryAndIngredientOf
 import com.papum.homecookscompanion.model.database.DaoList
 import com.papum.homecookscompanion.model.database.DaoMeals
 import com.papum.homecookscompanion.model.database.DaoNutrients
@@ -34,7 +36,6 @@ import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityProductAndIngredientOf
 import com.papum.homecookscompanion.model.database.EntityProductAndInventoryWithAlerts
 import com.papum.homecookscompanion.model.database.EntityProductAndList
-import com.papum.homecookscompanion.model.database.EntityProductAndMeals
 import com.papum.homecookscompanion.model.database.EntityProductAndMealsWithNutrients
 import com.papum.homecookscompanion.model.database.EntityProductAndNutrients
 import com.papum.homecookscompanion.model.database.EntityProductAndProductRecognized
@@ -53,6 +54,7 @@ class Repository(app: Context) {
 	private var daoAlerts							: DaoAlerts
 	private var daoIngredientOf						: DaoIngredientOf
 	private var daoInventory						: DaoInventory
+	private var daoInventoryAndIngredientOf			: DaoInventoryAndIngredientOf
 	private var daoList								: DaoList
 	private var daoMeals							: DaoMeals
 	private var daoNutrients						: DaoNutrients
@@ -75,6 +77,7 @@ class Repository(app: Context) {
 		daoAlerts							= db.daoAlerts()
 		daoIngredientOf						= db.daoIngredientOf()
 		daoInventory						= db.daoInventory()
+		daoInventoryAndIngredientOf			= db.daoInventoryAndIngredientOf()
 		daoList								= db.daoList()
 		daoMeals							= db.daoMeals()
 		daoNutrients						= db.daoNutrients()
@@ -98,25 +101,19 @@ class Repository(app: Context) {
 	fun getNutrients(ids: List<Long>): LiveData<List<EntityNutrients>> {
 		return daoNutrients.getAllFromId(ids)
 	}
-
 	fun getNutrients_value(ids: List<Long>): List<EntityNutrients> {
 		return daoNutrients.getAllFromId_value(ids)
 	}
 
-	fun getAllProducts(): LiveData<List<EntityProduct>> {
-		return daoProduct.getAll()
+	fun getMatchingProducts_caseInsensitive(nameSubstr: String): LiveData<List<EntityProduct>> {
+		return daoProduct.getMatches_lowercase("%${nameSubstr.lowercase()}%")
+	}
+	fun getMatchingProductsRecipes_caseInsensitive(nameSubstr: String): LiveData<List<EntityProduct>> {
+		return daoProduct.getMatchesRecipes_lowercase("%${nameSubstr.lowercase()}%")
 	}
 
-	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
-		return daoProduct.getAllMatches_lowercase("%${substr.lowercase()}%")
-	}
-
-	fun getAllIngredients_fromRecipeId(recipeId: Long): LiveData<List<EntityProductAndIngredientOf>> {
+	fun getIngredients(recipeId: Long): LiveData<List<EntityProductAndIngredientOf>> {
 		return daoProductAndIngredientOf.getAllFromRecipeId(recipeId)
-	}
-
-	fun getAllIngredients_fromRecipeId_value(recipeId: Long): List<EntityProductAndIngredientOf> {
-		return daoProductAndIngredientOf.getAllFromRecipeId_value(recipeId)
 	}
 
 	fun getMatchingProductsRecognized(recognizedTexts: List<String>, shopId: Long): LiveData<List<EntityProductAndProductRecognized>> {
@@ -127,7 +124,7 @@ class Repository(app: Context) {
 	/**
 	 * Get all products either in inventory or alerts (not necessarily in both).
 	 */
-	fun getAllInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> =
+	fun getInventoryWithAlerts(): LiveData<List<EntityProductAndInventoryWithAlerts>> =
 		daoProductAndInventoryWithAlerts.getAllInAlerts().switchMap { inAlerts ->
 			daoProductAndInventoryWithAlerts.getAllInInventory().switchMap { inInventory ->
 				MutableLiveData(
@@ -154,21 +151,13 @@ class Repository(app: Context) {
 		return products
 		 */
 	}
-
-
 	fun getInventory_lowStock_value(): List<EntityProductAndInventoryWithAlerts> {
 		return daoProductAndInventoryWithAlerts.getAllLowStocks_value()
 	}
-
-	fun getAllList(): LiveData<List<EntityProductAndList>> {
+	fun getList(): LiveData<List<EntityProductAndList>> {
 		return daoProductAndList.getAll()
 	}
-
-	fun getAllMeals(): LiveData<List<EntityProductAndMeals>> {
-			return daoProductAndMeals.getAll()
-	}
-
-	fun getMealsAndNutrients(start: LocalDateTime, end: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
+	fun getMeals(start: LocalDateTime, end: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
 		return daoProductAndMealsWithNutrients.getAllFromDateTimeInterval(
 			start.toInstant(ZoneOffset.UTC).toEpochMilli(),
 			end.toInstant(ZoneOffset.UTC).toEpochMilli()
@@ -198,26 +187,22 @@ class Repository(app: Context) {
 		return daoProduct.getOneFromId(id.toString())
 	}
 
-	fun getProduct_value(id: Long): EntityProduct? {
+	@Suppress("RedundantSuspendModifier")
+	suspend fun getProduct_value(id: Long): EntityProduct? {
 		return daoProduct.getOneFromId_value(id.toString())
 	}
 
-	fun getProductFromName_value(name: String, parent: String): EntityProduct? {
+	@Suppress("RedundantSuspendModifier")
+	suspend fun getProductFromName_value(name: String, parent: String): EntityProduct? {
 		return daoProduct.getOneFromName_value(name, parent)
 	}
 
-	fun getProductWithNutrients(id: Long): LiveData<EntityProductAndNutrients> {
+	fun getProductEdible(id: Long): LiveData<EntityProductAndNutrients> {
 		return daoProductAndNutrients.getOneFromId(id.toString())
 	}
 
 
 	/* Insert */
-
-	fun insertAllIngredients(ingredients: List<EntityIngredientOf>) {
-		Database.databaseWriteExecutor.execute {
-			daoIngredientOf.insertAll(ingredients)
-		}
-	}
 
 	fun addAlert(alert: EntityAlerts): EntityAlerts {
 		var newId: Long = alert.idProduct
@@ -251,6 +236,7 @@ class Repository(app: Context) {
 	 * Update quantity of meal (or delete from meals if quantity=0),
 	 * then (if didn't give error) add to inventory.
 	 * Update quantity to null if null.
+	 * @throws BadQuantityException if newQuantity > meal.quantity
 	 */
 	@Throws(BadQuantityException::class)
 	fun insertMealBackToInventory(meal: EntityMeals, newQuantity: Float) {
@@ -277,10 +263,16 @@ class Repository(app: Context) {
 	 * removing meal.quantity from inventory.quantity,
 	 * then (if didn't give error) add to meals.
 	 * Update quantity to null if null.
+	 * @throws BadQuantityException if meal.quantity > inventoryProduct.quantity
 	 */
+	@Throws(BadQuantityException::class)
 	fun insertMealFromInventory(meal: EntityMeals, inventoryProduct: EntityInventory) {
+
+		if(inventoryProduct.quantity - meal.quantity < 0F)
+			throw BadQuantityException("New quantity must be lower than current quantity")
+
 		Database.databaseWriteExecutor.execute {
-			if(inventoryProduct.quantity - meal.quantity <= 0F)
+			if(inventoryProduct.quantity - meal.quantity == 0F)
 				daoInventory.deleteOne(inventoryProduct)
 			else daoInventory.updateOne(inventoryProduct.apply{
 				quantity -= meal.quantity
@@ -290,49 +282,87 @@ class Repository(app: Context) {
 		}
 	}
 
-	fun insertProductNonEdible(product: EntityProduct): Long {
-		var newId = product.id
-		Database.databaseWriteExecutor.execute {
-			 newId = daoProduct.insertProduct(product)
+	/**
+	 * Insert recipe in Inventory, using ingredients in stock.
+	 * @throws BadQuantityException if an ingredient's quantity isn't enough to cook the recipe
+	 */
+	@Suppress("RedundantSuspendModifier")
+	@Throws(BadQuantityException::class)
+	suspend fun insertRecipeCookedInInventory_value(recipeId: Long, quantity: Float) {
+
+		val ingredientsInInventory = daoInventoryAndIngredientOf.getAllFromRecipeId_value(recipeId).let { ingredientsInInventory ->
+			Log.d("REPO", "ingredients: ${ingredientsInInventory.joinToString { it.ingredientItem.idIngredient.toString() }}")
+			ingredientsInInventory.sumOf {
+				Log.d("REPO", "weight ${it.ingredientItem.quantityMin}")
+				it.ingredientItem.quantityMin.toDouble() }
+				.let { recipeWeight ->
+					Log.d("REPO", "WTOT $recipeWeight")
+					if(recipeWeight > 0)
+						// calculate immediately quantities of ingredients in cooked recipe
+						ingredientsInInventory.map {
+							it.apply {
+								Log.d("REPO", "old quantity ${ingredientItem.quantityMin}")
+								ingredientItem.quantityMin *=
+									(quantity / recipeWeight).toFloat()
+								Log.d("REPO", "new quantity ${ingredientItem.quantityMin}")
+
+								if(inventoryItem.quantity < ingredientItem.quantityMin)
+									throw BadQuantityException(
+										"Not enough of ingredient ${it.ingredientItem.idIngredient} in stock")
+							} }
+					else
+						// if == 0, can't divide by 0, but
+						// weights are and remain all 0, so won't remove anything from inventory
+						ingredientsInInventory
+				}
 		}
-		return newId
-	}
-	suspend fun insertProduct_result(product: EntityProduct): Long {
-		val newId: Long = daoProductAndNutrients.insertProductAndNutrients(product,
-			EntityNutrients(0, null, null, null, null))
-		return newId
+
+		daoInventory.deleteMany(ingredientsInInventory
+			.filter { it.inventoryItem.quantity == it.ingredientItem.quantityMin }
+			.map { it.inventoryItem }
+		)
+		daoInventory.updateMany(ingredientsInInventory
+			.filter { it.inventoryItem.quantity > it.ingredientItem.quantityMin }
+			.map { it.inventoryItem.apply {
+				this.quantity -= it.ingredientItem.quantityMin
+			} }
+		)
+		daoInventory.insertOne(EntityInventory(
+			idProduct = recipeId,
+			quantity = quantity
+		))
 	}
 
-	fun insertManyProductsRecognized(productsRecognized: List<EntityProductRecognized>) {
+	fun insertProductsRecognized(productsRecognized: List<EntityProductRecognized>) {
 		Database.databaseWriteExecutor.execute {
 			daoProductRecognized.insertMany(productsRecognized)
 		}
 	}
 
-	fun insertProductAndNutrients(product: EntityProduct, nutrients: EntityNutrients) {
+	@Suppress("RedundantSuspendModifier")
+	suspend fun insertProduct_result(product: EntityProduct): Long {
+		val newId: Long = daoProductAndNutrients.insertProductAndNutrients(product,
+			EntityNutrients(0, null, null, null, null))
+		return newId
+	}
+	fun insertProductEdible(product: EntityProduct, nutrients: EntityNutrients) {
 		Database.databaseWriteExecutor.execute {
 			daoProductAndNutrients.insertProductAndNutrients(product, nutrients)
 		}
 	}
-
-	fun insertPurchase(purchase: EntityPurchases) {
+	fun insertProductNonEdible(product: EntityProduct): Long {
+		var newId = product.id
 		Database.databaseWriteExecutor.execute {
-			daoPurchases.insertOne(purchase)
+			newId = daoProduct.insertProduct(product)
 		}
+		return newId
 	}
-
-	fun insertManyPurchases(purchases: List<EntityPurchases>) {
-		Database.databaseWriteExecutor.execute {
-			daoPurchases.insertMany(purchases)
-		}
-	}
-
 	/**
 	 * Insert recipe in Products, and ingredients in IngredientOf.
 	 * ALso insert nutrients.
 	 * Also replace recipe if already present.
 	 */
-	fun insertRecipeAndIngredients(recipe: EntityProduct, ingredients: List<EntityIngredientOf>) {
+	fun insertProductRecipe(recipe: EntityProduct, ingredients: List<EntityIngredientOf>) {
 		Database.databaseWriteExecutor.execute {
 			// first delete old ingredients, then insert new ones (if id=0 doesn't do anything)
 			daoIngredientOf.deleteMatchingRecipe(recipe.id)
@@ -345,6 +375,17 @@ class Repository(app: Context) {
 			daoNutrients.insertOne(
 				UtilProducts.getRecipeNutrients(newId, ingredients, nutrientsList)
 			)
+		}
+	}
+
+	fun insertPurchase(purchase: EntityPurchases) {
+		Database.databaseWriteExecutor.execute {
+			daoPurchases.insertOne(purchase)
+		}
+	}
+	fun insertPurchases(purchases: List<EntityPurchases>) {
+		Database.databaseWriteExecutor.execute {
+			daoPurchases.insertMany(purchases)
 		}
 	}
 
@@ -384,7 +425,6 @@ class Repository(app: Context) {
 
 	/* Update */
 
-
 	fun updateAlert(alert: EntityAlerts) {
 		Database.databaseWriteExecutor.execute {
 			daoAlerts.updateOne(alert)
@@ -409,7 +449,7 @@ class Repository(app: Context) {
 
 		val res: EntityInventory = inventoryItem
 		Database.databaseWriteExecutor.execute {
-			val fetchedItem = daoInventory.getOne_fromId(inventoryItem.idProduct)
+			val fetchedItem = daoInventory.getFromId(inventoryItem.idProduct)
 			if (fetchedItem == null) {
 				val newId = daoInventory.insertOne(inventoryItem)
 				res.idProduct = newId

@@ -1,5 +1,6 @@
 package com.papum.homecookscompanion.model.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -7,23 +8,20 @@ import androidx.room.Query
 import androidx.room.Transaction
 
 @Dao
-interface DaoIngredientOf {
+interface DaoInventoryAndIngredientOf {
 
-
-	/* Query */
+	/* query */
 
 	@Query("""
         SELECT *
-        FROM IngredientOf
+        FROM Inventory
+        INNER JOIN IngredientOf ON Inventory.idProduct = IngredientOf.idIngredient
 		WHERE idRecipe = :id
     """)
 	@Transaction
-	fun getAllFromRecipeId_value(id: Long): List<EntityIngredientOf>
+	fun getAllFromRecipeId_value(id: Long): List<EntityInventoryAndIngredientOf>
 
 
-	/* Delete */
 
-	@Query("DELETE FROM IngredientOf WHERE idRecipe = :idRecipe")
-	fun deleteMatchingRecipe(idRecipe: Long)
 
 }

@@ -40,7 +40,7 @@ class EditRecipeViewModel(
 
 	// ingredients.value can be used with !!, as it's private and managed internally, and never null
 	fun fetchIngredients(): LiveData<List<EntityProductAndIngredientOf>> =
-		repository.getAllIngredients_fromRecipeId(recipeId)
+		repository.getIngredients(recipeId)
 
 	/**
 	 * Fetch from repository nutrients for each ingredient.
@@ -198,7 +198,7 @@ class EditRecipeViewModel(
 				isEdible = true
 			)
 
-		repository.insertRecipeAndIngredients(recipe, ingredients.value!!.map{it.ingredientItem})
+		repository.insertProductRecipe(recipe, ingredients.value!!.map{it.ingredientItem})
 
 		Log.d(TAG,
 			ingredients.value!!.map {

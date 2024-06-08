@@ -1,4 +1,4 @@
-package com.papum.homecookscompanion.view.products
+package com.papum.homecookscompanion.view.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
+import com.papum.homecookscompanion.view.products.ProductsViewModel
+import com.papum.homecookscompanion.view.products.ProductsViewModelFactory
 import kotlin.jvm.Throws
 
 class FragmentDialogAddToInventory(
@@ -47,7 +49,7 @@ class FragmentDialogAddToInventory(
 
 			Log.d("PRODUCTS_DIALOG", "product id: ${arguments?.getLong(KEY_PRODUCT).toString()}")
 			productId?.let { productId ->
-				viewModel.getProduct_fromId(productId).observe(this) { product ->
+				viewModel.getProduct(productId).observe(this) { product ->
 					Log.d("PRODUCTS_DIALOG", "listProducts: ${product.toString()}")
 					if(product != null) {
 						tvName.text = product.parent?.let { p ->

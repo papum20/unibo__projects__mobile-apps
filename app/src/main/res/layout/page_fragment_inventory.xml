@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="00dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/inventory_recycler_btn_scan"
+        app:layout_constraintBottom_toTopOf="@id/inventory_btn_scan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,16 +21,45 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageButton
-        android:id="@+id/inventory_recycler_btn_scan"
+        android:id="@+id/inventory_btn_scan"
         android:layout_width="@dimen/btn_main_size"
         android:layout_height="@dimen/btn_main_size"
-        android:layout_marginHorizontal="@dimen/btn_margin"
+        android:layout_marginVertical="@dimen/btn_margin"
+        android:layout_marginStart="@dimen/btn_margin"
+        android:layout_marginEnd="80dp"
         android:src="@drawable/scan_512"
         android:scaleType="fitCenter"
         android:backgroundTint="@color/btn_main_bg"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/inventory_editRecipe_tv"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inventory_recycler_view"
+        />
+
+    <TextView
+        android:id="@+id/inventory_editRecipe_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/tv_margin"
+        android:text="@string/inventory_add_recipe"
+        android:textSize="@dimen/tv_fontSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/inventory_editRecipe_btn"
+        app:layout_constraintStart_toEndOf="@id/inventory_btn_scan"
+        app:layout_constraintTop_toBottomOf="@id/inventory_recycler_view"
+    />
+
+    <ImageButton
+        android:id="@+id/inventory_editRecipe_btn"
+        android:layout_width="@dimen/btn_main_size"
+        android:layout_height="@dimen/btn_main_size"
+        android:layout_margin="@dimen/btn_margin"
+        android:src="@drawable/salad_512"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/btn_main_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/inventory_editRecipe_tv"
         app:layout_constraintTop_toBottomOf="@id/inventory_recycler_view"
         />
 

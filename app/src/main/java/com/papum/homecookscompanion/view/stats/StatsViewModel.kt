@@ -13,7 +13,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import kotlin.jvm.Throws
-import kotlin.math.max
 
 class StatsViewModel(
 	private val repository: Repository
@@ -31,7 +30,7 @@ class StatsViewModel(
 			days.switchMap { days ->
 				LocalDateTime.MIN.with(lastDay).plusDays(1).minusSeconds(1)
 					.let { lastDayTime ->
-						repository.getMealsAndNutrients(
+						repository.getMeals(
 							lastDayTime.with(LocalTime.MIN).minusDays(days - 1),
 							lastDayTime
 						)

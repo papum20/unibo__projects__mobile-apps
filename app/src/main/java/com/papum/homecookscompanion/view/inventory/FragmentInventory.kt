@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,8 +21,15 @@ import com.papum.homecookscompanion.model.database.EntityAlerts
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.utils.Const
-import com.papum.homecookscompanion.view.products.FragmentDialogAddToList
-import com.papum.homecookscompanion.view.products.FragmentDialogAddToMeals
+import com.papum.homecookscompanion.utils.errors.BadQuantityException
+import com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToInventory
+import com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToList
+import com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToMeals
+import com.papum.homecookscompanion.view.edit.recipe.EditRecipeViewModel
+import com.papum.homecookscompanion.view.products.ProductResultViewModel
+import com.papum.homecookscompanion.view.products.ProductResultViewModelFactory
+import com.papum.homecookscompanion.view.products.ProductsViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 
@@ -34,6 +41,7 @@ import java.time.LocalDateTime
 class FragmentInventory :
 	Fragment(R.layout.page_fragment_inventory),
 	InventoryAdapter.IListenerInventoryItem,
+	FragmentDialogAddToInventory.IListenerDialog,
 	FragmentDialogAddToList.IListenerDialog,
 	FragmentDialogAddToMeals.IListenerDialog
 {
@@ -44,8 +52,13 @@ class FragmentInventory :
 			Repository(requireActivity().application)
 		)
 	}
+	private val viewModel_selectProduct: ProductResultViewModel by viewModels {
+		ProductResultViewModelFactory(requireActivity())
+	}
 
 	val adapter = InventoryAdapter(mutableListOf(), this)
+
+	var addingRecipe = false
 
 
 	override fun onCreateView(
@@ -68,9 +81,16 @@ class FragmentInventory :
 
 		/* UI listeners */
 
-		view.findViewById<ImageButton>(R.id.inventory_recycler_btn_scan).setOnClickListener {
+		view.findViewById<ImageButton>(R.id.inventory_btn_scan).setOnClickListener {
 			navController.navigate(
 				FragmentInventoryDirections.actionFragmentInventoryToFragmentScanReceipt()
+			)
+		}
+
+		view.findViewById<ImageButton>(R.id.inventory_editRecipe_btn).setOnClickListener {
+			navController.navigate(
+				FragmentInventoryDirections.actionFragmentInventoryToProductsWithResult(
+					ProductsViewModel.ARG_FILTER_RECIPES)
 			)
 		}
 
@@ -80,11 +100,37 @@ class FragmentInventory :
 			adapter.updateItems(products.toMutableList())
 		}
 
+		// on successful add recipe
+		viewModel.addRecipeResult.observe(viewLifecycleOwner) { result ->
+			if(result != null) {
+				Log.d(TAG, "Add recipe to inventory: $result")
+				if (result == InventoryViewModel.Companion.AddRecipeResult.SUCCESS)
+					showSuccessAddRecipeToInventory()
+				else
+					showErrorLowQuantityRecipe()
+				viewModel.resetAddRecipeResult()
+			}
+		}
+
+		// selected recipe
+		viewModel_selectProduct.selectedProduct.observe(viewLifecycleOwner) { selectedProduct ->
+			if(selectedProduct != null) {
+				addingRecipe = true
+				showDialogAddToInventory(selectedProduct)
+				addingRecipe = false
+				viewModel_selectProduct.reset()
+			}
+		}
+
 	}
 
 
 	/* Display */
 
+	private fun showDialogAddToInventory(product: EntityProduct) {
+		FragmentDialogAddToInventory.newInstance(this, product)
+			.show(parentFragmentManager, "ADD_MEALS")
+	}
 	private fun showErrorAddToMeals(productId: Long, quantity: Float) {
 		Log.e(TAG, "Error adding quantity ${Const.getQuantityString(quantity)} of product $productId to meals")
 		Toast.makeText(context,
@@ -93,9 +139,25 @@ class FragmentInventory :
 		)
 			.show()
 	}
+	private fun showErrorLowQuantityRecipe() {
+		Log.e(TAG, "Error adding recipe to inventory, insufficient ingredients")
+		Toast.makeText(context,
+			"Error: insufficient ingredients; add more in inventory or add from Products instead",
+			Toast.LENGTH_LONG
+		)
+			.show()
+	}
 	private fun showSuccessAddToAlerts(productId: Long, quantity: Float) {
 		Log.d(TAG, "Added quantity ${Const.getQuantityString(quantity)} of product $productId to alerts")
 		Toast.makeText(context, "Added alert for ${Const.getQuantityString(quantity)}", Toast.LENGTH_SHORT)
+			.show()
+	}
+	private fun showSuccessAddRecipeToInventory() {
+		Log.d(TAG, "Added recipe to inventory")
+		Toast.makeText(context,
+			"Recipe added from ingredients!",
+			Toast.LENGTH_SHORT
+		)
 			.show()
 	}
 	private fun showSuccessAddToList(productId: Long, quantity: Float) {
@@ -144,6 +206,12 @@ class FragmentInventory :
 
 	/* FragmentDialogAddTo*.IListenerDialog */
 
+	override fun onClickAddToInventory(dialog: DialogFragment, productId: Long, quantity: Float) {
+		viewLifecycleOwner.lifecycleScope.launch {
+			viewModel.cookRecipe(productId, quantity)
+		}
+	}
+
 	override fun onClickAddToList(dialog: DialogFragment, productId: Long, quantity: Float) {
 		showSuccessAddToList(productId, quantity)
 		viewModel.addToList(productId, quantity)
@@ -171,13 +239,16 @@ class FragmentInventory :
 		adapter.deleteItem(inventoryItem.idProduct)
 	}
 
+	override fun onClickAddToInventoryCancel(dialog: DialogFragment) {
+
+	}
 	override fun onClickAddToListCancel(dialog: DialogFragment) {
 
 	}
-
 	override fun onClickAddToMealsCancel(dialog: DialogFragment) {
 
 	}
+
 
 
 

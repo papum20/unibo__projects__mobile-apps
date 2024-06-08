@@ -52,9 +52,10 @@ class FragmentMeals :
 		/* recycler view */
 		val adapter = MealsAdapter(listOf(), this, context)
 
-        val recycler = view.findViewById<RecyclerView>(R.id.meals_recycler_view)
-        recycler.adapter = adapter
-        recycler.layoutManager = LinearLayoutManager(context)
+        view.findViewById<RecyclerView>(R.id.meals_recycler_view).apply {
+			this.adapter	= adapter
+			layoutManager	= LinearLayoutManager(context)
+		}
 
 		/* selected day and buttons to change it */
 		viewModel.currentlySetDate.value = LocalDateTime.now()

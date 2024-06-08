@@ -13,9 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
-import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.model.database.EntityShops
-import com.papum.homecookscompanion.view.products.FragmentDialogAddToInventory
 
 class FragmentDialogAddShop : DialogFragment() {
 

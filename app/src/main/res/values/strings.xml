@@ -95,6 +95,8 @@
     <string name="editRecipe_title">Create a recipe</string>
     <string name="editRecipe_ingredients">Ingredients:</string>
 
+    <string name="inventory_add_recipe">Cooked a recipe?</string>
+
     <string name="map_product_info_product">Compare the prices for "%s":</string>
     <string name="map_product_radius">Selected radius: %1$5.2fkm</string>
     <string name="map_product_best_price">Cheapest price: %1$5.2f€</string>

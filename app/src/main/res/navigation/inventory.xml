@@ -26,6 +26,15 @@
                 app:argType="long"
                 />
         </action>
+        <action
+            android:id="@+id/action_fragmentInventory_to_productsWithResult"
+            app:destination="@id/products_with_result"
+            app:popUpTo="@id/fragmentInventory" >
+        <argument
+            android:name="filter"
+            app:argType="integer"
+            android:defaultValue="0" />
+        </action>
     </fragment>
 
     <fragment

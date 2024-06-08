@@ -24,7 +24,7 @@ class MealsViewModel(private val repository: Repository) : ViewModel() {
 	 * `month` from 1.
 	 */
 	private fun _getAllMealsWithNutrients(date: LocalDateTime): LiveData<List<EntityProductAndMealsWithNutrients>> {
-		return repository.getMealsAndNutrients(
+		return repository.getMeals(
 			date.with(LocalTime.MIN), date.with(LocalTime.MAX)
 		)
 	}

@@ -94,7 +94,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 					Log.d(TAG, "Adding to inventory: ${it.idProduct}, ${it.quantity}")
 					repository.addInventoryItemQuantity(it)
 				}
-				repository.insertManyPurchases(
+				repository.insertPurchases(
 					items.map { item ->
 						EntityPurchases(
 							0,
@@ -109,7 +109,7 @@ class ScanViewModel(val repository: Repository) : ViewModel() {
 	}
 
 	private fun _saveAllRecognizedTextAssociations(items: List<ScanModel>, shopId: Long) {
-		repository.insertManyProductsRecognized(
+		repository.insertProductsRecognized(
 			items.filter { it.productId != null }
 				.map { item ->
 					EntityProductRecognized(item.recognizedProduct, shopId, item.productId!!)

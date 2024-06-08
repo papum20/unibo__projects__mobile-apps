@@ -36,15 +36,15 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		val repository = Repository(applicationContext)
 
 		val products_lowStock = repository.getInventory_lowStock_value()
-		val names = products_lowStock.subList(0, PRODUCTS_NAMES_IN_NOTIFICATION_COUNT).joinToString(
-			",",
+		val names = products_lowStock.subList(0, N_PRODUCTS_NAMES_IN_NOTIFICATION).joinToString(
+			", ",
 			postfix = (
-				if (products_lowStock.size > PRODUCTS_NAMES_IN_NOTIFICATION_COUNT) "..."
+				if (products_lowStock.size > N_PRODUCTS_NAMES_IN_NOTIFICATION) "..."
 				else ""
 			)
 		) { product -> product.product.name }
 
-		sendNotification("${products_lowStock.size} products in low stock!", names)
+		sendNotification("${products_lowStock.size} products in short supply!", names)
 
 		// Indicate whether the work finished successfully with the Result
 		return Result.success()
@@ -83,10 +83,10 @@ class WorkerStock(appContext: Context, workerParams: WorkerParameters)
 		private const val KEY_PENDING_INTENT = "pendingIntent"
 
 		/* worker params */
-		private const val PRODUCTS_NAMES_IN_NOTIFICATION_COUNT = 3
+		private const val N_PRODUCTS_NAMES_IN_NOTIFICATION = 3
 
-		private val PERIODIC_INTERVAL_HOURS	= max(1L, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000 / 60 / 60)	//24
-		private val FLEX_INTERVAL_MINUTES	= max(5L, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS / 1000 / 60)	//30
+		private val PERIODIC_INTERVAL_HOURS	= max(24L, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS / 1000 / 60 / 60)
+		private val FLEX_INTERVAL_MINUTES	= max(10L, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS / 1000 / 60)
 
 		// hour of day when worker stock should be executed periodically
 		private const val REPEATING_HOUR: Int = 8

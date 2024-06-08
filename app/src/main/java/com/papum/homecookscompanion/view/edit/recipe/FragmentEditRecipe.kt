@@ -237,7 +237,7 @@ class FragmentEditRecipe :
 			viewModel.importRecipe(importedRecipe)
 
 			viewModel.getRecipe()?.let { newRecipe ->
-				Log.d(TAG, "new vm recipe is ${newRecipe}")
+				Log.d(TAG, "new vm recipe is $newRecipe")
 				viewModel.saveRecipe(newRecipe.name, newRecipe.parent)
 				navController.navigateUp()
 			} ?: run {

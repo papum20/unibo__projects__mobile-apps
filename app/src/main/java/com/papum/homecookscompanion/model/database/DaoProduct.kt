@@ -12,9 +12,6 @@ interface DaoProduct {
 
 	/* query */
 
-	@Query("SELECT * FROM Product")
-	fun getAll(): LiveData<List<EntityProduct>>
-
 	@Query("select * from Product where name LIKE :pattern")
 	fun getAllMatches(pattern: String): LiveData<List<EntityProduct>>
 
@@ -44,7 +41,10 @@ interface DaoProduct {
 	 * Use LOWER(name)
 	 */
 	@Query("select * from Product where LOWER(name) LIKE :pattern")
-	fun getAllMatches_lowercase(pattern: String): LiveData<List<EntityProduct>>
+	fun getMatches_lowercase(pattern: String): LiveData<List<EntityProduct>>
+
+	@Query("SELECT * FROM Product WHERE isRecipe = 1 AND LOWER(name) LIKE :pattern")
+	fun getMatchesRecipes_lowercase(pattern: String): LiveData<List<EntityProduct>>
 
 
 	/* insert */

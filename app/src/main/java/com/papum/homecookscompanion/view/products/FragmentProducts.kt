@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.core.widget.doOnTextChanged
@@ -20,7 +19,9 @@ import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
 import com.papum.homecookscompanion.utils.Const
-import com.papum.homecookscompanion.view.edit.food.FragmentEditFood
+import com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToInventory
+import com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToList
+import com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToMeals
 import java.time.LocalDateTime
 
 
@@ -58,12 +59,14 @@ class FragmentProducts :
 		/* Recycler */
 		val adapter = ProductsAdapter(listOf(), this)
 
-		val recycler = view.findViewById<RecyclerView>(R.id.products_recycler_view)
-		recycler.adapter = adapter
-		recycler.layoutManager = LinearLayoutManager(context)
+		val recycler = view.findViewById<RecyclerView>(R.id.products_recycler_view).apply {
+			this.adapter = adapter
+			layoutManager = LinearLayoutManager(context)
+		}
 
-		// first fetch all
-		viewModel.getAllProducts().observe(viewLifecycleOwner) { products ->
+		/* observers */
+
+		viewModel.getProducts().observe(viewLifecycleOwner) { products ->
 			adapter.updateItems(products)
 		}
 
@@ -72,9 +75,7 @@ class FragmentProducts :
 		// update on search
 		view.findViewById<EditText>(R.id.products_editText_search)
 			.doOnTextChanged { text, start, before, count ->
-				viewModel.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
-					adapter.updateItems(products)
-				}
+				viewModel.setSubstr(text.toString())
 			}
 
 		// create food/recipe

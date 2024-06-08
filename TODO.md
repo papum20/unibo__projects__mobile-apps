@@ -177,3 +177,5 @@ misc:
 	*	settings for notifications
 *	btn expand: switch icons
 *	meals: select day with dialog
+*	bottomanvbar: texts too big
+*	meals: remove

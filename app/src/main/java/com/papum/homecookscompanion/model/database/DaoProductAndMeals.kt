@@ -14,14 +14,6 @@ interface DaoProductAndMeals {
         SELECT *
         FROM Product
         INNER JOIN Meals ON Product.id = Meals.idEdible
-    """)
-	@Transaction
-	fun getAll(): LiveData<List<EntityProductAndMeals>>
-
-	@Query("""
-        SELECT *
-        FROM Product
-        INNER JOIN Meals ON Product.id = Meals.idEdible
 		WHERE idEdible = :id
     """)
 	@Transaction

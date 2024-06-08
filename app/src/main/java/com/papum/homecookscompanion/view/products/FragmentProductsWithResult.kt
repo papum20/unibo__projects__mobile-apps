@@ -12,12 +12,13 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.papum.homecookscompanion.R
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityProduct
-
+import com.papum.homecookscompanion.view.edit.food.FragmentEditFoodArgs
 
 
 class FragmentProductsWithResult :
@@ -25,6 +26,7 @@ class FragmentProductsWithResult :
 	ProductsWithResultAdapter.IListenerOnClickProduct
 {
 
+	private val args: FragmentProductsWithResultArgs by navArgs()
 	private val viewModel_products: ProductsViewModel by viewModels {
 		ProductsViewModelFactory(
 			Repository(requireActivity().application)
@@ -49,6 +51,9 @@ class FragmentProductsWithResult :
 
 		navController = findNavController()
 
+		val filter: Int = args.filter
+		viewModel_products.filter.value = filter
+
 		/* Recycler */
 		val adapter = ProductsWithResultAdapter(listOf(), this)
 
@@ -57,7 +62,7 @@ class FragmentProductsWithResult :
 		recycler.layoutManager = LinearLayoutManager(context)
 
 		// first fetch all
-		viewModel_products.getAllProducts().observe(viewLifecycleOwner) { products ->
+		viewModel_products.getProducts().observe(viewLifecycleOwner) { products ->
 			adapter.updateItems(products)
 		}
 
@@ -66,7 +71,7 @@ class FragmentProductsWithResult :
 		// update on search
 		view.findViewById<EditText>(R.id.productsWithResult_editText_search)
 			.doOnTextChanged { text, start, before, count ->
-				viewModel_products.getAllProducts_fromSubstr_caseInsensitive(text.toString()).observe(viewLifecycleOwner) { products ->
+				viewModel_products.getProducts().observe(viewLifecycleOwner) { products ->
 					adapter.updateItems(products)
 				}
 			}
@@ -98,6 +103,7 @@ class FragmentProductsWithResult :
 	companion object {
 
 		private const val TAG = "SELECT"
+
 
 	}
 

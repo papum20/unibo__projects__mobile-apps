@@ -22,6 +22,10 @@
                 app:argType="long"
                 />
         </action>
+        <argument
+            android:name="filter"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
     <include app:graph="@navigation/edit_food" />

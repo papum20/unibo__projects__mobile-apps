@@ -1,8 +1,10 @@
 package com.papum.homecookscompanion.view.products
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
 import com.papum.homecookscompanion.model.Repository
 import com.papum.homecookscompanion.model.database.EntityInventory
 import com.papum.homecookscompanion.model.database.EntityList
@@ -13,19 +15,27 @@ import kotlin.jvm.Throws
 
 class ProductsViewModel(private val repository: Repository) : ViewModel() {
 
+	private val substr = MutableLiveData("")
+
+	val filter = MutableLiveData(ARG_FILTER_DFLT)
+
 
 	/* Query */
 
-	fun getAllProducts(): LiveData<List<EntityProduct>> {
-		return repository.getAllProducts()
-	}
+	fun getProducts(): LiveData<List<EntityProduct>> =
+		filter.switchMap { filter ->
+			if(filter == ARG_FILTER_RECIPES)
+				substr.switchMap { substr ->
+					repository.getMatchingProductsRecipes_caseInsensitive(substr)
+				}
+			else
+				substr.switchMap { substr ->
+					repository.getMatchingProducts_caseInsensitive(substr)
+				}
+		}
 
-	fun getProduct_fromId(id: Long): LiveData<EntityProduct?> {
+	fun getProduct(id: Long): LiveData<EntityProduct?> {
 		return repository.getProduct(id)
-	}
-
-	fun getAllProducts_fromSubstr_caseInsensitive(substr: String): LiveData<List<EntityProduct>> {
-		return repository.getAllProducts_fromSubstr_caseInsensitive(substr)
 	}
 
 	/* Insert */
@@ -43,15 +53,21 @@ class ProductsViewModel(private val repository: Repository) : ViewModel() {
 	}
 
 
-	/*
-	fun insertProduct(product: EntityProduct) {
-		repository.insertProduct(product)
+	/* getters/setters */
+
+	fun setSubstr(substr: String) {
+		this.substr.value = substr
 	}
 
-	fun deleteProduct(products: List<EntityProduct>) {
-		repository.deleteProducts(products)
+
+	companion object {
+
+		const val ARG_FILTER_ALL		= 0
+		const val ARG_FILTER_RECIPES	= 1
+		const val ARG_FILTER_DFLT		= ARG_FILTER_ALL
+
 	}
-	 */
+
 
 }
 

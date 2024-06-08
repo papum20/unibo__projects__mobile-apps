@@ -11,7 +11,7 @@ import kotlin.jvm.Throws
 class ListViewModel(private val repository: Repository) : ViewModel() {
 
 	fun getAllProductsInList(): LiveData<List<EntityProductAndList>> {
-		return repository.getAllList()
+		return repository.getList()
 	}
 
 	fun addToList(id: Long, quantity: Float): EntityList {

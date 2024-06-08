@@ -51,19 +51,19 @@
 
     <dialog
         android:id="@+id/fragmentDialogAddToList"
-        android:name="com.papum.homecookscompanion.view.products.FragmentDialogAddToList"
+        android:name="com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToList"
         android:label="FragmentDialogAddToList"
         tools:layout="@layout/dialog_products_add_to_list" />
 
     <dialog
         android:id="@+id/fragmentDialogAddToInventory"
-        android:name="com.papum.homecookscompanion.view.products.FragmentDialogAddToInventory"
+        android:name="com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToInventory"
         android:label="FragmentDialogAddToInventory"
         tools:layout="@layout/dialog_products_add_to_inventory" />
 
     <dialog
         android:id="@+id/fragmentDialogAddToMeals"
-        android:name="com.papum.homecookscompanion.view.products.FragmentDialogAddToMeals"
+        android:name="com.papum.homecookscompanion.view.dialogs.FragmentDialogAddToMeals"
         android:label="FragmentDialogAddToMeals"
         tools:layout="@layout/dialog_products_add_to_meals" >
 
