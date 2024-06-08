@@ -114,7 +114,8 @@
     <string name="nutrients_fats">Fats (g): </string>
     <string name="nutrients_proteins">Proteins (g): </string>
 
-    <string name="products_add_to">Create new:</string>
+    <string name="products_create">Create new:</string>
+    <string name="products_add_to">Add to:</string>
     <string name="products_btn_addToList">+List</string>
     <string name="products_btn_addToInventory">+Inventory</string>
     <string name="products_btn_addToMeals">+Meals</string>

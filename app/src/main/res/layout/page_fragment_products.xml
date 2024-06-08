@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/tv_padding"
-        android:text="@string/products_add_to"
+        android:text="@string/products_create"
         android:textSize="@dimen/tv_fontSize"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/products_btn_editFood"
