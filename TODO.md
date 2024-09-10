@@ -55,20 +55,14 @@ Vorrei creare un mezzo per gestire l'inventario della casa (oggetti consumabili)
 
 ## tasks
 
-map:
-*	shops waypoints, with prices and stuff
+fix:
+*	stats : days for avg dont update like spinner
 
 stats:
 *	purchases
 *	shops
 
-recipes:
-*	create, manage...
-
-share
-
 zip
-
 
 all list:
 *	db: load only some
@@ -78,6 +72,10 @@ ux:
 	*	error dialog if wrong parameters (e.g. missing quantity/or put default val)
 *	inventory:
 	*	error if add to meal more than you have
+*	products:
+	*	add to list, when no quantity: no feedback and does not do anything
+*	scan:
+	*	if select shop and then select product, forgets about shop but still remains written
 
 services:
 *	on boot
@@ -119,7 +117,16 @@ info:
 
 view:
 *	buttons, cards, edit texts... too smal hard to click, sometimes misaligned (would be better to make bigger)
+*	stats:
+	*	spinner: uses listener, but better define in place lambda callback
 
+## bugs
+
+*	inventory:
+	*	add to list: crash if already present, as doesnt check but just performs an add instead of change quantity like for inventory
+	*	doesnt remove item if has alert, even after removing alert (maybe alert still remains in alerts table so..)
+*	productsWithResult:
+	*	no search update (need to copy products)
 
 ## future
 
@@ -177,5 +184,4 @@ misc:
 	*	settings for notifications
 *	btn expand: switch icons
 *	meals: select day with dialog
-*	bottomanvbar: texts too big
 *	meals: remove
