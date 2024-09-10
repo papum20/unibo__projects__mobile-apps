@@ -3,3 +3,6 @@ Project for Mobile Apps course at UniBo, y. 2023/2024. A food management app, fr
 
 ## Dependencies
 *	osmdroid : got at https://github.com/osmdroid/osmdroid/releases
+
+## Credits
+*	icons : https://www.flaticon.com/free-icons/  
