@@ -1,9 +1,11 @@
-
-## bin?
+# bin?
 opencv/native/
 
 # build
 **/build/
+
+# editor
+.vscode/
 
 # other
 .cxx
